@@ -8,5 +8,6 @@ $factory->define(App\Report::class, function (Faker $faker) {
         'longitude' => $faker->longitude,
         'notes' => $faker->streetAddress,
         'type_id' => rand(1, 4),
+        'user_created' => 1,
     ];
 });
