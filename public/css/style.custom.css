@@ -98,6 +98,7 @@
     #sidebar ul li {
         position: relative;
         display: block;
+        cursor: pointer;
         -webkit-transition: all 150ms ease-in;
         -moz-transition: all 150ms ease-in;
         -o-transition: all 150ms ease-in;

@@ -5,6 +5,7 @@
 	background: rgba(255, 255, 255, 0.5);
 	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
     width: 400px;
+    display: none;
 }
 #direct-box .header{
 	background: #3367D6 !important;
@@ -24,23 +25,23 @@
 	border: none;
 }
 .dismiss {
-        width: 35px;
-        height: 35px;
-        line-height: 35px;
-        text-align: center;
-        background: #4285F4;
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        cursor: pointer;
-        -webkit-transition: all 0.3s ease-in;
-        -o-transition: all 0.3s ease-in;
-        transition: all 0.3s ease-in;
-    }
-    .dismiss:hover {
-        background: rgba(255, 255, 255, 0.87);
-        color: #4285F4;
-    }
+    width: 35px;
+    height: 35px;
+    line-height: 35px;
+    text-align: center;
+    background: #4285F4;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    -webkit-transition: all 0.3s ease-in;
+    -o-transition: all 0.3s ease-in;
+    transition: all 0.3s ease-in;
+}
+.dismiss:hover {
+    background: rgba(255, 255, 255, 0.87);
+    color: #4285F4;
+}
 </style>
 @endsection
 @section('content')
@@ -52,7 +53,7 @@
     </div>
 
     <ul class="components">
-        <li>
+        <li id="show-direct-box">
         	<a href="#">
         		<i class="fa fa-map"></i>
         		<p>Directions</p>
@@ -116,7 +117,6 @@
 			</div>-->
 		</div>
 	</div>
-	
 </div>
 
 <div id="map"></div>
@@ -136,8 +136,14 @@
 		map.controls[google.maps.ControlPosition.LEFT_TOP].push(document.getElementById('left-panel'));
 		map.controls[google.maps.ControlPosition.LEFT_TOP].push(document.getElementById('direct-box'));
 
-		$('#left-panel').hide();
-
+		$('#direct-box .dismiss').click(() => {
+			$('#direct-box').hide('fast');
+			$('#left-panel').show('fast');
+		});
+		$('#show-direct-box').click(() => {
+			$('#direct-box').show('fast');
+			$('#sidebar').removeClass('active');
+		});
 		$("#sidebar").mCustomScrollbar({
             theme: "minimal"
         });

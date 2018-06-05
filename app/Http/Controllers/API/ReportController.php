@@ -68,7 +68,7 @@ class ReportController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // confirm
     }
 
     /**
@@ -79,6 +79,6 @@ class ReportController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // ennd
     }
 }
