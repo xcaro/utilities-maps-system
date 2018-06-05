@@ -6,7 +6,7 @@
 	<link rel="icon" type="image/png" sizes="96x96" href="{{ asset('assets/img/favicon.png') }}">-->
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-	<title>{{ $title }}</title>
+	<title>{{ $title  = 'Admin Dashboard'}}</title>
 
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
@@ -186,9 +186,9 @@
                             </li>
                         </ul>
                     </nav>
-                    <div class="copyright pull-right">
+                    <!--<div class="copyright pull-right">
                         &copy; <script>document.write(new Date().getFullYear())</script>, made with <i class="fa fa-heart heart"></i> by <a href="http://www.creative-tim.com">Creative Tim</a>
-                    </div>
+                    </div>-->
                 </div>
             </footer>
 	    </div>

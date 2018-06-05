@@ -36,7 +36,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'username', 'active', 'user_created',
+        'name', 'email', 'password', 'username', 'active',
     ];
 
     /**
@@ -58,7 +58,7 @@ class User extends Authenticatable implements JWTSubject
         return !! optional(optional($this->role)->permissions)->contains($permission);
     }
 
-    public function isAdmin($user)
+    public function isAdmin()
     {
         return true;
     }

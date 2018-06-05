@@ -16,7 +16,8 @@ class AdminMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if(Auth::user()->isAdmin()) {
+        // return response()->json(auth()->user());
+        if(Auth::check() && Auth::user()->isAdmin()) {
             return $next($request);
         }
         // if ($request->ajax() || $request->wantsJson()) {

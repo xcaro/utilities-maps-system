@@ -9,3 +9,8 @@ Route::group([
 		'as' => 'dashboard',
 	]);
 });
+
+Route::resources([
+	'reports' => 'ReportController',
+	'rptype' => 'ReportTypeController'
+]);

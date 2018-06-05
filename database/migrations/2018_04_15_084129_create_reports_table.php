@@ -30,6 +30,8 @@ class CreateReportsTable extends Migration
                   ->onDelete('cascade');
             $table->boolean('active')
                   ->default(true);
+            $table->boolean('confirm')
+                  ->default(false);
             $table->timestamps();
         });
     }

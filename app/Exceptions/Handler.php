@@ -46,6 +46,24 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        //dd($exception);
+        if ($exception instanceof AuthorizationException) {
+            return response()->json(['error' => $exception->getMessage(), 'code' => 403], 403);
+        }
         return parent::render($request, $exception);
     }
+        /**
+     * Convert an authentication exception into a response.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Auth\AuthenticationException  $exception
+     * @return \Illuminate\Http\Response
+     */
+    // protected function unauthenticated($request, AuthenticationException $exception)
+    // {
+    //     return parent::unauthenticated($request, $exception);
+    //     return ($request->expectsJson() || $request->ajax())
+    //                 ? response()->json(['message' => $exception->getMessage()], 401)
+    //                 : redirect()->guest(route('login'));
+    // }
 }
