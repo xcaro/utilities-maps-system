@@ -13,7 +13,7 @@ class ReportController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api');
+        $this->middleware('auth:api', ['except' => ['index', 'show']]);
     }
     /**
      * Display a listing of the resource.
@@ -37,14 +37,20 @@ class ReportController extends Controller
         $report = new Report;
         $report->latitude = $request->latitude;
         $report->longitude = $request->longitude;
-        $report->notes = $request->notes;
+        $report->comment = $request->comment;
         $report->type_id = $request->type;
         $report->user_created = auth()->user()->id;
-        $report->save();
+        if($report->save())
+        {
+            return response()->json([
+                'status' => 'Created successful',
+                'data' => $report,
+            ], 201);
+        }
         return response()->json([
-            'status' => 'Created successful',
-            'data' => $report,
+            'status' => 'Data can not be processed',
         ], 201);
+        
     }
 
     /**
@@ -55,7 +61,6 @@ class ReportController extends Controller
      */
     public function show($id)
     {
-        $this->authorize('view-report');
         return new ReportResource(Report::findOrFail($id));
     }
 
@@ -68,7 +73,20 @@ class ReportController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // confirm
+        $report = Report::find($id);
+        $report->latitude = $request->latitude;
+        $report->longitude = $request->longitude;
+        $report->comment = $request->comment;
+        $report->type_id = $request->type;
+        $report->user_created = auth()->user()->id;
+        $report->confirm = $request->confirm;
+        $report->image = $request->image;
+        $report->save();
+        
+        return response()->json([
+            'status' => 'Updated successful',
+            'data' => $report,
+        ], 200);
     }
 
     /**
@@ -79,6 +97,22 @@ class ReportController extends Controller
      */
     public function destroy($id)
     {
-        // ennd
+        $report = Report::find($id);
+        $report->active = false;
+        $report->save();
+        return response()->json(null, 204);
+    }
+
+    public function confirm(Report $report)
+    {
+        $report->confirm = true;
+        $report->save();
+        return response()->json(null, 204);
+    }
+    public function unconfirm(Report $report)
+    {
+        $report->confirm = false;
+        $report->save();
+        return response()->json(null, 204);
     }
 }

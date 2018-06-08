@@ -13,7 +13,7 @@ class ReportTypeController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api');
+        $this->middleware('auth:api', ['except' => ['index', 'show']]);
     }
     /**
      * Display a listing of the resource.
@@ -36,9 +36,12 @@ class ReportTypeController extends Controller
         $item = new ReportType;
         $item->name = $request->name;
         if ($item->save()) {
-            return response()->json(['message' => 'Created successful']);
+            return response()->json([
+                'message' => 'Created successful',
+                'data' => $item,
+            ]);
         }
-        return response()->json(['message' => 'Data cannot access']);
+        return response()->json(['message' => 'Data cannot access'], 200);
     }
 
     /**
@@ -64,9 +67,12 @@ class ReportTypeController extends Controller
         $item = ReportType::find($id);
         $item->name = $request->name;
         if ($item->save()) {
-            return response()->json(['message' => 'Created successful']);
+            return response()->json([
+                'message' => 'Updated successful',
+                'data' => $item,
+            ]);
         }
-        return response()->json(['message' => 'Data cannot access']);
+        return response()->json(['message' => 'Data cannot access'], 200);
     }
 
     /**
@@ -77,6 +83,9 @@ class ReportTypeController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $type = ReportType::find($id);
+        $type->active = false;
+        $type->save();
+        return response()->json([], 204);
     }
 }

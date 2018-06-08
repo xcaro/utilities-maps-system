@@ -25,8 +25,8 @@
                             <input type="text" placeholder="Enter Longitude" class="form-control" name="longitude">
                         </div>
                         <div class="form-group">
-                            <label>Notes</label>
-                            <textarea class="form-control" placeholder="Enter note here" name="notes"></textarea>
+                            <label>Comment</label>
+                            <textarea class="form-control" placeholder="Enter note here" name="comment"></textarea>
                         </div>
                         <div class="form-group">
                             <button class="btn btn-success">Create</button>

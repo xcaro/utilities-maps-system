@@ -19,7 +19,7 @@
                             <th class="text-center">#</th>
                             <th>latitude</th>
                             <th>longitude</th>
-                            <th>notes</th>
+                            <th>comment</th>
                             <th>type</th>
                         </tr>
                     </thead>
@@ -29,7 +29,7 @@
 	                            <td class="text-center">{{ $report->id }}</td>
 	                            <td>{{ $report->latitude }}</td>
 	                            <td>{{ $report->longitude }}</td>
-	                            <td>{{ $report->notes }}</td>
+	                            <td>{{ $report->comment }}</td>
 	                            <td>{{ $report->type->name }}</td>
 	                            <td class="td-actions text-right">
 	                                <a href="#" rel="tooltip" title="View" class="btn btn-info btn-simple btn-xs">

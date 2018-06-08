@@ -5,7 +5,7 @@
 	background: rgba(255, 255, 255, 0.5);
 	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
     width: 400px;
-    display: block;
+    display: none;
 }
 #direct-box .header{
 	background: #3367D6 !important;

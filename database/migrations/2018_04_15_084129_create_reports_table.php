@@ -17,7 +17,7 @@ class CreateReportsTable extends Migration
             $table->increments('id');
             $table->float('latitude', 10, 7);
             $table->float('longitude', 10, 7);
-            $table->string('notes')
+            $table->string('comment')
                   ->nullable();
             $table->unsignedInteger('type_id');
             $table->foreign('type_id')
@@ -32,6 +32,8 @@ class CreateReportsTable extends Migration
                   ->default(true);
             $table->boolean('confirm')
                   ->default(false);
+            $table->string('image')
+                  ->nullable();
             $table->timestamps();
         });
     }

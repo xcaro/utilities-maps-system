@@ -54,10 +54,10 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <h5 class="modal-title">Thay đổi thông tin</h5>
+        <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
-        </button>
+        </button>-->
       </div>
       <div class="modal-body">
       	<div class="row">

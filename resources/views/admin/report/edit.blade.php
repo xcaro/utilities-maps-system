@@ -26,8 +26,8 @@
                             <input type="text" placeholder="Enter Longitude" class="form-control" value="{{ $report->longitude }}">
                         </div>
                         <div class="form-group">
-                            <label>Notes</label>
-                            <textarea class="form-control" placeholder="Enter note here">{{ $report->notes }}</textarea>
+                            <label>Comment</label>
+                            <textarea class="form-control" placeholder="Enter note here" name="comment">{{ $report->comment }}</textarea>
                         </div>
                         <div class="form-group">
                             <button class="btn btn-success" type="submit">Edit</button>
