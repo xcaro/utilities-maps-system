@@ -28,3 +28,5 @@ Route::apiResources([
 	'report-types' => 'ReportTypeController',
 	'reports' => 'ReportController',
 ]);
+Route::put('/reports/{report}/confirm', 'ReportController@confirm')->name('reports.confirm');
+Route::put('/reports/{report}/unconfirm', 'ReportController@unconfirm')->name('reports.unconfirm');

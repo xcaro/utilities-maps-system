@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Report as ReportResource;
 use App\Http\Resources\ReportCollection;
 use App\Report;
-
+use r;
 class ReportController extends Controller
 {
     public function __construct()
@@ -34,6 +34,9 @@ class ReportController extends Controller
      */
     public function store(Request $request)
     {
+        // rql
+        $r_connect = r\connect('localhost');
+        //mysql
         $report = new Report;
         $report->latitude = $request->latitude;
         $report->longitude = $request->longitude;
@@ -42,6 +45,21 @@ class ReportController extends Controller
         $report->user_created = auth()->user()->id;
         if($report->save())
         {
+            //rql 
+            $r_result = r\db('app')->table('activeReports')
+                ->insert([
+                    'id' => $report->id,
+                    'latitude' => $report->latitude,
+                    'longitude' => $report->longitude,
+                    'comment' => $report->comment,
+                    'type_id' => $report->type_id,
+                    'confirm' => false,
+                    'created_at' => $report->created_at,
+                    'updated_at' => $report->updated_at,
+                ])
+                ->run($r_connect);
+            $r_connect->close();
+            //response
             return response()->json([
                 'status' => 'Created successful',
                 'data' => $report,
@@ -97,6 +115,11 @@ class ReportController extends Controller
      */
     public function destroy($id)
     {
+        //rql
+        $r_connect = r\connect('localhost');
+        $result = r\db('app')->table('activeReports')->get((int)$id)->delete()->run($r_connect);
+        $r_connect->close();
+
         $report = Report::find($id);
         $report->active = false;
         $report->save();
@@ -105,12 +128,20 @@ class ReportController extends Controller
 
     public function confirm(Report $report)
     {
+        $r_connect = r\connect('localhost');
+        $result = r\db('app')->table('activeReports')->get((int)$report->id)->update(['confirm' => true])->run($r_connect);
+        $r_connect->close();
+
         $report->confirm = true;
         $report->save();
         return response()->json(null, 204);
     }
     public function unconfirm(Report $report)
     {
+        $r_connect = r\connect('localhost');
+        $result = r\db('app')->table('activeReports')->get((int)$report->id)->update(['confirm' => false])->run($r_connect);
+        $r_connect->close();
+
         $report->confirm = false;
         $report->save();
         return response()->json(null, 204);

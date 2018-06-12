@@ -30,7 +30,7 @@
         },
         "files": [
             "helpers.php",
-            "php-rql/rdb/rdb.php"
+            "rethinkdb.config.php"
         ]
     },
     "autoload-dev": {

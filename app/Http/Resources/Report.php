@@ -18,8 +18,11 @@ class Report extends JsonResource
             'id' => $this->id, 
             'latitude' => $this->latitude, 
             'longitude' => $this->longitude, 
-            'notes' => $this->notes, 
+            'comment' => $this->comment, 
             'type_id' => $this->type_id,
+            'confirm' => $this->confirm,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at
         ];
     }
 }

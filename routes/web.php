@@ -33,9 +33,6 @@ Route::group([
 });
 Route::get('/test', function(){
 	// Connect to localhost
-    $conn = r\connect('localhost');
-
-    // Create a test table
-    r\db("app")->tableCreate("tablePhpTest")->run($conn);
+    
 	return dd(1);
 });
