@@ -25,6 +25,8 @@ class CreateReportsTable extends Migration
                   ->on('report_types')
                   ->onDelete('cascade');
             $table->unsignedInteger('user_created')
+                  ->nullable();
+            $table->foreign('user_created')
                   ->references('id')
                   ->on('users')
                   ->onDelete('cascade');
