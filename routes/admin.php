@@ -14,3 +14,4 @@ Route::resources([
 	'reports' => 'ReportController',
 	'rptype' => 'ReportTypeController'
 ]);
+Route::put('reports/{report}/confirm', 'ReportController@confirm');

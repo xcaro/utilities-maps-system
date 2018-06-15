@@ -84,10 +84,16 @@
         		<p>Search Places</p>
         	</a>
         </li>
-        <li>
+        <li data-toggle="modal" data-target="#sign-up">
         	<a href="#">
-        		<i class="fa fa-map-o"></i>
-        		<p>Option 1</p>
+        		<i class="fa fa-user-plus"></i>
+        		<p>Sign Up</p>
+        	</a>
+        </li>
+        <li data-toggle="modal" data-target="#sign-in">
+        	<a href="#">
+        		<i class="fa fa-sign-in"></i>
+        		<p>Sign In</p>
         	</a>
         </li>
     </ul>
@@ -144,6 +150,151 @@
 	</div>
 </div>
 
+<div id="sign-up" class="modal">
+	<div class="modal-dialog modal-lg">
+		 <div class="modal-content">
+		 	<div class="modal-header">
+		 		<h5 class="modal-title">Sign Up</h5>
+		 		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		            <span aria-hidden="true">&times;</span>
+		        </button>
+		 	</div>
+		 	<div class="modal-body">
+		 		<div class="container-fluid">
+		 			<div class="row">
+		 				<div class="col">
+		 					<div class="form-group row">
+		 						<label class="col-sm-3 col-form-label">Fullname</label>
+							    <div class="col-sm-9">
+							    	<input type="text" class="form-control" >
+							    </div>
+		 					</div>
+		 				</div>
+		 				<div class="col">
+		 					<div class="form-group row">
+		 						<label class="col-sm-3 col-form-label">Username</label>
+							    <div class="col-sm-9">
+							    	<input type="text" class="form-control" >
+							    </div>
+		 					</div>
+		 				</div>
+		 			</div>
+		 			<div class="row">
+		 				<div class="col">
+		 					<div class="form-group row">
+		 						<label class="col-sm-3 col-form-label">Email</label>
+							    <div class="col-sm-9">
+							    	<input type="text" class="form-control" >
+							    </div>
+		 					</div>
+		 				</div>
+		 				<div class="col">
+		 					<div class="form-group row">
+		 						<label class="col-sm-3 col-form-label">Re-Email</label>
+							    <div class="col-sm-9">
+							    	<input type="text" class="form-control" >
+							    </div>
+		 					</div>
+		 				</div>
+		 			</div>
+		 			<div class="row">
+		 				<div class="col">
+		 					<div class="form-group row">
+		 						<label class="col-sm-3 col-form-label">Password</label>
+							    <div class="col-sm-9">
+							    	<input type="text" class="form-control" >
+							    </div>
+		 					</div>
+		 				</div>
+		 				<div class="col">
+		 					<div class="form-group row">
+		 						<label class="col-sm-3 col-form-label">Re-Password</label>
+							    <div class="col-sm-9">
+							    	<input type="text" class="form-control" >
+							    </div>
+		 					</div>
+		 				</div>
+		 			</div>
+		 		</div>
+		 	</div>
+		 	<div class="modal-footer">
+		        <button type="button" class="btn btn-primary">Sign Up</button>
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		    </div>
+		 </div>
+	</div>
+</div>
+<div id="sign-in" class="modal">
+	<div class="modal-dialog">
+		 <div class="modal-content">
+		 	<div class="modal-header">
+		 		<h5 class="modal-title">Sign Up</h5>
+		 		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		            <span aria-hidden="true">&times;</span>
+		        </button>
+		 	</div>
+		 	<div class="modal-body">
+		 		<div class="container-fluid">
+	 				<div class="form-group row">
+ 						<label class="col-sm-3 col-form-label">Username</label>
+					    <div class="col-sm-9">
+					    	<input type="text" class="form-control" placeholder="Username">
+					    </div>
+ 					</div>
+ 					<div class="form-group row">
+ 						<label class="col-sm-3 col-form-label">Password</label>
+					    <div class="col-sm-9">
+					    	<input type="text" class="form-control" placeholder="Password">
+					    </div>
+ 					</div>
+ 					<div class="form-group row">
+ 						<label class="col-sm-3 col-form-label"></label>
+					    <div class="col-sm-9">
+					    	<div class="form-check">
+						        <input class="form-check-input" type="checkbox" id="check-remember">
+						        <label class="form-check-label" for="check-remember">
+						        	Remember me
+						        </label>
+						    </div>
+					    </div>
+ 					</div>
+		 		</div>
+		 	</div>
+		 	<div class="modal-footer">
+		        <button type="button" class="btn btn-primary">Sign In</button>
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		    </div>
+		 </div>
+	</div>
+</div>
+<div id="register-clinic" class="modal">
+	<div class="modal-dialog">
+		 <div class="modal-content">
+		 	<div class="modal-header">
+		 		<h5 class="modal-title">Sign Up</h5>
+		 		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		            <span aria-hidden="true">&times;</span>
+		        </button>
+		 	</div>
+		 	<div class="modal-body">
+		 		<div class="container-fluid">
+	 				<div class="form-group row">
+ 						<label class="col-sm-4 col-form-label">Loại phòng khám</label>
+					    <div class="col-sm-8">
+					    	<select class="form-control" id="clinic-type">
+					    	</select>
+					    </div>
+ 					</div>
+ 					
+		 		</div>
+		 	</div>
+		 	<div class="modal-footer">
+		        <button type="button" class="btn btn-primary">Sign In</button>
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		    </div>
+		 </div>
+	</div>
+</div>
 <div id="map"></div>
 
 @endsection
@@ -152,6 +303,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 <script>
 	$(() => {
+
 		let map = new google.maps.Map(document.getElementById('map'), {
 			center: {lat: 10.764237, lng: 106.689597},
         	mapTypeControl: false,
@@ -222,6 +374,25 @@
             $('.widget-toggle .widget-toggle-button').show();
             $('#left-panel').hide('fast');
         });
+
+        $('#register-clinic').modal('show');
+        $.ajax({
+        	url: '/api/clinic-types',
+        	type: 'GET',
+        })
+        .done(res => {
+        	console.log(res);
+        	$.each(res.data, (index, el) => {
+        		$('#clinic-type').append(`<option value="${el.id}">${el.name}</option>`)
+        	});
+        })
+        .fail((err) => {
+        	console.log(err);
+        })
+        .always(function() {
+        	console.log("complete");
+        });
+        
 	});
 </script>
 @endsection

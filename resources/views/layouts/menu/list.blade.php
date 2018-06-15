@@ -23,7 +23,7 @@
 			</ul>
 		</div>
     </li>
-	<li>
+	<!--<li>
 		<a data-toggle="collapse" href="#componentsExamples">
 			<i class="ti-package"></i>
 			<p>Components
@@ -236,5 +236,5 @@
 				</li>
             </ul>
         </div>
-    </li>
+    </li>-->
 </ul>

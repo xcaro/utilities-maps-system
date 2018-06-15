@@ -27,6 +27,9 @@ Route::post('me', 'AuthController@me');
 Route::apiResources([
 	'report-types' => 'ReportTypeController',
 	'reports' => 'ReportController',
+	'clinic-types' => 'ClinicTypeController',
+	'clinics' => 'ClinicController',
+	'logs' => 'LogController',
 ]);
 Route::put('/reports/{report}/confirm', 'ReportController@confirm')->name('reports.confirm');
 Route::put('/reports/{report}/unconfirm', 'ReportController@unconfirm')->name('reports.unconfirm');

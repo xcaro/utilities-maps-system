@@ -20,11 +20,11 @@ class ReportController extends Controller
     {
 
         //$this->authorize('view-report');
-        $listRp = Report::where('active', true)->paginate(10);
+        $listRp = Report::select(['id','latitude', 'longitude','confirm', 'type_id', 'comment'])->where('active', true)->get();
         return view('admin.report.index', [
             'title' => 'List Reports',
             'listReport' => $listRp,
-        ])->with('mes', 'hi');
+        ]);
     }
 
     /**
@@ -109,5 +109,12 @@ class ReportController extends Controller
     {
         Report::find($id)->update(['active' => 0]);
         return response()->json(null, 204);
+    }
+    public function confirm($id)
+    {
+        Report::find($id)->update(['confirm' => 1]);
+        return response()->json([
+            'message' => 'Confirmed',
+        ], 200);
     }
 }

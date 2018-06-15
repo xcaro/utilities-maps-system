@@ -9,6 +9,7 @@
         "duxet/laravel-rethinkdb": "dev-master",
         "fideloper/proxy": "^4.0",
         "laravel/framework": "5.6.*",
+        "laravel/socialite": "^3.0",
         "laravel/tinker": "^1.0",
         "tymon/jwt-auth": "1.0.0-rc.2"
     },

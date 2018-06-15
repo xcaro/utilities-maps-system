@@ -15,8 +15,8 @@ class Report extends Model
     	return $this->belongsTo(ReportType::class);
     }
     
-    public function userCreated()
-    {
-    	return $this->belongsTo(User::class);
-    }
+    // public function userCreated()
+    // {
+    // 	return $this->belongsTo(User::class);
+    // }
 }

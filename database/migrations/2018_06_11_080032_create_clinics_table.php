@@ -23,6 +23,8 @@ class CreateClinicsTable extends Migration
                   ->references('id')
                   ->on('clinic_types')
                   ->onDelete('cascade');
+            $table->boolean('active')
+                  ->default(true);
             $table->timestamps();
         });
     }

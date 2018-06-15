@@ -42,7 +42,7 @@ class ReportController extends Controller
         $report->longitude = $request->longitude;
         $report->comment = $request->comment;
         $report->type_id = $request->type;
-        $report->user_created = auth()->user()->id;
+        $report->user_created = auth('api')->check()? auth('api')->user()->id:null;
         if($report->save())
         {
             //rql 
