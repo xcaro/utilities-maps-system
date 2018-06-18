@@ -23,6 +23,12 @@ class CreateUserTurnsTable extends Migration
                   ->references('id')
                   ->on('clinic_shifts')
                   ->onDelete('cascade');
+            $table->boolean('confirm')
+                  ->default(false);
+            $table->dateTime('register_day')
+                  ->nullable();
+            $table->text('description')
+                  ->nullable();
         });
     }
 

@@ -10,5 +10,6 @@ class ClinicShift extends Model
     	'name',
     	'start_shift',
     	'end_shift',
+    	'active',
     ];
 }

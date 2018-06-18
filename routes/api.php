@@ -13,9 +13,10 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+// 
 Route::post('login', 'AuthController@login');
 Route::post('logout', 'AuthController@logout');
 Route::post('refresh', 'AuthController@refresh');
@@ -25,11 +26,14 @@ Route::post('me', 'AuthController@me');
 // Route::resource('report', 'ReportController');
 
 Route::apiResources([
-	'report-types' => 'ReportTypeController',
-	'reports' => 'ReportController',
-	'clinic-types' => 'ClinicTypeController',
-	'clinics' => 'ClinicController',
-	'logs' => 'LogController',
+	'report-type' => 'ReportTypeController',
+	'report' => 'ReportController',
+	'clinic-type' => 'ClinicTypeController',
+	'clinic' => 'ClinicController',
+	'clinic.shift' => 'ClinicShiftController'
 ]);
-Route::put('/reports/{report}/confirm', 'ReportController@confirm')->name('reports.confirm');
-Route::put('/reports/{report}/unconfirm', 'ReportController@unconfirm')->name('reports.unconfirm');
+Route::put('/report/{report}/confirm', 'ReportController@confirm')->name('reports.confirm');
+Route::put('/report/{report}/unconfirm', 'ReportController@unconfirm')->name('reports.unconfirm');
+
+//User Api
+Route::apiResource('user', 'UserController', ['except' => ['index', 'show', 'destroy']]);

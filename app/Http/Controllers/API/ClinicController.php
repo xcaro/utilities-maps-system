@@ -20,7 +20,7 @@ class ClinicController extends Controller
      */
     public function index()
     {
-        return new ClinicCollection(Clinic::all());
+        return new ClinicCollection(Clinic::where('active', true)->get());
     }
 
     /**
@@ -38,12 +38,12 @@ class ClinicController extends Controller
         $item->address = $request->address;
         if($item->save()){
             return response()->json([
-                'status' => 'Created successful',
+                'message' => 'Created successful',
                 'data' => $report,
             ], 201);
         }
         return response()->json([
-            'status' => 'Data can not be processed',
+            'message' => 'Data can not be processed',
         ], 201);
     }
 
@@ -74,12 +74,12 @@ class ClinicController extends Controller
         $item->address = $request->address;
         if($item->save()){
             return response()->json([
-                'status' => 'Created successful',
+                'message' => 'Created successful',
                 'data' => $report,
             ], 201);
         }
         return response()->json([
-            'status' => 'Data can not be processed',
+            'message' => 'Data can not be processed',
         ], 201);
     }
 

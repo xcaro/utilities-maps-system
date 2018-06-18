@@ -4,7 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-
+use Illuminate\Auth\AuthenticationException;
 class Handler extends ExceptionHandler
 {
     /**
@@ -46,10 +46,24 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        //dd($exception);
+
         if ($exception instanceof AuthorizationException) {
             return response()->json(['error' => $exception->getMessage(), 'code' => 403], 403);
         }
+        // if ($exception instanceof ValidationException) {
+        //     return response()->json(['error' => $exception->getMessage()], 403);
+        // }
+        // if ($request->ajax() || $request->wantsJson()) {
+        //     $res = [
+        //         'status' => false,
+        //         'errors' => [
+        //             'code' => $exception->getCode(),
+        //             'messages' => $exception->getMessage(),
+        //         ],
+        //     ];
+        //     return response()->json($res, 400);
+        // }
+        
         return parent::render($request, $exception);
     }
         /**
@@ -59,11 +73,32 @@ class Handler extends ExceptionHandler
      * @param  \Illuminate\Auth\AuthenticationException  $exception
      * @return \Illuminate\Http\Response
      */
-    // protected function unauthenticated($request, AuthenticationException $exception)
-    // {
-    //     return parent::unauthenticated($request, $exception);
-    //     return ($request->expectsJson() || $request->ajax())
-    //                 ? response()->json(['message' => $exception->getMessage()], 401)
-    //                 : redirect()->guest(route('login'));
-    // }
+    public function unauthenticated($request, AuthenticationException $exception)
+    {
+        //return response()->json(['mess'=>false]);
+        //dd($request->route());
+        $guard = array_get($exception->guards(), 0);
+        
+        switch ($guard) {
+            case 'api':
+                return response()->json(['messages' => $exception->getMessage()], 401);
+                break;
+            
+            // case 'admin':
+            //     return ($request->expectsJson() || $request->ajax())
+            //         ? response()->json(['message' => $exception->getMessage()], 401)
+            //         : redirect()->guest(route('admin.login'));
+            //     break;
+
+            default:
+                return ($request->expectsJson() || $request->ajax())
+                        ? response()->json(['messages' => $exception->getMessage()], 401)
+                        : redirect()->guest(route('admin.login'));
+                break;
+        }
+        // return response()->json(['message' => $exception->getMessage()], 401);
+        // return ($request->expectsJson() || $request->ajax())
+        //             ? response()->json(['message' => $exception->getMessage()], 401)
+        //             : redirect()->guest(route('admin.login'));
+    }
 }

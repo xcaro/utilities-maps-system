@@ -27,6 +27,10 @@ class CreateUsersTable extends Migration
                   ->references('id')
                   ->on('roles')
                   ->onDelete('set null');
+            $table->string('address')
+                  ->nullable();
+            $table->string('phone')
+                  ->nullable();
             $table->boolean('active')
                   ->default(true);
             $table->rememberToken();

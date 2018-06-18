@@ -14,6 +14,14 @@ class User extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'username' => $this->username,
+            'address' => $this->address,
+            'phone' => $this->phone,
+            'active' => $this->active,
+            'role' => $this->role,
+        ];
     }
 }

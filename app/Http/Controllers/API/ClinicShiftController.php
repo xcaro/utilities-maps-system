@@ -5,20 +5,20 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class LogController extends Controller
+class ClinicShiftController extends Controller
 {
     public function __construct()
     {
-        
+        $this->middleware('auth:api', ['except' => ['index', 'show']]);
     }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
-        //
+        
     }
 
     /**

@@ -43,24 +43,24 @@
 			Tip 2: you can change the color of the active button using the data-active-color="primary | info | success | warning | danger"
 		-->
 			<div class="logo">
-				<a href="http://www.creative-tim.com" class="simple-text logo-mini">
+				<a href="#" class="simple-text logo-mini">
 					CT
 				</a>
 
-				<a href="http://www.creative-tim.com" class="simple-text logo-normal">
-					Creative Tim
+				<a href="#" class="simple-text logo-normal">
+					noname system
 				</a>
 			</div>
 	    	<div class="sidebar-wrapper">
 				<div class="user">
 	                <div class="info">
 						<div class="photo">
-		                    <img src="{{ asset('assets/img/faces/face-2.jpg') }}" />
+		                    <img src="{{ asset('assets/img/faces/face-1.jpg') }}" />
 		                </div>
 
 	                    <a data-toggle="collapse" href="#collapseExample" class="collapsed">
 	                        <span>
-								Chet Faker
+								{{ Auth::user()->name }}
 		                        <b class="caret"></b>
 							</span>
 	                    </a>
@@ -154,6 +154,21 @@
 									</p>
 	                            </a>
 	                        </li>
+	                        <li>
+
+	                            <a class="btn-rotate"  href="{{ route('admin.logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        
+									<i class="fa fa-sign-out"></i>
+									<p class="hidden-md hidden-lg">
+										{{ __('Signout') }}
+									</p>
+	                            </a>
+	                        </li>
+	                        <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
 	                    </ul>
 	                </div>
 	            </div>
@@ -256,5 +271,38 @@
 	{{-- <script src="{{ asset('assets/js/demo.js') }}"></script> --}}
 
 	@yield('scripts')
-
+<script>
+	$(() => {
+		// $('#logout').click(()=>{
+		// 	$.ajax({
+		// 		url: '{{route('admin.logout')}}',
+		// 		type: 'POST',
+		// 		data: {_token:'{{csrf_token()}}'},
+		// 	})
+		// 	.done(() => {
+		// 		window.location.href = '{{route('admin.login')}}';
+		// 	})
+		// 	.fail(function() {
+		// 		console.log("error");
+		// 	})
+		// 	.always(function() {
+		// 		console.log("complete");
+		// 	});
+		// });
+		// set active current menu
+		let path = window.location.href;
+		path = path.replace(/\/$/, "");
+		path = decodeURIComponent(path);
+		console.log(path)
+		$('#slibar-menu li').each((index, el) => {
+			if ($(el).children('li a').attr('href') === path) {
+				$(el).parent().parent().addClass('in');
+				$(el).addClass('active');
+			}
+			if ($(el).children('a').attr('href') === path) {
+				$(el).addClass('active');
+			}
+		});
+	});
+</script>
 </html>

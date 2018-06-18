@@ -18,6 +18,7 @@ class CreateClinicShiftsTable extends Migration
             $table->string('name')->nullable();
             $table->dateTime('start_shift');
             $table->dateTime('end_shift');
+            $table->boolean('active')->default(true);
             $table->timestamps();
         });
     }

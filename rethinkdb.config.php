@@ -1,8 +1,9 @@
 <?php
-$r_hostname = 'localhost';
-$r_dbname = 'app';
+$r_hostname = env('R_HOST', '127.0.0.1');
+$r_dbname = env('R_DATABASE', 'test');
+$r_port = env('R_PORT', 28015);
 
-$r_connect = r\connect($r_hostname);
+$r_connect = r\connect($r_hostname, $r_port);
 
 $r_list_db = r\dbList()->run($r_connect);
 if (!in_array($r_dbname, $r_list_db)) {

@@ -285,7 +285,33 @@
 					    	</select>
 					    </div>
  					</div>
- 					
+ 					<div class="form-group row">
+ 						<label class="col-sm-4 col-form-label">Tên phòng khám</label>
+					    <div class="col-sm-8">
+					    	<select class="form-control" id="clinic-name">
+					    		<option>ABC</option>
+					    	</select>
+					    </div>
+ 					</div>
+ 					<div class="form-group row">
+ 						<label class="col-sm-4 col-form-label">Lượt khám</label>
+					    <div class="col-sm-8">
+					    	<select class="form-control" id="clinic-shifts">
+					    		<option>10:00 - 11:00</option>
+					    		<option disabled>10:00 - 11:00</option>
+					    	</select>
+					    </div>
+ 					</div>
+ 					<div class="form-group row">
+ 						<div class="col-sm-4">
+ 							<label class="col-form-label">Mô tả triệu chứng</label>
+ 							<small class="text-muted">Optional</small>
+ 						</div>
+ 						{{--  --}}
+					    <div class="col-sm-8">
+					    	<textarea class="form-control"></textarea>
+					    </div>
+ 					</div>
 		 		</div>
 		 	</div>
 		 	<div class="modal-footer">
@@ -299,6 +325,7 @@
 
 @endsection
 @section('scripts')
+<script src="https://apis.google.com/js/platform.js" async defer></script>
 <script async defer src="//maps.googleapis.com/maps/api/js?libraries=places‌​&key=AIzaSyA0kXy7r6QF_I9nixVMeP1TbIZ3ERfWgYc&libraries=places&language=vi&region=vn"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 <script>

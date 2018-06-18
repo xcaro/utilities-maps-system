@@ -1,17 +1,16 @@
-<ul class="nav">
+<ul class="nav" id="slibar-menu">
     <li>
-        <a data-toggle="collapse" href="#dashboardOverview" aria-expanded="true">
+        <a href="{{route('admin.dashboard')}}" >
             <i class="ti-panel"></i>
-            <p>Dashboard
-                <b class="caret"></b>
+            <p>Bảng điều khiển
             </p>
         </a>
-		<div class="collapse" id="dashboardOverview">
+		<!--<div class="collapse" id="dashboardOverview">
 			<ul class="nav">
-				<li class="active">
+				<li>
 					<a href="../dashboard/overview.html">
 						<span class="sidebar-mini">O</span>
-						<span class="sidebar-normal">Overview</span>
+						<span class="sidebar-normal">Trang chính</span>
 					</a>
 				</li>
 				<li>
@@ -21,62 +20,81 @@
 					</a>
 				</li>
 			</ul>
-		</div>
+		</div>-->
     </li>
-	<!--<li>
-		<a data-toggle="collapse" href="#componentsExamples">
-			<i class="ti-package"></i>
-			<p>Components
+	<li>
+		<a data-toggle="collapse" href="#users-viewer" >
+			<i class="ti-user"></i>
+			<p>Người dùng
 			   <b class="caret"></b>
 			</p>
 		</a>
-		<div class="collapse" id="componentsExamples">
+		<div class="collapse" id="users-viewer">
 			<ul class="nav">
-                <li>
-					<a href="../components/buttons.html">
-						<span class="sidebar-mini">B</span>
-						<span class="sidebar-normal">Buttons</span>
+				<li>
+					<a href="{{ route('admin.user.create') }}">
+						<span class="sidebar-mini">+</span>
+						<span class="sidebar-normal">Tạo tải khoản</span>
 					</a>
 				</li>
                 <li>
-					<a href="../components/grid.html">
-						<span class="sidebar-mini">GS</span>
-						<span class="sidebar-normal">Grid System</span>
+					<a href="{{ route('admin.user.index') }}">
+						<span class="sidebar-mini">+</span>
+						<span class="sidebar-normal">Danh sách tài khoản</span>
 					</a>
 				</li>
-                <li>
-					<a href="../components/panels.html">
-						<span class="sidebar-mini">P</span>
-						<span class="sidebar-normal">Panels</span>
-					</a>
-				</li>
-                <li>
-					<a href="../components/sweet-alert.html">
-						<span class="sidebar-mini">SA</span>
-						<span class="sidebar-normal">Sweet Alert</span>
-					</a>
-				</li>
-                <li>
-					<a href="../components/notifications.html">
-						<span class="sidebar-mini">N</span>
-						<span class="sidebar-normal">Notifications</span>
-					</a>
-				</li>
-                <li>
-					<a href="../components/icons.html">
-						<span class="sidebar-mini">I</span>
-						<span class="sidebar-normal">Icons</span>
-					</a>
-				</li>
-                <li>
-					<a href="../components/typography.html">
-						<span class="sidebar-mini"><i class="ti-panel"></i></span>
-						<span class="sidebar-normal">Typography</span>
+				<li>
+					<a href="#">
+						<span class="sidebar-mini">+</span>
+						<span class="sidebar-normal">Nhóm quyền</span>
 					</a>
 				</li>
             </ul>
 		</div>
 	</li>
+	<li>
+		<a data-toggle="collapse" href="#report-viewer" >
+			<i class="ti-package"></i>
+			<p>Báo cáo
+			   <b class="caret"></b>
+			</p>
+		</a>
+		<div class="collapse" id="report-viewer">
+			<ul class="nav">
+                <li>
+					<a href="{{ route('admin.reports.index') }}">
+						<span class="sidebar-mini">+</span>
+						<span class="sidebar-normal">Danh sách báo cáo</span>
+					</a>
+				</li>
+            </ul>
+		</div>
+	</li>
+	<li>
+		<a data-toggle="collapse" href="#clinic-viewer" >
+			<i class="ti-wheelchair"></i>
+			<p>Phòng khám
+			   <b class="caret"></b>
+			</p>
+		</a>
+		<div class="collapse" id="clinic-viewer">
+			<ul class="nav">
+				<li>
+					<a href="#">
+						<span class="sidebar-mini">+</span>
+						<span class="sidebar-normal">Tạo phòng khám</span>
+					</a>
+				</li>
+                <li>
+					<a href="#">
+						<span class="sidebar-mini">+</span>
+						<span class="sidebar-normal">Quản lý phòng khám</span>
+					</a>
+				</li>
+            </ul>
+		</div>
+	</li>
+	<!--</li>
 	<li>
 		<a data-toggle="collapse" href="#formsExamples">
             <i class="ti-clipboard"></i>

@@ -21,7 +21,7 @@ class ClinicTypeController extends Controller
      */
     public function index()
     {
-        return new ClinicTypeCollection(ClinicType::all());
+        return new ClinicTypeCollection(ClinicType::where('active', true)->get());
     }
 
     /**

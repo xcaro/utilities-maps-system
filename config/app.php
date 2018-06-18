@@ -65,7 +65,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Ho_Chi_Minh',
 
     /*
     |--------------------------------------------------------------------------
@@ -78,7 +78,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'vi',
 
     /*
     |--------------------------------------------------------------------------
@@ -152,7 +152,6 @@ return [
          */
 Barryvdh\Debugbar\ServiceProvider::class,
 Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
-duxet\Rethinkdb\RethinkdbServiceProvider::class,
         /*
          * Application Service Providers...
          */

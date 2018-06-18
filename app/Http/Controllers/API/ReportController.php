@@ -23,7 +23,9 @@ class ReportController extends Controller
     public function index()
     {
         //$this->authorize('view-report');
-        return new ReportCollection(Report::paginate(1000));
+        return (new ReportCollection(Report::paginate(1000)))
+                ->response()
+                ->setStatusCode(206);
     }
 
     /**
@@ -35,7 +37,7 @@ class ReportController extends Controller
     public function store(Request $request)
     {
         // rql
-        $r_connect = r\connect('localhost');
+        $r_connect = r\connect(env('R_HOST'), env('R_PORT'));
         //mysql
         $report = new Report;
         $report->latitude = $request->latitude;
@@ -46,7 +48,7 @@ class ReportController extends Controller
         if($report->save())
         {
             //rql 
-            $r_result = r\db('app')->table('activeReports')
+            $r_result = r\db(env('R_DATABASE'))->table('activeReports')
                 ->insert([
                     'id' => $report->id,
                     'latitude' => $report->latitude,
@@ -61,12 +63,12 @@ class ReportController extends Controller
             $r_connect->close();
             //response
             return response()->json([
-                'status' => 'Created successful',
+                'message' => 'Created successful',
                 'data' => $report,
             ], 201);
         }
         return response()->json([
-            'status' => 'Data can not be processed',
+            'message' => 'Data can not be processed',
         ], 201);
         
     }
@@ -79,7 +81,9 @@ class ReportController extends Controller
      */
     public function show($id)
     {
-        return new ReportResource(Report::findOrFail($id));
+        return (new ReportResource(Report::findOrFail($id)))
+                ->response()
+                ->setStatusCode(200);
     }
 
     /**
@@ -102,7 +106,7 @@ class ReportController extends Controller
         $report->save();
         
         return response()->json([
-            'status' => 'Updated successful',
+            'message' => 'Updated successful',
             'data' => $report,
         ], 200);
     }
@@ -134,7 +138,7 @@ class ReportController extends Controller
 
         $report->confirm = true;
         $report->save();
-        return response()->json(null, 204);
+        return response()->setStatusCode(204);
     }
     public function unconfirm(Report $report)
     {
@@ -144,6 +148,6 @@ class ReportController extends Controller
 
         $report->confirm = false;
         $report->save();
-        return response()->json(null, 204);
+        return response()->setStatusCode(204);
     }
 }

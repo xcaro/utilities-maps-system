@@ -11,6 +11,11 @@ class Clinic extends Model
     	'latitude',
     	'longitude',
     	'address',
-    	'type'
+    	'type',
+    	'active',
     ];
+    public function shifts()
+    {
+    	return $this->hasMany(ClinicShift::class, 'type');
+    }
 }

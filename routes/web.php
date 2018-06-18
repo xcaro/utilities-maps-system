@@ -26,13 +26,14 @@ Route::group([
 		'uses' => 'LoginController@showLoginForm',
 		'as' => 'login',
 	]);
-	Route::post('login', [
+	Route::post('/', [
 		'uses' => 'LoginController@login',
 		'as' => 'check',
 	]);
 });
-Route::get('/test', function(){
-	// Connect to localhost
-    
-	return dd(1);
-});
+
+// Google+ login
+Route::get('auth/redirect', 'AuthController@redirect');
+Route::get('auth/callback', 'AuthController@callback');
+Route::get('register', 'AuthController@signup')->name('signup.show');
+Route::post('register', 'AuthController@register')->name('signup.store');

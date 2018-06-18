@@ -23,17 +23,37 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login()
+    public function login(Request $request)
     {
-        $credentials = request(['username', 'password']);
 
+        //$credentials = $request->only(['email', 'password']);
+
+        //return response()->json($this->credentials($request));
+        $credentials = $this->credentials($request);
+        
         if (! $token = auth('api')->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized.'], 401);
+            return response()->json(['errors' => 'Unauthorized.'], 401);
         }
         //return $token;
         return $this->respondWithToken($token);
     }
 
+    /**
+     * Get the needed authorization credentials from the request.
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    public function credentials(Request $request)
+    {
+        $field = filter_var($request->get('username'), FILTER_VALIDATE_EMAIL)
+            ? 'email'
+            : 'username';
+
+        return array_merge([
+            $field => $request->get('username'),
+            'password' => $request->password,
+        ], ['active' => true]);
+    }
     /**
      * Get the authenticated User.
      *

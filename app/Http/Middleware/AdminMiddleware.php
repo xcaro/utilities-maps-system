@@ -23,6 +23,9 @@ class AdminMiddleware
         // if ($request->ajax() || $request->wantsJson()) {
         //     return response('Unauthorized.', 401);
         // }
-        return redirect()->route('admin.login');
+        Auth::logout();
+        return redirect()
+            ->route('admin.login')
+            ->withErrors('Bạn không có quyền quản trị');
     }
 }

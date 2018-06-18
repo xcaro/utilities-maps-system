@@ -6,7 +6,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('assets/img/apple-icon.png') }}">
     <link rel="icon" type="image/png" sizes="96x96" href="{{ asset('assets/img/favicon.png') }}">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>Login - noname system</title>
+    <title>Paper Dashboard PRO by Creative Tim</title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
     <!-- Bootstrap core CSS     -->
@@ -25,23 +25,17 @@
     <nav class="navbar navbar-transparent navbar-absolute">
         <div class="container">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation-example-2">
+                <button type="button" class="navbar-toggle navbar-toggle-black" data-toggle="collapse" data-target="#navigation-example-2">
                     <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
+                    <span class="icon-bar "></span>
+                    <span class="icon-bar "></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="../dashboard/overview.html">noname system</a>
             </div>
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <!--<li>
-                        <a href="#">
-                            Đăng ký
-                        </a>
-                    </li>-->
                     <li>
-                        <a href="#">
+                       <a href="{{ route('admin.login')}}" class="btn">
                             Trang quản trị
                         </a>
                     </li>
@@ -49,15 +43,55 @@
             </div>
         </div>
     </nav>
+
     <div class="wrapper wrapper-full-page">
-        <div class="full-page login-page" data-color="" data-image="{{ asset('assets/img/background/background-2.jpg') }}">
-            <!--   you can change the color of the filter page using: data-color="blue | azure | green | orange | red | purple" -->
+        <div class="register-page" data-color="blue" >
+        <!--   you can change the color of the filter page using: data-color="blue | azure | green | orange | red | purple" -->
             <div class="content">
                 <div class="container">
                     <div class="row">
-                        <div class="col-md-4 col-sm-6 col-md-offset-4 col-sm-offset-3">
-
-                            @if ($errors->any())
+                        <div class="col-md-8 col-md-offset-2">
+                            <div class="header-text">
+                                <h2>noname system</h2>
+                                <h4>Đăng ký tài khoản miễn phí</h4>
+                                <hr>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-md-offset-2">
+                            <div class="media">
+                                <div class="media-left">
+                                    <div class="icon icon-danger">
+                                        <i class="ti ti-user"></i>
+                                    </div>
+                                </div>
+                                <div class="media-body">
+                                    <h5>Free Account</h5>
+                                </div>
+                            </div>
+                            <div class="media">
+                                <div class="media-left">
+                                    <div class="icon icon-warning">
+                                        <i class="ti-bar-chart-alt"></i>
+                                    </div>
+                                </div>
+                                <div class="media-body">
+                                    <h5>Awesome Performances</h5>
+                                </div>
+                            </div>
+                            <div class="media">
+                                <div class="media-left">
+                                    <div class="icon icon-info">
+                                        <i class="ti-headphone"></i>
+                                    </div>
+                                </div>
+                                <div class="media-body">
+                                    <h5>Global Support</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <form method="POST" action="#" autocomplete="false">
+                    @if ($errors->any())
                         <div class="alert alert-danger">
                             <ul>
                                 @foreach ($errors->all() as $error)
@@ -66,27 +100,30 @@
                             </ul>
                         </div>
                     @endif
-                            <form method="POST" action="{{ route('admin.check') }}">
-                                @csrf
-                                <div class="card" data-background="color" data-color="blue">
-                                    <div class="card-header">
-                                        <h3 class="card-title">Đăng nhập</h3>
-                                    </div>
-                                    <div class="card-content">
+
+                                <div class="card card-plain">
+                                    <div class="content">
                                         <div class="form-group">
-                                            <label>Tên người dùng</label>
-                                            <input type="text" name="username" placeholder="Tên người dùng" class="form-control input-no-border" required autofocus>
+                                            <input type="text" placeholder="Tên của bạn" class="form-control" name="name" required autofocus value="{{isset($user)? $user->name:""}}">
                                         </div>
                                         <div class="form-group">
-                                            <label>Mật khẩu</label>
-                                            <input type="password" name="password" placeholder="Mật khẩu" class="form-control input-no-border" required>
+                                            <input type="email" placeholder="Địa chỉ email" class="form-control" name="email" required {{isset($user)? "value={$user->email} disabled":''}}>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="password" placeholder="Mật khẩu" class="form-control" name="password" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="password" placeholder="Nhập lại mật khẩu" class="form-control" name="repassword" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" placeholder="Số điện thoại" class="form-control" name="phone" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" placeholder="Địa chỉ" class="form-control" id="address" name="address" required>
                                         </div>
                                     </div>
-                                    <div class="card-footer text-center">
-                                        <button type="submit" class="btn btn-fill btn-wd ">Đăng nhập</button>
-                                        <!--<div class="forgot">
-                                            <a href="#pablo">Quên mật khẩu</a>
-                                        </div>-->
+                                    <div class="footer text-center">
+                                        <button type="submit" class="btn btn-fill btn-danger btn-wd">Tạo tài khoản</button>
                                     </div>
                                 </div>
                             </form>
@@ -94,13 +131,11 @@
                     </div>
                 </div>
             </div>
+
             <footer class="footer footer-transparent">
                 <div class="container">
-                    <div class="copyright">
-                        &copy;
-                        <script>
-                        document.write(new Date().getFullYear())
-                        </script>, made with <i class="fa fa-heart heart"></i> by <a href="http://www.creative-tim.com">Creative Tim</a>
+                    <div class="copyright text-center">
+                        &copy; <script>document.write(new Date().getFullYear())</script>, made with <i class="fa fa-heart heart"></i> by <a href="#">Creative Tim</a>
                     </div>
                 </div>
             </footer>
@@ -135,7 +170,7 @@
 <!-- Vector Map plugin -->
 <script src="{{ asset('assets/js/jquery-jvectormap.js') }}"></script>
 <!--  Google Maps Plugin    -->
-<!--<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>-->
+<script src="https://maps.googleapis.com/maps/api/js?libraries=places‌​&key=AIzaSyA0kXy7r6QF_I9nixVMeP1TbIZ3ERfWgYc&libraries=places&language=vi&region=vn"></script>
 <!-- Wizard Plugin    -->
 <script src="{{ asset('assets/js/jquery.bootstrap.wizard.min.js') }}"></script>
 <!--  Bootstrap Table Plugin    -->
@@ -147,22 +182,17 @@
 <!-- Paper Dashboard PRO Core javascript and methods for Demo purpose -->
 <script src="{{ asset('assets/js/paper-dashboard.js') }}"></script>
 <!-- Paper Dashboard PRO DEMO methods, don't include it in your project! -->
-<!--<script src="{{ asset('assets/js/demo.js') }}"></script>-->
+{{-- <script src="{{ asset('assets/js/demo.js') }}"></script> --}}
 <script type="text/javascript">
-$().ready(function() {
+    $().ready(function(){
+        let autoAddress = new google.maps.places.Autocomplete(document.getElementById('address'), {types: ['geocode']});
 
-    $page = $('.full-page');
-    image_src = $page.data('image');
 
-    if(image_src !== undefined){
-        image_container = '<div class="full-page-background" style="background-image: url(' + image_src + ') "/>'
-        $page.append(image_container);
-    }
-    setTimeout(function() {
-        // after 1000 ms we add the class animated to the login/register card
-        $('.card').removeClass('card-hidden');
-    }, 700)
-});
+        setTimeout(function(){
+            // after 1000 ms we add the class animated to the login/register card
+            $('.card').removeClass('card-hidden');
+        }, 700)
+    });
 </script>
 
 </html>

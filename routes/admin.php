@@ -1,6 +1,7 @@
 <?php
 
 //Route::get('/', 'DashboardController@dashboard');
+Route::post('logout', 'LoginController@logout')->name('logout');
 Route::group([
 	'prefix' => 'dashboard'
 ], function () {
@@ -12,6 +13,7 @@ Route::group([
 
 Route::resources([
 	'reports' => 'ReportController',
-	'rptype' => 'ReportTypeController'
+	'rptype' => 'ReportTypeController',
+	'user' => 'UserController'
 ]);
 Route::put('reports/{report}/confirm', 'ReportController@confirm');
