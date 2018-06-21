@@ -16,9 +16,9 @@ class CreateReportTypesTable extends Migration
         Schema::create('report_types', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('confirmed_icon')->nullable();
-            $table->string('unconfirmed_icon')->nullable();
-            $table->string('menu_icon')->nullable();
+            $table->text('confirmed_icon')->nullable();
+            $table->text('unconfirmed_icon')->nullable();
+            $table->text('menu_icon')->nullable();
             $table->boolean('active')
                   ->default(true);
             $table->timestamps();
