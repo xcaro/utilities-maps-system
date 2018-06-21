@@ -14,8 +14,4 @@ class Clinic extends Model
     	'type',
     	'active',
     ];
-    public function shifts()
-    {
-    	return $this->hasMany(ClinicShift::class, 'type');
-    }
 }

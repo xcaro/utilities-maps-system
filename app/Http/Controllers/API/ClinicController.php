@@ -36,10 +36,11 @@ class ClinicController extends Controller
         $item->latitude = $request->latitude;
         $item->longitude = $request->longitude;
         $item->address = $request->address;
+        $item->type = $request->type;
         if($item->save()){
             return response()->json([
                 'message' => 'Created successful',
-                'data' => $report,
+                'data' => new ClinicResource($item),
             ], 201);
         }
         return response()->json([
@@ -72,10 +73,11 @@ class ClinicController extends Controller
         $item->latitude = $request->latitude;
         $item->longitude = $request->longitude;
         $item->address = $request->address;
+        $item->type = $request->type;
         if($item->save()){
             return response()->json([
                 'message' => 'Created successful',
-                'data' => $report,
+                'data' => new ClinicResource($item),
             ], 201);
         }
         return response()->json([

@@ -4,6 +4,9 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ClinicShiftClinicShift as ClinicShiftResource;
+use App\Http\Resources\ClinicShiftCollection;
+use App\ClinicShift;
 
 class ClinicShiftController extends Controller
 {
@@ -18,7 +21,10 @@ class ClinicShiftController extends Controller
      */
     public function index($id)
     {
-        
+        return new ClinicShiftCollection(ClinicShift::where([
+            ['clinic_id', '=', $id],
+            ['active', '=', true],
+        ])->get());
     }
 
     /**
@@ -27,9 +33,21 @@ class ClinicShiftController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store($id, Request $request)
     {
-        //
+        $item = new ClinicShift;
+        $item->name = $request->name;
+        $item->clinic_id = $id;
+        $item->start_shift = $request->start_shift;
+        $item->end_shift = $request->end_shift;
+
+        if ($item->save()) {
+            return response()->json([
+                'message' => 'Created successful',
+                'data' => new ClinicShiftResource($item),
+            ]);
+        }
+        return response()->json(['message' => 'Data cannot access'], 200);
     }
 
     /**
@@ -38,9 +56,9 @@ class ClinicShiftController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($clinic_id, $id)
     {
-        //
+        return new ClinicShiftResource(ClinicShift::findOrFail($id));
     }
 
     /**
@@ -50,9 +68,21 @@ class ClinicShiftController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $clinic_id, $id)
     {
-        //
+        $item = ClinicShift::findOrFail($id);
+        $item->name = $request->name;
+        $item->clinic_id = $id;
+        $item->start_shift = $request->start_shift;
+        $item->end_shift = $request->end_shift;
+
+        if ($item->save()) {
+            return response()->json([
+                'message' => 'Created successful',
+                'data' => new ClinicShiftResource($item),
+            ]);
+        }
+        return response()->json(['message' => 'Data cannot access'], 200);
     }
 
     /**
@@ -61,8 +91,11 @@ class ClinicShiftController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($clinic_id, $id)
     {
-        //
+        $item = ClinicShift::findOrFail($id);
+        $item->active = false;
+        $item->save();
+        return response()->json(null, 204);
     }
 }

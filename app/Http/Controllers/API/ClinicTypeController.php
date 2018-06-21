@@ -37,7 +37,7 @@ class ClinicTypeController extends Controller
         if ($item->save()) {
             return response()->json([
                 'message' => 'Created successful',
-                'data' => $item,
+                'data' => new ClinicTypeResource($item),
             ]);
         }
         return response()->json(['message' => 'Data cannot access'], 200);

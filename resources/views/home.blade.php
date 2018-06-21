@@ -404,7 +404,7 @@
 
         $('#register-clinic').modal('show');
         $.ajax({
-        	url: '/api/clinic-types',
+        	url: '/api/clinic-type',
         	type: 'GET',
         })
         .done(res => {

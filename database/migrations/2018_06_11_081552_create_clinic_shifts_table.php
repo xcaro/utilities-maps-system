@@ -16,8 +16,13 @@ class CreateClinicShiftsTable extends Migration
         Schema::create('clinic_shifts', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->nullable();
-            $table->dateTime('start_shift');
-            $table->dateTime('end_shift');
+            $table->unsignedInteger('clinic_id');
+            $table->foreign('clinic_id')
+                  ->references('id')
+                  ->on('clinics')
+                  ->onDelete('cascade');
+            $table->timestamp('start_shift')->nullable();
+            $table->timestamp('end_shift')->nullable();
             $table->boolean('active')->default(true);
             $table->timestamps();
         });

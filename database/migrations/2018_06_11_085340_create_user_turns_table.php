@@ -15,14 +15,15 @@ class CreateUserTurnsTable extends Migration
     {
         Schema::create('user_turns', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('user_id')
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')
                   ->references('id')
                   ->on('users')
                   ->onDelete('cascade');
-            $table->unsignedInteger('shift_id')
-                  ->references('id')
-                  ->on('clinic_shifts')
-                  ->onDelete('cascade');
+            // $table->unsignedInteger('shift_id')
+            //       ->references('id')
+            //       ->on('clinic_shifts')
+            //       ->onDelete('cascade');
             $table->boolean('confirm')
                   ->default(false);
             $table->dateTime('register_day')

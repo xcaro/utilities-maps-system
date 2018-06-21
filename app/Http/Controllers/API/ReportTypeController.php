@@ -35,10 +35,13 @@ class ReportTypeController extends Controller
     {
         $item = new ReportType;
         $item->name = $request->name;
+        $item->confirmed_icon = $request->confirmed_icon;
+        $item->unconfirmed_icon = $request->unconfirmed_icon;
+        $item->menu_icon = $request->menu_icon;
         if ($item->save()) {
             return response()->json([
                 'message' => 'Created successful',
-                'data' => $item,
+                'data' => new ReportTypeResource($item),
             ]);
         }
         return response()->json(['message' => 'Data cannot access'], 200);
@@ -66,10 +69,13 @@ class ReportTypeController extends Controller
     {
         $item = ReportType::find($id);
         $item->name = $request->name;
+        $item->confirmed_icon = $request->confirmed_icon;
+        $item->unconfirmed_icon = $request->unconfirmed_icon;
+        $item->menu_icon = $request->menu_icon;
         if ($item->save()) {
             return response()->json([
                 'message' => 'Updated successful',
-                'data' => $item,
+                'data' => new ReportTypeResource($item),
             ]);
         }
         return response()->json(['message' => 'Data cannot access'], 200);

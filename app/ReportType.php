@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class ReportType extends Model
 {
     protected $fillable = [
-    	'id', 'name', 'active',
+    	'id', 'name', 'confirmed_icon', 'unconfirmed_icon', 'menu_icon', 'active',
     ];
 
     public function reports()

@@ -32,8 +32,8 @@ Route::apiResources([
 	'clinic' => 'ClinicController',
 	'clinic.shift' => 'ClinicShiftController'
 ]);
-Route::put('/report/{report}/confirm', 'ReportController@confirm')->name('reports.confirm');
-Route::put('/report/{report}/unconfirm', 'ReportController@unconfirm')->name('reports.unconfirm');
+Route::put('/report/{report}/confirm', 'ReportController@confirm')->name('report.confirm');
+Route::put('/report/{report}/unconfirm', 'ReportController@unconfirm')->name('report.unconfirm');
 
 //User Api
 Route::apiResource('user', 'UserController', ['except' => ['index', 'show', 'destroy']]);

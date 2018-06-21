@@ -45,6 +45,18 @@ class ReportController extends Controller
         $report->comment = $request->comment;
         $report->type_id = $request->type;
         $report->user_created = auth('api')->check()? auth('api')->user()->id:null;
+
+        if($request->hasFile('images')) 
+        {
+            foreach ($request->file('images') as $key => $photo) {
+                $ext = $photo->getClientOriginalExtension();
+                $name = $prName . '_' . $key . '.' . $ext;
+                $photo->move(public_path('upload/reports'), $name);
+                // Update images in report table
+            }
+        }
+
+
         if($report->save())
         {
             //rql 
@@ -100,7 +112,6 @@ class ReportController extends Controller
         $report->longitude = $request->longitude;
         $report->comment = $request->comment;
         $report->type_id = $request->type;
-        $report->user_created = auth()->user()->id;
         $report->confirm = $request->confirm;
         $report->image = $request->image;
         $report->save();

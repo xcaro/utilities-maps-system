@@ -19,7 +19,8 @@ class CreateClinicsTable extends Migration
             $table->float('latitude', 10, 7);
             $table->float('longitude', 10, 7);
             $table->string('address');
-            $table->unsignedInteger('type')
+            $table->unsignedInteger('type');
+            $table->foreign('type')
                   ->references('id')
                   ->on('clinic_types')
                   ->onDelete('cascade');

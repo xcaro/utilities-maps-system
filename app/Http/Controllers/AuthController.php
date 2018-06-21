@@ -24,7 +24,7 @@ class AuthController extends Controller
     public function callback()
     {
         $appUser = Socialite::driver('google')->user();
-        
+        return dd($appUser);
         $user = User::where('email', $appUser->email)->first();
         if ($user) {
         	auth()->login($user);
