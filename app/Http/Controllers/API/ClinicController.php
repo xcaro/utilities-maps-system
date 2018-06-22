@@ -20,7 +20,17 @@ class ClinicController extends Controller
      */
     public function index()
     {
-        return new ClinicCollection(Clinic::where('active', true)->get());
+        // Lấy tất cả
+        $result = Clinic::where([
+            ['active', '=', true],
+            ['confirmed', '=', true],
+        ]);
+        // Nếu có loại, lọc theo loại
+        if (request('type')) {
+            $result->where('type', request('type'));
+        }
+        // trả về
+        return new ClinicCollection($result->get());
     }
 
     /**
@@ -37,6 +47,7 @@ class ClinicController extends Controller
         $item->longitude = $request->longitude;
         $item->address = $request->address;
         $item->type = $request->type;
+        $item->user_created = auth()->user()->id;
         if($item->save()){
             return response()->json([
                 'message' => 'Created successful',
@@ -74,9 +85,10 @@ class ClinicController extends Controller
         $item->longitude = $request->longitude;
         $item->address = $request->address;
         $item->type = $request->type;
+        $item->confirmed = $request->confirmed;
         if($item->save()){
             return response()->json([
-                'message' => 'Created successful',
+                'message' => 'Updated successful',
                 'data' => new ClinicResource($item),
             ], 201);
         }

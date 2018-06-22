@@ -24,6 +24,13 @@ class CreateClinicsTable extends Migration
                   ->references('id')
                   ->on('clinic_types')
                   ->onDelete('cascade');
+            $table->unsignedInteger('user_created');
+            $table->foreign('user_created')
+                  ->references('id')
+                  ->on('users')
+                  ->onDelete('cascade');
+            $table->boolean('confirmed')
+                  ->default(false);
             $table->boolean('active')
                   ->default(true);
             $table->timestamps();

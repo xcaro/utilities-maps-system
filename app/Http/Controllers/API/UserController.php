@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\User;
 use Validator;
 use App\Http\Resources\User as UserResource;
+
 class UserController extends Controller
 {
     /**

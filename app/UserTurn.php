@@ -11,6 +11,6 @@ class UserTurn extends Model
     ];
     public function shifts()
     {
-    	return $this->belongsToMany(ClinicShift::class, 'shift_turn', 'turn_id', 'shift_id');
+    	return $this->belongsToMany(ClinicShift::class, 'shift_turn', 'turn_id', 'shift_id')->withPivot('confirmed');;
     }
 }

@@ -30,7 +30,8 @@ Route::apiResources([
 	'report' => 'ReportController',
 	'clinic-type' => 'ClinicTypeController',
 	'clinic' => 'ClinicController',
-	'clinic.shift' => 'ClinicShiftController'
+	'clinic.shift' => 'ClinicShiftController',
+	'user.turn' => 'UserTurnController',
 ]);
 Route::put('/report/{report}/confirm', 'ReportController@confirm')->name('report.confirm');
 Route::put('/report/{report}/unconfirm', 'ReportController@unconfirm')->name('report.unconfirm');

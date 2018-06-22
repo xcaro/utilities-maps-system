@@ -13,5 +13,8 @@ class Clinic extends Model
     	'address',
     	'type',
     	'active',
+    	'user_created',
+    	'confirmed',
+    	'active',
     ];
 }

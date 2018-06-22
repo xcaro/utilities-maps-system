@@ -21,6 +21,9 @@ class Clinic extends JsonResource
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,
             'type' => $this->type,
+            //'user_created' => $this->user_created,
+            //'confirmed' => $this->confirmed,
+            //'active' => $this->active,
         ];
     }
 }
