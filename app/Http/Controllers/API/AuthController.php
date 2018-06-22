@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-
+use App\Http\Resources\User as UserResource;
 class AuthController extends Controller
 {
     /**
@@ -61,7 +61,8 @@ class AuthController extends Controller
      */
     public function me()
     {
-        return response()->json(auth('api')->user());
+        return new UserResource(auth('api')->user());
+        //return response()->json(auth('api')->user());
     }
 
     /**

@@ -127,7 +127,7 @@ class ReportController extends Controller
     public function destroy($id)
     {
         //rql
-        $r_connect = r\connect('localhost');
+        $r_connect = r\connect(env('R_HOST'), env('R_PORT'));
         $result = r\db('app')->table('activeReports')->get((int)$id)->delete()->run($r_connect);
         $r_connect->close();
 
@@ -139,7 +139,7 @@ class ReportController extends Controller
 
     public function confirm(Report $report)
     {
-        $r_connect = r\connect('localhost');
+        $r_connect = r\connect(env('R_HOST'), env('R_PORT'));
         $result = r\db('app')->table('activeReports')->get((int)$report->id)->update(['confirm' => true])->run($r_connect);
         $r_connect->close();
 
@@ -149,7 +149,7 @@ class ReportController extends Controller
     }
     public function unconfirm(Report $report)
     {
-        $r_connect = r\connect('localhost');
+        $r_connect = r\connect(env('R_HOST'), env('R_PORT'));
         $result = r\db('app')->table('activeReports')->get((int)$report->id)->update(['confirm' => false])->run($r_connect);
         $r_connect->close();
 

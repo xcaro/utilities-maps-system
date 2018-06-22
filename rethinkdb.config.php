@@ -1,7 +1,7 @@
 <?php
 $r_hostname = env('R_HOST', '127.0.0.1');
 $r_dbname = env('R_DATABASE', 'test');
-$r_port = env('R_PORT', 28015);
+$r_port = env('R_PORT');
 
 $r_connect = r\connect($r_hostname, $r_port);
 

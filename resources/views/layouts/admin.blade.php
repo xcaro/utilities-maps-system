@@ -293,7 +293,6 @@
 		let path = window.location.href;
 		path = path.replace(/\/$/, "");
 		path = decodeURIComponent(path);
-		console.log(path)
 		$('#slibar-menu li').each((index, el) => {
 			if ($(el).children('li a').attr('href') === path) {
 				$(el).parent().parent().addClass('in');

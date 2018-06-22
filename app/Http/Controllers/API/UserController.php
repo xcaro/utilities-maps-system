@@ -58,7 +58,7 @@ class UserController extends Controller
             ], 201);
         }
         return response()->json([
-            'success' => true,
+            'success' => false,
             'messages' => 'Đăng ký tài khoản không thành công.',
         ]);
     }
