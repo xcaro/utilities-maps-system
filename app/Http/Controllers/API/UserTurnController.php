@@ -32,7 +32,7 @@ class UserTurnController extends Controller
      */
     public function store(Request $request, $id)
     {
-       vềshift_id = $request->shift_id;
+        $shift_id = $request->shift_id;
 
         $turn = new UserTurn;
         $turn->user_id = auth()->user()->id;
@@ -70,6 +70,11 @@ class UserTurnController extends Controller
     {
         $confirm_shift_id = $request->confirm_shift_id;
         $turn = UserTurn::findOrFail($id);
+        $turn->shifts()->updateExistingPivot($confirm_shift_id, ['confirmed' => true]);
+        return response()->json([
+            'message' => 'Updated successful',
+            'data' => new UserTurnResource($turn),
+        ], 200);
     }
 
     /**
@@ -80,6 +85,9 @@ class UserTurnController extends Controller
      */
     public function destroy($user_id, $id)
     {
-        //
+        $turn = UserTurn::findOrFail($id);
+        $turn->active = false;
+        $turn->save();
+        return response()->json(null, 204);
     }
 }

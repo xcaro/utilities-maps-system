@@ -44,15 +44,7 @@ class ReportController extends Controller
         $report->type_id = $request->type;
         $report->user_created = auth('api')->check()? auth('api')->user()->id:null;
 
-        if($request->hasFile('images')) 
-        {
-            foreach ($request->file('images') as $key => $photo) {
-                $ext = $photo->getClientOriginalExtension();
-                $name = $prName . '_' . $key . '.' . $ext;
-                $photo->move(public_path('upload/reports'), $name);
-                // Update images in report table
-            }
-        }
+        
 
 
         if($report->save())
@@ -71,10 +63,18 @@ class ReportController extends Controller
                 ])
                 ->run($r_connect);
             $r_connect->close();
+            if($request->hasFile('images')) 
+            {
+                $file = $request->images;
+                $ext = $file->getClientOriginalExtension();
+                $name = $report->id . '.' . $ext;
+                $file->move(public_path('upload/reports'), $name);
+                Report::where('id', $report->id)->update(['image' => $name]);
+            }
             //response
             return response()->json([
                 'message' => 'Created successful',
-                'data' => $report,
+                'data' => new ReportResource($report),
             ], 201);
         }
         return response()->json([
@@ -114,7 +114,7 @@ class ReportController extends Controller
         
         return response()->json([
             'message' => 'Updated successful',
-            'data' => $report,
+            'data' => new ReportResource($report),
         ], 200);
     }
 
