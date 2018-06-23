@@ -9,6 +9,7 @@ use App\Http\Resources\Report as ReportResource;
 use App\Http\Resources\ReportCollection;
 use App\Report;
 use r;
+use Auth;
 class ReportController extends Controller
 {
     public function __construct()
@@ -22,7 +23,8 @@ class ReportController extends Controller
      */
     public function index()
     {
-        //$this->authorize('view-report');
+        //return Auth::guard('api')->user();
+        //$this->authorize('report-control');
         return (new ReportCollection(Report::paginate(1000)));
     }
 

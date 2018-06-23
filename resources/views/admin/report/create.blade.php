@@ -3,7 +3,7 @@
 <div class="row">
     <div class="col-md-6">
         <div class="card">
-        	<form action="{{ route('admin.reports.store') }}" method="POST">
+        	<form action="{{ route('admin.report.store') }}" method="POST">
                 @csrf
         	<div class="card-content">
         		<div class="row">
@@ -30,7 +30,7 @@
                         </div>
                         <div class="form-group">
                             <button class="btn btn-success">Create</button>
-                            <a href="{{ route('admin.reports.index') }}"><button class="btn btn-danger">Cancel</button></a>
+                            <a href="{{ route('admin.report.index') }}"><button class="btn btn-danger">Cancel</button></a>
                         </div>
                     </div>
                 </div>

@@ -55,7 +55,7 @@
 	         });
 			let id = $(e.target).data('report-id');
 			$.ajax({
-				url: '/admin/reports/' + id + '/confirm',
+				url: '/admin/report/' + id + '/confirm',
 				type: 'POST',
 				data: {_method: 'PUT', _token: '{{csrf_token()}}'},
 			})

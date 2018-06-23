@@ -3,7 +3,7 @@
 <div class="row">
     <div class="col-md-6">
         <div class="card">
-            <form action="{{ route('admin.reports.update', $report->id) }}" method="POST">
+            <form action="{{ route('admin.report.update', $report->id) }}" method="POST">
                 @csrf
                 {{ method_field('PUT') }}
             <div class="card-content">
@@ -31,7 +31,7 @@
                         </div>
                         <div class="form-group">
                             <button class="btn btn-success" type="submit">Edit</button>
-                            <a href="{{ route('admin.reports.index') }}"><button class="btn btn-danger" type="button">Cancel</button></a>
+                            <a href="{{ route('admin.report.index') }}"><button class="btn btn-danger" type="button">Cancel</button></a>
                         </div>
                     </div>
                 </div>

@@ -12,8 +12,14 @@ Route::group([
 });
 
 Route::resources([
-	'reports' => 'ReportController',
-	'rptype' => 'ReportTypeController',
+	'report' => 'ReportController',
+	'rtype' => 'ReportTypeController',
 	'user' => 'UserController'
 ]);
-Route::put('reports/{report}/confirm', 'ReportController@confirm');
+Route::put('report/{report}/confirm', 'ReportController@confirm');
+Route::get('role', function(){
+	return response()->json(Auth::user(), 200, [], JSON_PRETTY_PRINT);
+});
+Route::get('pass', function(){
+	return response()->json(Auth::user()->password, 200, [], JSON_PRETTY_PRINT);
+});

@@ -7,9 +7,13 @@ use App\Http\Controllers\Controller;
 use App\User;
 use Validator;
 use App\Http\Resources\User as UserResource;
-
+use Hash;
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['except' => ['store']]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -96,5 +100,32 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function changePassword(Request $request)
+    {
+        $current_password = $request->current_password;
+        $new_password = $request->new_password;
+        $renew_password = $request->renew_password;
+
+        if (Hash::check($current_password, auth('api')->user()->password)) {
+            if ($new_password === $renew_password) {
+                $user = auth('api')->user();
+                $user->password = bcrypt($renew_password);
+                
+                if ($user->save()) {
+                    auth('api')->logout();
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'Đổi mật khẩu thành công, tài khoản đã đăng xuất',
+                    ], 200);
+                }
+                
+            }
+        }
+        return response()->json([
+            'success' => false,
+            'message' => 'Đổi mật khẩu không thành công',
+        ], 200);
     }
 }

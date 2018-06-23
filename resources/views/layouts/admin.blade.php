@@ -293,10 +293,13 @@
 		let path = window.location.href;
 		path = path.replace(/\/$/, "");
 		path = decodeURIComponent(path);
-		$('#slibar-menu li').each((index, el) => {
+		$('ul#slibar-menu li').each((index, el) => {
+			//console.log(el);
 			if ($(el).children('li a').attr('href') === path) {
 				$(el).parent().parent().addClass('in');
 				$(el).addClass('active');
+				$(el).parent().parent().parent().addClass('active');
+				//console.log($('#slibar-menu li'));
 			}
 			if ($(el).children('a').attr('href') === path) {
 				$(el).addClass('active');

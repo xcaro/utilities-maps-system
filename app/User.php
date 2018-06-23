@@ -60,6 +60,6 @@ class User extends Authenticatable implements JWTSubject
 
     public function isAdmin()
     {
-        return true;
+        return $this->hasPermission(Permission::find(1));
     }
 }

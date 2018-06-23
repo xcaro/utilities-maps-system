@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\ReportType;
 
 class ReportTypeController extends Controller
 {
@@ -14,7 +15,10 @@ class ReportTypeController extends Controller
      */
     public function index()
     {
-        return view('admin.rptype.index');
+        $listType = ReportType::where('active', true)->get();
+        return view('admin.rtype.index', [
+            'listType' => $listType,
+        ]);
     }
 
     /**
@@ -35,7 +39,21 @@ class ReportTypeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $item = new ReportType;
+        $item->name = $request->name;
+        $item->unconfirmed_icon = $request->unconfirmed_icon;
+        $item->confirmed_icon = $request->confirmed_icon;
+        $item->menu_icon = $request->menu_icon;
+        if ($item->save()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Thêm loại mới thành công',
+            ]);
+        }
+        return response()->json([
+            'success' => false,
+            'message' => 'Thêm loại mới thất bại',
+        ]);
     }
 
     /**
@@ -46,7 +64,7 @@ class ReportTypeController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json(ReportType::findOrFail($id));
     }
 
     /**
@@ -69,7 +87,21 @@ class ReportTypeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $item = ReportType::findOrFail($id);
+        $item->name = $request->name;
+        $item->unconfirmed_icon = $request->unconfirmed_icon;
+        $item->confirmed_icon = $request->confirmed_icon;
+        $item->menu_icon = $request->menu_icon;
+        if ($item->save()) {
+            return response()->json([
+                'message' => 'Cập nhật loại thành công',
+                'success' => true,
+            ]);
+        }
+        return response()->json([
+            'message' => 'Cập nhật loại thất bại',
+            'success' => false,
+        ]);
     }
 
     /**
