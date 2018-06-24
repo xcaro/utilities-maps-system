@@ -88,7 +88,24 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = User::find($id);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->username = $request->username;
+        $user->phone = $request->phone;
+        $user->address = $request->address;
+
+        if ($user->save()) {
+            return response()->json([
+                'success' => true,
+                'messages' => 'Cập nhật tài khoản thành công',
+                'data' => new UserResource($user),
+            ], 201);
+        }
+        return response()->json([
+            'success' => false,
+            'messages' => 'Cập nhật tài khoản không thành công',
+        ]);
     }
 
     /**
