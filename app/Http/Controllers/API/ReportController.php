@@ -38,6 +38,7 @@ class ReportController extends Controller
     {
         // rql
         $r_connect = r\connect(env('R_HOST'), env('R_PORT'));
+
         //mysql
         $report = new Report;
         $report->latitude = $request->latitude;
@@ -46,33 +47,23 @@ class ReportController extends Controller
         $report->type_id = $request->type;
         $report->user_created = auth('api')->check()? auth('api')->user()->id:null;
 
-        
-
-
         if($report->save())
         {
-            //rql 
-            $r_result = r\db(env('R_DATABASE'))->table('activeReports')
-                ->insert([
-                    'id' => $report->id,
-                    'latitude' => $report->latitude,
-                    'longitude' => $report->longitude,
-                    'comment' => $report->comment,
-                    'type_id' => $report->type_id,
-                    'confirm' => false,
-                    'created_at' => $report->created_at,
-                    'updated_at' => $report->updated_at,
-                ])
-                ->run($r_connect);
-            $r_connect->close();
             if($request->hasFile('image')) 
             {
                 $file = $request->image;
                 $ext = $file->getClientOriginalExtension();
                 $name = $report->id . '.' . $ext;
                 $file->move(public_path('upload/reports'), $name);
-                Report::where('id', $report->id)->update(['image' => $name]);
+                //Report::where('id', $report->id)->update(['image' => $name]);
+                $report->image = $name;
+                $report->save();
             }
+
+            $r_result = r\db(env('R_DATABASE'))->table('activeReports')
+                ->insert($report->toArray())
+                ->run($r_connect);
+            $r_connect->close();
             //response
             return response()->json([
                 'message' => 'Created successful',
