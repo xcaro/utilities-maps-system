@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\User as UserResource;
+use App\User;
+
 class AuthController extends Controller
 {
     /**
@@ -74,7 +76,7 @@ class AuthController extends Controller
     {
         auth('api')->logout();
 
-        return response()->json(['message' => 'Successfully logged out']);
+        return response()->json(['message' => 'Successfully logged out'], 200);
     }
 
     /**
@@ -100,6 +102,28 @@ class AuthController extends Controller
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth('api')->factory()->getTTL() * 60
+        ]);
+    }
+
+    public function changeInfo(Request $request)
+    {
+        $user = User::find(auth('api')->user()->id);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->username = $request->username;
+        $user->phone = $request->phone;
+        $user->address = $request->address;
+
+        if ($user->save()) {
+            return response()->json([
+                'success' => true,
+                'messages' => 'Cập nhật tài khoản thành công',
+                'data' => new UserResource($user),
+            ], 201);
+        }
+        return response()->json([
+            'success' => false,
+            'messages' => 'Cập nhật tài khoản không thành công',
         ]);
     }
 }
