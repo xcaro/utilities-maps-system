@@ -108,12 +108,22 @@ class AuthController extends Controller
     public function changeInfo(Request $request)
     {
         $user = User::find(auth('api')->user()->id);
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->username = $request->username;
-        $user->phone = $request->phone;
-        $user->address = $request->address;
-
+        if ($request->has('name')) {
+            $user->name = $request->name;
+        }
+        if ($request->has('email')) {
+            $user->email = $request->email;
+        }
+        if ($request->has('username')) {
+            $user->username = $request->username;
+        }
+        if ($request->has('phone')) {
+            $user->phone = $request->phone;
+        }
+        if ($request->has('address')) {
+            $user->address = $request->address;
+        }
+        
         if ($user->save()) {
             return response()->json([
                 'success' => true,
