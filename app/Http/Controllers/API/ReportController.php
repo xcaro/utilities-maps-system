@@ -49,13 +49,14 @@ class ReportController extends Controller
 
         if($report->save())
         {
+            $report = Report::find($report->id);
             if($request->hasFile('image')) 
             {
                 $file = $request->image;
                 $ext = $file->getClientOriginalExtension();
                 $name = $report->id . '.' . $ext;
                 $file->move(public_path('upload/reports'), $name);
-                //Report::where('id', $report->id)->update(['image' => $name]);
+                
                 $report->image = $name;
                 $report->save();
             }
