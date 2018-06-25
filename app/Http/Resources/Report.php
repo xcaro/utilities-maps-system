@@ -21,6 +21,9 @@ class Report extends JsonResource
             'comment' => $this->comment, 
             'type_id' => $this->type_id,
             'confirm' => $this->confirm,
+            $this->mergeWhen(($this->image) != null, [
+                'image' => url('upload/reports/' . $this->image),
+            ]),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at
         ];
