@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Permission;
 
 class PermissionsTableSeeder extends Seeder
 {
@@ -11,6 +12,28 @@ class PermissionsTableSeeder extends Seeder
      */
     public function run()
     {
-        //
+        $listPerms = [
+        	[
+        		'title' => 'Admin Control',
+        		'name' => 'admin-control',
+        	],
+        	[
+        		'title' => 'Report Control',
+        		'name' => 'report-control',
+        	],
+        	[
+        		'title' => 'Clinic Control',
+        		'name' => 'clinic-control',
+        	],
+        	[
+        		'title' => 'User Control',
+        		'name' => 'user-control',
+        	],
+        ];
+        foreach ($listPerms as $perm) {
+        	if (Permission::where('name', $perm['name'])->first() === null) {
+        		Permission::create($perm);
+        	}
+        }
     }
 }
