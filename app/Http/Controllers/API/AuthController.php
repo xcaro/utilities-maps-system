@@ -107,6 +107,7 @@ class AuthController extends Controller
 
     public function changeInfo(Request $request)
     {
+
         $user = User::find(auth('api')->user()->id);
         if ($request->has('name')) {
             $user->name = $request->name;
@@ -123,7 +124,6 @@ class AuthController extends Controller
         if ($request->has('address')) {
             $user->address = $request->address;
         }
-        
         if ($user->save()) {
             return response()->json([
                 'success' => true,
