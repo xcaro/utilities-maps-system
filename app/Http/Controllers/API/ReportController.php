@@ -65,9 +65,9 @@ class ReportController extends Controller
                 ])
                 ->run($r_connect);
             $r_connect->close();
-            if($request->hasFile('images')) 
+            if($request->hasFile('image')) 
             {
-                $file = $request->images;
+                $file = $request->image;
                 $ext = $file->getClientOriginalExtension();
                 $name = $report->id . '.' . $ext;
                 $file->move(public_path('upload/reports'), $name);
