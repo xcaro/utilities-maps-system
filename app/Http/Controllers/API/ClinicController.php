@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use App\Http\Resources\Clinic as ClinicResource;
 use App\Http\Resources\ClinicCollection;
 use App\Clinic;
@@ -42,6 +43,8 @@ class ClinicController extends Controller
      */
     public function store(Request $request)
     {
+        DB::beginTransaction();
+
         $item = new Clinic;
         $item->name = $request->name;
         $item->latitude = $request->latitude;
@@ -52,26 +55,28 @@ class ClinicController extends Controller
         
         if($item->save()){
             $item = Clinic::find($item->id);
-            foreach ($doctors as $rel) {
+            foreach ($request->doctors as $rel) {
                 $doctor = new Doctor;
-                $doctor->name = $rel->name;
-                $doctor->description = $rel->description;
-                if ($doctor->save()) {
-                    if ($rel->hasFile('image')) {
-                        $file = $request->image;
+                $doctor->name = $rel['name'];
+                $doctor->description = $rel['description'];
+                if ($item->doctors()->save($doctor)) {
+                    if ($rel['image'] != null) {
+                        $file = $rel['image'];
                         $ext = $file->getClientOriginalExtension();
                         $name = $doctor->id . '.' . $ext;
                         $file->move(public_path('upload/doctors'), $name);
                         Doctor::where('id', $doctor->id)->update(['image' => $name]);
                     }
                 }
-                $item->doctors()->save($doctor);
             }
+            DB::commit();
+
             return response()->json([
                 'message' => 'Created successful',
                 'data' => new ClinicResource($item),
             ], 201);
         }
+        DB::rollBack();
         return response()->json([
             'message' => 'Data can not be processed',
         ], 201);
