@@ -45,7 +45,7 @@
 					</a>
 				</li>
 				<li>
-					<a href="#">
+					<a href="{{ route('admin.role.index') }}">
 						<span class="sidebar-mini">+</span>
 						<span class="sidebar-normal">Nhóm quyền</span>
 					</a>

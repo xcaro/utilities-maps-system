@@ -21,6 +21,10 @@ class Clinic extends JsonResource
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,
             'type' => $this->type,
+            $this->mergeWhen(($this->doctors) != null, [
+                'doctors' => new DoctorCollection($this->doctors),
+            ]),
+            //'doctors' => 
             //'user_created' => $this->user_created,
             //'confirmed' => $this->confirmed,
             //'active' => $this->active,

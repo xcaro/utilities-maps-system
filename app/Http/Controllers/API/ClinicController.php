@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Clinic as ClinicResource;
 use App\Http\Resources\ClinicCollection;
 use App\Clinic;
+use App\Doctor;
 class ClinicController extends Controller
 {
     public function __construct()
@@ -34,7 +35,7 @@ class ClinicController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created apiource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -47,8 +48,24 @@ class ClinicController extends Controller
         $item->longitude = $request->longitude;
         $item->address = $request->address;
         $item->type = $request->type;
-        $item->user_created = auth()->user()->id;
+        $item->user_created = auth('api')->user()->id;
+        
         if($item->save()){
+            foreach ($doctors as $rel) {
+                $doctor = new Doctor;
+                $doctor->name = $rel->name;
+                $doctor->description = $rel->description;
+                if ($doctor->save()) {
+                    if ($rel->hasFile('image')) {
+                        $file = $request->image;
+                        $ext = $file->getClientOriginalExtension();
+                        $name = $doctor->id . '.' . $ext;
+                        $file->move(public_path('upload/doctors'), $name);
+                        Doctor::where('id', $doctor->id)->update(['image' => $name]);
+                    }
+                }
+                $item->doctors()->save($doctor);
+            }
             return response()->json([
                 'message' => 'Created successful',
                 'data' => new ClinicResource($item),
@@ -70,8 +87,7 @@ class ClinicController extends Controller
         return new ClinicResource(Clinic::findOrFail($id));
     }
 
-    /**
-     * Update the specified resource in storage.
+ request     * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id

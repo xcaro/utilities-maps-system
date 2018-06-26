@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\ReportTypeRequest;
 use App\Http\Controllers\Controller;
 
 use App\ReportType;
 use App\Http\Resources\ReportType as ReportTypeResource;
 use App\Http\Resources\ReportTypeCollection;
+
 use Auth;
 class ReportTypeController extends Controller
 {
@@ -31,13 +33,16 @@ class ReportTypeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ReportTypeRequest $request)
     {
+        $res = $request->validated();
+        //return response()->json($res);
         $item = new ReportType;
         $item->name = $request->name;
         $item->confirmed_icon = $request->confirmed_icon;
         $item->unconfirmed_icon = $request->unconfirmed_icon;
         $item->menu_icon = $request->menu_icon;
+        $item->alive = $request->alive;
         if ($item->save()) {
             return response()->json([
                 'message' => 'Created successful',
@@ -65,7 +70,7 @@ class ReportTypeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ReportTypeRequest $request, $id)
     {
         $item = ReportType::find($id);
         $item->name = $request->name;

@@ -4,9 +4,8 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class User extends JsonResource
+class Doctor extends JsonResource
 {
-
     /**
      * Transform the resource into an array.
      *
@@ -18,13 +17,10 @@ class User extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'email' => $this->email,
-            'username' => $this->username,
-            'address' => $this->address,
-            'phone' => $this->phone,
-            'active' => $this->active,
-            'role' => $this->role,
-            //'permissions' => $this->role->permissions,
+            'description' => $this->description,
+            $this->mergeWhen(($this->image) != null, [
+                'image' => url('upload/doctors/' . $this->image),
+            ]),
         ];
     }
 }

@@ -21,6 +21,7 @@ class ReportType extends JsonResource
             'confirmed_icon' => $this->confirmed_icon,
             'unconfirmed_icon' => $this->unconfirmed_icon,
             'menu_icon' => $this->menu_icon,
+            'alive' => $this->alive,
         ];
     }
 }

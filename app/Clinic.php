@@ -11,10 +11,18 @@ class Clinic extends Model
     	'latitude',
     	'longitude',
     	'address',
-    	'type',
     	'active',
+        'type',
     	'user_created',
+        'ward_id',
+        'district_id',
+        'description',
     	'confirmed',
     	'active',
     ];
+
+    public function doctors()
+    {
+        return $this->hasMany(Doctor::class);
+    }
 }

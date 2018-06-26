@@ -45,7 +45,7 @@ class ReportTypesSeeder extends Seeder
         ];
         foreach ($listTypes as $key => $type) {
         	if (ReportType::where('name', $type['name'])->first() === null) {
-        		ReportType::create($type);
+        		ReportType::firstOrCreate($type);
         	}
         }
     }

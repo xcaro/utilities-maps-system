@@ -7,16 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Report extends Model
 {
     protected $fillable = [
-    	'id', 'latitude', 'longitude', 'comment', 'user_created', 'active', 'confirm', 'image', 'type_id',
+    	'id', 'latitude', 'longitude', 'comment', 'user_created', 'active', 'confirm', 'image', 'type_id', 'ward_id', 'district_id',
     ];
 
     public function type()
     {
     	return $this->belongsTo(ReportType::class);
     }
-    
-    // public function userCreated()
-    // {
-    // 	return $this->belongsTo(User::class);
-    // }
 }

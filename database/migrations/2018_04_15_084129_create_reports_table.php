@@ -20,16 +20,12 @@ class CreateReportsTable extends Migration
             $table->string('comment')
                   ->nullable();
             $table->unsignedInteger('type_id');
-            $table->foreign('type_id')
-                  ->references('id')
-                  ->on('report_types')
-                  ->onDelete('cascade');
             $table->unsignedInteger('user_created')
                   ->nullable();
-            $table->foreign('user_created')
-                  ->references('id')
-                  ->on('users')
-                  ->onDelete('cascade');
+            $table->unsignedInteger('ward_id')
+                  ->nullable();
+            $table->unsignedInteger('district_id')
+                  ->nullable();
             $table->boolean('active')
                   ->default(true);
             $table->boolean('confirm')
@@ -37,6 +33,23 @@ class CreateReportsTable extends Migration
             $table->string('image')
                   ->nullable();
             $table->timestamps();
+
+            $table->foreign('ward_id')
+                  ->references('id')
+                  ->on('wards')
+                  ->onDelete('cascade');
+            $table->foreign('district_id')
+                  ->references('id')
+                  ->on('districts')
+                  ->onDelete('cascade');
+            $table->foreign('user_created')
+                  ->references('id')
+                  ->on('users')
+                  ->onDelete('cascade');
+            $table->foreign('type_id')
+                  ->references('id')
+                  ->on('report_types')
+                  ->onDelete('cascade');
         });
     }
 

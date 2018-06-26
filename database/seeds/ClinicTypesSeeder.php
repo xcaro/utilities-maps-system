@@ -46,7 +46,7 @@ class ClinicTypesSeeder extends Seeder
         ];
         foreach ($types as $item) {
         	if (ClinicType::where('name', $item['name'])->first() === null) {
-        		ClinicType::create($item);
+        		ClinicType::firstOrCreate($item);
         	}
         }
     }

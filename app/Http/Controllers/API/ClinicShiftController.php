@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\ClinicShiftClinicShift as ClinicShiftResource;
+use App\Http\Resources\ClinicShift as ClinicShiftResource;
 use App\Http\Resources\ClinicShiftCollection;
 use App\ClinicShift;
 

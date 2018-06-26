@@ -32,7 +32,7 @@ class PermissionsTableSeeder extends Seeder
         ];
         foreach ($listPerms as $perm) {
         	if (Permission::where('name', $perm['name'])->first() === null) {
-        		Permission::create($perm);
+        		Permission::firstOrCreate($perm);
         	}
         }
     }

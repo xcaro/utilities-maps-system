@@ -40,4 +40,5 @@ Route::put('report/{report}/unconfirm', 'ReportController@unconfirm')->name('rep
 Route::apiResource('user', 'UserController', ['except' => ['index', 'show', 'destroy']]);
 Route::post('user/change-password', 'UserController@changePassword')->name('user.change-password');
 Route::post('user/change-info', 'AuthController@changeInfo')->name('user.change-info');
+
 Route::apiResource('test', 'TestController');

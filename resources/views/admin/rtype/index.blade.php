@@ -14,7 +14,7 @@
         <div class="card">
             <div class="card-header">
                 <h4 class="card-title">{{ $title = ''}}</h4>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#report-type-modal" data-backdrop="static" data-type="create"><i class="ti-plus"></i> Thêm mới</button>
+                <button type="button" class="btn btn-primary" data-type="create"><i class="ti-plus"></i> Thêm mới</button>
             </div>
             <div class="card-content table-responsive table-full-width">
                 <table class="table">
@@ -39,7 +39,7 @@
 	                                <!--<a href="#" rel="tooltip" title="View Type" class="btn btn-info btn-simple btn-xs">
                                       <i class="ti-info"></i>
                                   </a>-->
-	                                <a href="#" data-toggle="modal" data-target="#report-type-modal" data-backdrop="static" data-id="{{ $item->id }}" data-type="update" rel="tooltip" title="Edit Type" class="btn btn-success btn-simple btn-xs">
+	                                <a href="#"  data-id="{{ $item->id }}" data-type="update" rel="tooltip" title="Edit Type" class="btn btn-success btn-simple btn-xs show-modal-type">
 	                                    <i class="ti-pencil-alt"></i>
 	                                </a>
 	                                <a href="#" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-xs">
@@ -58,7 +58,7 @@
 </div>
 
 
-<div class="modal fade" id="report-type-modal" tabindex="-1" role="dialog" aria-labelledby="report-type-modal" aria-hidden="true">
+<div class="modal fade" id="report-type-modal" tabindex="-1" role="dialog" aria-labelledby="report-type-modal" aria-hidden="true" data-backdrop="static">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="form-horizontal">
@@ -113,15 +113,17 @@
 @section('scripts')
 <script>
 	$(document).ready(() => {
+    
 		$('#report-type-modal').on('show.bs.modal', (event) => {
+      $('#report-type-modal input').val('');
       let token = '{{csrf_token()}}';
       let button = $(event.relatedTarget);
-      let typeId = button.data('id');
+
+      //var typeId = button.data('id');
       if (button.data('type') === 'create') { //Create type
         $('#create-type').show();
         $('#update-type').hide();
 
-        $('#report-type-modal input').val('');
 
         $('#create-type').click((event) => {
           $.ajax({
@@ -185,16 +187,12 @@
           $('input[name="unconfirmed_icon"]').val(res.unconfirmed_icon);
           $('input[name="menu_icon"]').val(res.menu_icon);
         })
-        .fail((err) => {
-          console.log(err);
-        })
-        .always(() => {
-          console.log("complete");
-        });
+        .fail((err) => console.log(err))
+        .always(() => console.log("complete"));
 
         $('#update-type').click((event) => {
-console.log(typeId);
-          /*$.ajax({
+            console.log(typeId)
+          $.ajax({
             url: `rtype/${typeId}`,
             type: 'PUT',
             dataType: 'JSON',
@@ -236,11 +234,13 @@ console.log(typeId);
           })
           .always(() => {
             setTimeout(() => location.reload(), 2000);
-          });*/
-          
+          });
         });
+
       }
     });
+    $('.show-modal-type').click(() => $('#report-type-modal').modal({show:true}));
+
 	});
 </script>
 @endsection

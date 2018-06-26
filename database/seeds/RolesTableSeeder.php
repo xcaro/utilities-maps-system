@@ -20,7 +20,7 @@ class RolesTableSeeder extends Seeder
         ];
         foreach ($listRole as $item) {
         	if (Role::where('title', $item)->first() === null) {
-        		Role::create(['title' => $item]);
+        		Role::firstOrCreate(['title' => $item]);
         	}
         }
 

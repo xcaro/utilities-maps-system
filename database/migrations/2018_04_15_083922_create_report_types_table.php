@@ -19,9 +19,13 @@ class CreateReportTypesTable extends Migration
             $table->text('confirmed_icon')->nullable();
             $table->text('unconfirmed_icon')->nullable();
             $table->text('menu_icon')->nullable();
+            $table->unsignedInteger('alive')
+                  ->default(0);
             $table->boolean('active')
                   ->default(true);
+            
             $table->timestamps();
+
         });
     }
 

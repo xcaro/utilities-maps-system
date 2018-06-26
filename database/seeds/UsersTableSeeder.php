@@ -20,7 +20,7 @@ class UsersTableSeeder extends Seeder
           'role_id' => 1,
        	];
        	if (User::where('username', $user['username'])->first() === null) {
-       		User::create($user);
+       		User::firstOrCreate($user);
        	}
     }
 }

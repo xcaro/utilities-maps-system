@@ -35,7 +35,7 @@ class UserTurnController extends Controller
         $shift_id = $request->shift_id;
 
         $turn = new UserTurn;
-        $turn->user_id = auth()->user()->id;
+        $turn->user_id = auth('api')->user()->id;
         $turn->register_day = $turn->register_day;
 
         if ($turn->save()) {

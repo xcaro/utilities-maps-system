@@ -50,10 +50,6 @@ class LoginController extends Controller
     {
         return 'username';
     }
-    protected function authenticated(Request $request, $user)
-    {
-        //return redirect()->route('admin.dashboard');
-    }
     protected function credentials(Request $request)
     {
         $field = filter_var($request->get($this->username()), FILTER_VALIDATE_EMAIL)
