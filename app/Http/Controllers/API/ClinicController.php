@@ -51,6 +51,7 @@ class ClinicController extends Controller
         $item->user_created = auth('api')->user()->id;
         
         if($item->save()){
+            $item = Clinic::find($item->id);
             foreach ($doctors as $rel) {
                 $doctor = new Doctor;
                 $doctor->name = $rel->name;
@@ -87,7 +88,7 @@ class ClinicController extends Controller
         return new ClinicResource(Clinic::findOrFail($id));
     }
 
- request     * Update the specified resource in storage.
+    /** Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
