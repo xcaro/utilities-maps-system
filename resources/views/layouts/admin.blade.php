@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
+	<meta name="csrf-token" content="{{ csrf_token() }}">
 	<!--<link rel="apple-touch-icon" sizes="76x76" href="{{ asset('assets/img/apple-icon.png') }}">
 	<link rel="icon" type="image/png" sizes="96x96" href="{{ asset('assets/img/favicon.png') }}">-->
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -209,7 +210,9 @@
 	    </div>
 	</div>
 </body>
-
+<script>
+	var token = '{{ csrf_token()}}';
+</script>
 	<!--   Core JS Files. Extra: TouchPunch for touch library inside jquery-ui.min.js   -->
 	<script src="{{ asset('assets/js/jquery-3.1.1.min.js') }}" type="text/javascript"></script>
 	<script src="{{ asset('assets/js/jquery-ui.min.js') }}" type="text/javascript"></script>
@@ -273,33 +276,19 @@
 	@yield('scripts')
 <script>
 	$(() => {
-		// $('#logout').click(()=>{
-		// 	$.ajax({
-		// 		url: '{{route('admin.logout')}}',
-		// 		type: 'POST',
-		// 		data: {_token:'{{csrf_token()}}'},
-		// 	})
-		// 	.done(() => {
-		// 		window.location.href = '{{route('admin.login')}}';
-		// 	})
-		// 	.fail(function() {
-		// 		console.log("error");
-		// 	})
-		// 	.always(function() {
-		// 		console.log("complete");
-		// 	});
-		// });
-		// set active current menu
 		let path = window.location.href;
 		path = path.replace(/\/$/, "");
 		path = decodeURIComponent(path);
-		$('ul#slibar-menu li').each((index, el) => {
+		$('ul#slibar-menu li').each(function(index, el) {
+			// if ($(el).children('a').attr('href') === path) {
+			// 	$(el).addClass('active');
+			// }
 			//console.log(el);
 			if ($(el).children('li a').attr('href') === path) {
 				$(el).parent().parent().addClass('in');
 				$(el).addClass('active');
 				$(el).parent().parent().parent().addClass('active');
-				//console.log($('#slibar-menu li'));
+				// console.log(el);
 			}
 			if ($(el).children('a').attr('href') === path) {
 				$(el).addClass('active');

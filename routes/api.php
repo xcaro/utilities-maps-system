@@ -41,4 +41,3 @@ Route::apiResource('user', 'UserController', ['except' => ['index', 'show', 'des
 Route::post('user/change-password', 'UserController@changePassword')->name('user.change-password');
 Route::post('user/change-info', 'AuthController@changeInfo')->name('user.change-info');
 
-Route::apiResource('test', 'TestController');

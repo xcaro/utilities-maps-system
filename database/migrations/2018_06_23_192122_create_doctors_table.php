@@ -22,6 +22,8 @@ class CreateDoctorsTable extends Migration
                   ->nullable();
             $table->text('description')
                   ->nullable();
+            $table->unsignedInteger('title')
+                  ->nullable();
             $table->timestamps();
 
             $table->foreign('clinic_id')

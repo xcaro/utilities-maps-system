@@ -91,13 +91,13 @@
 		<div class="collapse" id="clinic-viewer">
 			<ul class="nav">
 				<li>
-					<a href="#">
+					<a href="{{ route('admin.clinic.create') }}">
 						<span class="sidebar-mini">+</span>
 						<span class="sidebar-normal">Tạo phòng khám</span>
 					</a>
 				</li>
                 <li>
-					<a href="#">
+					<a href="{{ route('admin.clinic.index') }}">
 						<span class="sidebar-mini">+</span>
 						<span class="sidebar-normal">Quản lý phòng khám</span>
 					</a>

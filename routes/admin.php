@@ -12,15 +12,27 @@ Route::group([
 });
 
 Route::resources([
-	'report' => 'ReportController',
-	'rtype' => 'ReportTypeController',
+	//'rtype' => 'ReportTypeController',
 	'user' => 'UserController',
-	'role' => 'RoleController'
+	'role' => 'RoleController',
+	'clinic' => 'ClinicController',
 ]);
-Route::put('report/{report}/confirm', 'ReportController@confirm');
+Route::put('report/{report}/confirm', 'ReportController@confirm')->name('report.confirm');
+Route::post('report/filter', 'ReportController@filter')->name('report.filter');
 // Route::get('role', function(){
 // 	return response()->json(Auth::user(), 200, [], JSON_PRETTY_PRINT);
 // });
 Route::get('pass', function(){
 	return response()->json(Auth::user()->password, 200, [], JSON_PRETTY_PRINT);
 });
+
+Route::resource('report', 'ReportController', [
+	'except' => [
+		'create', 'store', 'show', 'edit', 'update',
+	]
+]);
+Route::resource('rtype', 'ReportTypeController', [
+	'except' => [
+		'create', 'show', 'update',
+	]
+]);

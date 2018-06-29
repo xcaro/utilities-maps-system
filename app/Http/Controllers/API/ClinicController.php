@@ -52,6 +52,7 @@ class ClinicController extends Controller
         $item->address = $request->address;
         $item->type = $request->type;
         $item->user_created = auth('api')->user()->id;
+        $item->description = $request->description;
         
         if($item->save()){
             $item = Clinic::find($item->id);
@@ -109,6 +110,19 @@ class ClinicController extends Controller
         $item->type = $request->type;
         $item->confirmed = $request->confirmed;
         if($item->save()){
+            foreach ($request->doctors as $rel) {
+                $doctor = Doctor::find($rel['id']);
+                $doctor->name = $rel['name'];
+                $doctor->description = $rel['description'];
+                if ($rel['image'] != null) {
+                    $file = $rel['image'];
+                    $ext = $file->getClientOriginalExtension();
+                    $name = $doctor->id . '.' . $ext;
+                    $file->move(public_path('upload/doctors'), $name);
+                    $doctor->image = $image;
+                }
+                $doctor->save();
+            }
             return response()->json([
                 'message' => 'Updated successful',
                 'data' => new ClinicResource($item),

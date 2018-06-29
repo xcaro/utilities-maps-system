@@ -31,6 +31,8 @@ class CreateClinicsTable extends Migration
                   ->default(false);
             $table->boolean('active')
                   ->default(true);
+            $table->timestamp('end_date')
+                  ->nullable();
             $table->timestamps();
 
             $table->foreign('ward_id')

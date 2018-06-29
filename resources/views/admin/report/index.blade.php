@@ -7,12 +7,54 @@
 @section('content')
 <div class="row">
 	<div class="col-md-12">
+		<div class="card">
+			<div class="card-header">
+                <h4 class="card-title">Lọc báo cáo</h4>
+			</div>
+			<div class="card-content">
+				<div class="row" id="filter-options">
+						<div class="form-group col-md-3">
+							<select class="form-control" id="report-type">
+								<option value="0">Tất cả loại báo cáo</option>
+								@foreach($listType as $type)
+									<option value="{{ $type->id }}">{{ $type->name }}</option>
+								@endforeach
+							</select>
+						</div>
+						<div class="form-group col-md-3">
+							<select class="form-control" id="report-district">
+								<option value="0">Tất cả khu vực</option>
+								@foreach($listDistrict as $dst)
+									<option value="{{ $dst->id }}">{{ $dst->name }}</option>
+								@endforeach
+							</select>
+						</div>
+						<div class="form-group col-md-3">
+							<select class="form-control" id="report-status">
+								<option value="2">Tất cả trạng thái</option>
+								<option value="0">Chưa xác nhận</option>
+								<option value="1">Xác nhận</option>
+							</select>
+						</div>
+						
+						<div class="form-group col-md-3">
+							<button class="btn btn-primary" type="button" id="btn-filter"><i class="ti-search"></i> Tìm </button>
+						</div>
+					
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-12">
         <div class="card card-map">
 			<div class="card-header">
-                <h4 class="card-title">Traffic Report Map</h4>
+                <h4 class="card-title">Bảng đồ tình trạng giao thông <span id="filter-option"></span></h4>
             </div>
 			<div class="card-content">
-                <div id="map" class="map map-big"></div>
+				<!--<div id="admin">
+					<report-map></report-map>
+				</div>-->
+            	<div id="map" class="map map-big"></div>
             </div>
 		</div>
     </div>
@@ -20,52 +62,163 @@
 
 @endsection
 @section('scripts')
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>-->
+<script src="http://localhost:8000/socket.io/socket.io.js"></script>
 <script>
-	var listReport = {!!$listReport!!};
+	var listType = {!!$listType!!};
+	var types = {};
+	var markers = {};
+
+	/**
+	 * Xoá tất cả các report trên bản đồ
+	 * @param  {array} markers :danh sách obj report
+	 * @return {void}         
+	 */
+	var clearAllMarkers = (markers) => {
+		$.each(markers, (index, el) => {
+			el.setMap(null);
+		});
+	}
+	/**
+	 * Hiển thị tất cả report lên bản đồ
+	 * @param  {map} map        :obj google map
+	 * @param  {obj} listReport :danh sách tất cả report
+	 * @return {void}            
+	 */
+	var displayMarkers = (map, listReport) => {
+		clearAllMarkers(markers);
+		$.each(listReport, (index, el) => {
+			displayMarker(map, el);
+		});
+	}
+
+	/**
+	 * Hiển thị một report lên bản đồ
+	 * @param  {map} map    
+	 * @param  {obj} report 
+	 * @return {void}      
+	 */
+	var displayMarker = (map, report) => {
+		let infowindow = new google.maps.InfoWindow({
+			content: `${report.comment == null ? '':report.comment}<hr>
+	 						<button type="button" class="btn btn-primary confirm-report" data-report-id="${report.id}" data-report-type="${report.type_id}">${report.confirm?'Unconfirm':'Confirm'}</button>
+	 						<button type="button" class="btn btn-danger">Delete</button>`
+		});
+		let marker = new google.maps.Marker({
+			draggable: true,
+            animation: google.maps.Animation.DROP,
+			position: {lat: report.latitude, lng: report.longitude},
+			icon: (report.confirm) ? types[report.type_id].confirmed_icon: types[report.type_id].unconfirmed_icon,
+		});
+		marker.addListener('click', () => {
+			infowindow.open(map, marker);
+		});
+		marker.setMap(map);
+		markers[report.id] = (marker);
+	}
+
 	$(() => {
-		var markers = [];
+		
+		// format Danh sách loại rp
+		$.each(listType, (index, el) => {
+			types[el.id] = {
+				confirmed_icon: el.confirmed_icon,
+				unconfirmed_icon: el.unconfirmed_icon,
+			};
+		});
+
+		/**
+		 * Khởi tạo bản đồ
+		 * @type {google}
+		 */
 		var map = new google.maps.Map(document.getElementById('map'), {
 			center: {lat: 10.764237, lng: 106.689597},
         	mapTypeControl: false,
-        	zoom: 13,
+        	zoom: 12,
 		});
-		$.each(listReport, (index, el) => {
-			let infowindow = new google.maps.InfoWindow({
-	          content: `${el.comment}<hr>
-							<button type="button" class="btn btn-primary confirm-report" data-report-id="${el.id}">Confirm</button>
-							<button type="button" class="btn btn-danger">Delete</button>`
-	        });
-			let marker = new google.maps.Marker({
-	          position: {lat: 10.764237, lng: 106.689597},
-	          map: map,
-	          icon: "data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTYuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjMycHgiIGhlaWdodD0iMzJweCIgdmlld0JveD0iMCAwIDUxMiA1MTIiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDUxMiA1MTI7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4KPGc+Cgk8cGF0aCBkPSJNMjU2LDBDMTY3LjY0MSwwLDk2LDcxLjYyNSw5NiwxNjBjMCwyNC43NSw1LjYyNSw0OC4yMTksMTUuNjcyLDY5LjEyNUMxMTIuMjM0LDIzMC4zMTMsMjU2LDUxMiwyNTYsNTEybDE0Mi41OTQtMjc5LjM3NSAgIEM0MDkuNzE5LDIxMC44NDQsNDE2LDE4Ni4xNTYsNDE2LDE2MEM0MTYsNzEuNjI1LDM0NC4zNzUsMCwyNTYsMHogTTI1NiwyNTZjLTUzLjAxNiwwLTk2LTQzLTk2LTk2czQyLjk4NC05Niw5Ni05NiAgIGM1MywwLDk2LDQzLDk2LDk2UzMwOSwyNTYsMjU2LDI1NnoiIGZpbGw9IiNEODAwMjciLz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K",
-	        });
-	        marker.addListener('click',() => {
-	          infowindow.open(map, marker);
-	        });
+		
+		// Show các rp
+		//displayMarkers(map, listReport);
+		var socket = io('http://127.0.0.1:8000');
+      	socket.on('connection', (res) => {
+      		let reportType = $('#report-type').val();
+			let reportDistrict = $('#report-district').val();
+			let reportStatus = $('#report-status').val();
 
-	        markers.push(marker)
-		});
+			if (res.type == 'add') {
+				$.notify({
+					icon: 'ti-flag-alt',
+					message: 'Có báo cáo mới',
+				}, {
+					type: 'warning',
+					delay: 5000,
+					placement: {
+		                from: 'top',
+		                align: 'right'
+		            }
+				});
+			}
+
+      		if (res.type == 'initial' || res.type == 'add') {
+      			let report = res.new_val;
+      			let flag = false;
+				if (reportType == 0 || reportDistrict == 0 || reportStatus == 2) {
+					flag = true;
+				}
+				else if (reportType == report.type && reportDistrict == report.district_id && reportStatus == report.confirm) {
+					flag = true;
+				}
+				if (flag) {
+					displayMarker(map, res.new_val);
+				}
+      		}
+      		console.log(res);
+      	});
+		// Thực hiện confirm
 		$(document).on('click', 'button.confirm-report', (e) => {
-			console.log(markers[0])
-			markers[0].setMap(null)
-			markers[0] = new google.maps.Marker({
-	          position: {lat: 10.764237, lng: 106.689597},
-	          map: map,
-	         });
 			let id = $(e.target).data('report-id');
 			$.ajax({
 				url: '/admin/report/' + id + '/confirm',
-				type: 'POST',
-				data: {_method: 'PUT', _token: '{{csrf_token()}}'},
+				method: 'PUT',
+				data: { _token: token},
 			})
 			.done((res) => {
 				console.log(res);
+				if(res.success){
+					markers[id].setIcon(types[$(e.target).data('report-type')].confirmed_icon);
+					$(e.target).text('Unconfirm');
+				}
 			})
-			.fail(() => {
-				console.log("error");
+			.fail((err) => console.log(err))
+			.always(() => console.log("complete"));
+			
+		});
+		
+		$('#btn-filter').click((e) => {
+			let reportType = $('#report-type').val();
+			let reportDistrict = $('#report-district').val();
+			let reportStatus = $('#report-status').val();
+
+			$.ajax({
+				url: '/admin/report/filter',
+				method: 'POST',
+				dataType: 'JSON',
+				data: {
+					type:reportType,
+					district:reportDistrict,
+					status:reportStatus,
+					_token: token,
+				},
 			})
-			.always(() => {
+			.done((res) => {
+				console.log(res);
+				clearAllMarkers(markers);
+				displayMarkers(map, res);
+			})
+			.fail((err) => {
+				console.log(err);
+			})
+			.always(function() {
 				console.log("complete");
 			});
 			

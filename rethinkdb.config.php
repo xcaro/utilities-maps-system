@@ -14,4 +14,7 @@ $r_list_tb = r\db('app')->tableList()->run($r_connect);
 if (!in_array('activeReports', $r_list_tb)) {
 	r\db('app')->tableCreate('activeReports')->run($r_connect);
 }
+if (!in_array('activeClinics', $r_list_tb)) {
+	r\db('app')->tableCreate('activeClinics')->run($r_connect);
+}
 $r_connect->close();

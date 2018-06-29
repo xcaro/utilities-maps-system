@@ -24,6 +24,9 @@ class Clinic extends JsonResource
             $this->mergeWhen(($this->doctors) != null, [
                 'doctors' => new DoctorCollection($this->doctors),
             ]),
+            'ward_id' => $this->ward_id,
+            'district_id' => $this->district_id,
+            'confirmed' => $this->confirmed,
             //'doctors' => 
             //'user_created' => $this->user_created,
             //'confirmed' => $this->confirmed,

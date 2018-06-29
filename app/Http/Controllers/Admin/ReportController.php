@@ -25,6 +25,8 @@ class ReportController extends Controller
         return view('admin.report.index', [
             'title' => 'List Reports',
             'listReport' => $listRp,
+            'listType' => \App\ReportType::where('active', 1)->get(),
+            'listDistrict' => \App\District::where('city_id', 1)->get(),
         ]);
     }
 
@@ -108,14 +110,43 @@ class ReportController extends Controller
      */
     public function destroy($id)
     {
+        $r_connect = r\connect(env('R_HOST'), env('R_PORT'));
+        $result = r\db('app')->table('activeReports')->get((int)$id)->delete()->run($r_connect);
+        $r_connect->close();
+
         Report::find($id)->update(['active' => 0]);
         return response()->json(null, 204);
     }
     public function confirm($id)
     {
-        Report::find($id)->update(['confirm' => 1]);
+
+        $r_connect = \r\connect(env('R_HOST'), env('R_PORT'));
+        $result = \r\db('app')->table('activeReports')->get((int)$id)->update(['confirm' => true])->run($r_connect);
+        $r_connect->close();
+        Report::find($id)->update(['confirm' => true]);
         return response()->json([
+            'success' => true,
             'message' => 'Confirmed',
         ], 200);
+    }
+    public function filter(Request $request)
+    {
+        //$req = [];
+        $reports = Report::where('active', true);
+        if ($request->has('type') && $request->type != 0) {
+            //$req[] = ['type_id', '=', $request->type];
+            $reports->where('type_id', $request->type);
+        }
+        if ($request->has('status') && ($request->status == 0 || $request->status == 1)) {
+            //$req[] = ['confirm', '=', $request->status == 0 ? false : true];
+            $reports->where('confirm', $request->status == 0 ? false : true);
+        }
+        if ($request->has('district') && $request->district != 0) {
+            //$req[] = ['district', '=', $request->district];
+            $reports->where('district_id', $request->district);
+        }
+        //$req[] = ['active', '=', true];
+        //$reports = Report::where($req)->get();
+        return response()->json($reports->get());
     }
 }

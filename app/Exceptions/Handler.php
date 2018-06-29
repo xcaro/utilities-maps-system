@@ -50,17 +50,19 @@ class Handler extends ExceptionHandler
     {
         //$guard = array_get($exception->guards(), 0);
         //dd($exception->guards());
- // dd($exception);
+  //dd($exception);
         if ($exception instanceof AuthorizationException) {
             return response()->json(['error' => $exception->getMessage(), 'code' => 401], 401);
         }
         if ($exception instanceof ValidationException) {
+            if ($request->expectsJson() || $request->ajax()) {
+                
                 $res = [
                     'message' => $exception->getMessage(),
                     'errors' => $exception->errors(),
                 ];
                 return response()->json($res, 400);
-                
+            }
         }
         
         
