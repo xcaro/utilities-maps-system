@@ -19,6 +19,7 @@ class Clinic extends Model
         'description',
     	'confirmed',
     	'active',
+        'end_date',
     ];
 
     public function doctors()

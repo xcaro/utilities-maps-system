@@ -24,7 +24,7 @@ Route::post('me', 'AuthController@me');
 
 // Route::resource('report-type', 'ReportTypeController');
 // Route::resource('report', 'ReportController');
-
+Route::get('clinic/me', 'ClinicController@myClinic')->name('clinic.me');
 Route::apiResources([
 	'report-type' => 'ReportTypeController',
 	'report' => 'ReportController',
@@ -41,3 +41,4 @@ Route::apiResource('user', 'UserController', ['except' => ['index', 'show', 'des
 Route::post('user/change-password', 'UserController@changePassword')->name('user.change-password');
 Route::post('user/change-info', 'AuthController@changeInfo')->name('user.change-info');
 
+// My Clinic Func

@@ -98,4 +98,5 @@ class ClinicShiftController extends Controller
         $item->save();
         return response()->json(null, 204);
     }
+    
 }

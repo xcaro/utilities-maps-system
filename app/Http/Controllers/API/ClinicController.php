@@ -60,6 +60,7 @@ class ClinicController extends Controller
                 $doctor = new Doctor;
                 $doctor->name = $rel['name'];
                 $doctor->description = $rel['description'];
+                $doctor->title = $rel['title'];
                 if ($item->doctors()->save($doctor)) {
                     if ($rel['image'] != null) {
                         $file = $rel['image'];
@@ -145,5 +146,11 @@ class ClinicController extends Controller
         $item->active = false;
         $item->save();
         return response()->json(null, 204);
+    }
+    public function myClinic()
+    {
+        $user = auth('api')->user();
+        $clinics = Clinic::where('user_created', $user->id)->get();
+        return new ClinicCollection($clinics);
     }
 }
