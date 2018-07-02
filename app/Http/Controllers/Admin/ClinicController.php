@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Clinic;
 use App\ClinicType;
+use r;
+use Illuminate\Support\Carbon;
 
 class ClinicController extends Controller
 {
@@ -32,7 +34,10 @@ class ClinicController extends Controller
      */
     public function create()
     {
-        return view('admin.clinic.create');
+        $listType = ClinicType::where('active', true)->get();
+        return view('admin.clinic.create', [
+            'listType' => $listType,
+        ]);
     }
 
     /**
@@ -43,7 +48,7 @@ class ClinicController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
     }
 
     /**
@@ -65,7 +70,12 @@ class ClinicController extends Controller
      */
     public function edit($id)
     {
-        //
+        $cln = Clinic::find($id);
+        $listType = ClinicType::where('active', true)->get();
+        return view('admin.clinic.edit', [
+            'listType' => $listType,
+            'cln' => $cln,
+        ]);
     }
 
     /**
@@ -77,7 +87,18 @@ class ClinicController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $item = Clinic::find($id);
+        $item->name = $request->name;
+        $item->address = $request->address;
+        $item->latitude = $request->latitude;
+        $item->longitude = $request->longitude;
+        $item->description = $request->description;
+        $item->end_date = Carbon::createFromFormat('Y-m-d H:i:s', $request->end_date);
+        $item->active = $request->active == 'on' ? true:false;
+        if ($item->save()) {
+            return redirect()->route('admin.clinic.index')->with('message', 'Chỉnh sửa thành công');
+        }
+        return redirect()->route('admin.clinic.index')->withErrors('Chỉnh sửa không thành công');
     }
 
     /**
@@ -100,8 +121,32 @@ class ClinicController extends Controller
             $cln->where('district_id', $request->district);
         }
         if ($request->has('status') && ($request->status == 0 || $request->status == 1)) {
-            $cln->where('confirm', $request->status == 0 ? false:true);
+            $cln->where('confirmed', $request->status == 0 ? false:true);
         }
         return response()->json($cln->get());
+    }
+    public function confirm($id)
+    {
+        $r_connect = r\connect(env('R_HOST'), env('R_PORT'));
+        $result = r\db('app')->table('activeClinics')->get((int)$id)->update(['confirmed' => true])->run($r_connect);
+        $r_connect->close();
+
+        Clinic::find($id)->update(['confirmed' => true]);
+        return response()->json([
+            'success' => true,
+            'message' => 'Confirmed',
+        ], 200);
+    }
+    public function unconfirm($id)
+    {
+        $r_connect = r\connect(env('R_HOST'), env('R_PORT'));
+        $result = r\db('app')->table('activeClinics')->get((int)$id)->update(['confirmed' => false])->run($r_connect);
+        $r_connect->close();
+        
+        Clinic::find($id)->update(['confirmed' => false]);
+        return response()->json([
+            'success' => true,
+            'message' => 'Unconfirmed',
+        ], 200);
     }
 }

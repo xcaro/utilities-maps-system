@@ -5,7 +5,7 @@
         <div class="card">
             <div class="card-header">
                 <h4 class="card-title">{{ $title = ''}}</h4>
-                
+                <a href="{{ route('admin.user.create') }}"><button type="button" class="btn btn-success btn-fill" data-type="create"><i class="ti-plus"></i> Thêm mới</button></a>
             </div>
             <div class="card-content table-responsive table-full-width">
                 <table class="table">
@@ -20,12 +20,13 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach($users as $user)
 	                        <tr>
-	                            <td class="text-center">1</td>
-	                            <td>Admin</td>
-	                            <td>admin@example.com</td>
-	                            <td>Admin</td>
-	                            <td><span class="label label-danger">disable</span></td>
+	                            <td class="text-center">{{ $user->id }}</td>
+	                            <td>{{ $user->name }}</td>
+	                            <td>{{ $user->email }}</td>
+	                            <td>{{ $user->role ? $user->role->title : 'Người dùng'}}</td>
+	                            <td><span class="label label-{{ $user->active ? 'success':'danger' }}">{{ $user->active ? 'enable':'disable' }}</span></td>
 	                            <td class="td-actions text-right">
 	                                <a href="#" rel="tooltip" title="View Profile" class="btn btn-info btn-simple btn-xs">
 	                                    <i class="ti-user"></i>
@@ -38,7 +39,7 @@
 	                                </a>
 	                            </td>
 	                        </tr>
-                        
+                        @endforeach
                         
                     </tbody>
 

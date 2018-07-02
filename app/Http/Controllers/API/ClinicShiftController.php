@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ClinicShift as ClinicShiftResource;
 use App\Http\Resources\ClinicShiftCollection;
 use App\ClinicShift;
+use Illuminate\Support\Carbon;
 
 class ClinicShiftController extends Controller
 {
@@ -35,11 +36,12 @@ class ClinicShiftController extends Controller
      */
     public function store($id, Request $request)
     {
+        Carbon::now()->addDay($this->expire);
         $item = new ClinicShift;
         $item->name = $request->name;
         $item->clinic_id = $id;
-        $item->start_shift = $request->start_shift;
-        $item->end_shift = $request->end_shift;
+        $item->start_shift = Carbon::createFromFormat('Y-m-d H:m:s',$request->start_shift);
+        $item->end_shift = Carbon::createFromFormat('Y-m-d H:m:s',$request->end_shift);
 
         if ($item->save()) {
             return response()->json([
@@ -73,8 +75,8 @@ class ClinicShiftController extends Controller
         $item = ClinicShift::findOrFail($id);
         $item->name = $request->name;
         $item->clinic_id = $id;
-        $item->start_shift = $request->start_shift;
-        $item->end_shift = $request->end_shift;
+        $item->start_shift = Carbon::createFromFormat('Y-m-d H:m:s',$request->start_shift);
+        $item->end_shift = Carbon::createFromFormat('Y-m-d H:m:s',$request->end_shift);
 
         if ($item->save()) {
             return response()->json([
@@ -97,6 +99,10 @@ class ClinicShiftController extends Controller
         $item->active = false;
         $item->save();
         return response()->json(null, 204);
+    }
+    public function getRegistered($shift_id)
+    {
+        
     }
     
 }

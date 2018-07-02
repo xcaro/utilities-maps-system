@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateShiftTurnTable extends Migration
+class CreateShiftUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,21 +13,22 @@ class CreateShiftTurnTable extends Migration
      */
     public function up()
     {
-        Schema::create('shift_turn', function (Blueprint $table) {
+        Schema::create('shift_user', function (Blueprint $table) {
             $table->unsignedInteger('shift_id');
-            $table->unsignedInteger('turn_id');
+            $table->unsignedInteger('user_id');
             $table->boolean('confirmed')->default(false);
+            $table->timestamps();
             
             $table->foreign('shift_id')
                   ->references('id')
                   ->on('clinic_shifts')
                   ->onDelete('cascade');
-            $table->foreign('turn_id')
+            $table->foreign('user_id')
                   ->references('id')
-                  ->on('user_turns')
+                  ->on('users')
                   ->onDelete('cascade');
 
-            $table->primary(['shift_id', 'turn_id']);
+            $table->primary(['shift_id', 'user_id']);
         });
     }
 
@@ -38,6 +39,6 @@ class CreateShiftTurnTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shift_turn');
+        Schema::dropIfExists('shift_user');
     }
 }

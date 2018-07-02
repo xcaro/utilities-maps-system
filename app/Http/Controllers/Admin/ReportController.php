@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Report;
+use r;
 class ReportController extends Controller
 {
     public function __construct()
@@ -114,14 +115,17 @@ class ReportController extends Controller
         $result = r\db('app')->table('activeReports')->get((int)$id)->delete()->run($r_connect);
         $r_connect->close();
 
-        Report::find($id)->update(['active' => 0]);
-        return response()->json(null, 204);
+        Report::find($id)->update(['active' => false]);
+        return response()->json([
+            'success' => true,
+            'message' => 'Deleted',
+        ], 200);
     }
     public function confirm($id)
     {
 
-        $r_connect = \r\connect(env('R_HOST'), env('R_PORT'));
-        $result = \r\db('app')->table('activeReports')->get((int)$id)->update(['confirm' => true])->run($r_connect);
+        $r_connect = r\connect(env('R_HOST'), env('R_PORT'));
+        $result = r\db('app')->table('activeReports')->get((int)$id)->update(['confirm' => true])->run($r_connect);
         $r_connect->close();
         Report::find($id)->update(['confirm' => true]);
         return response()->json([

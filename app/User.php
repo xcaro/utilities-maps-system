@@ -62,4 +62,8 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasPermission(Permission::find(1));
     }
+    public function shifts()
+    {
+        return $this->belongsToMany(ClinicShift::class, 'shift_user', 'user_id', 'shift_id')->withPivot(['confirmed'])->withTimestamps();
+    }
 }

@@ -25,13 +25,21 @@ Route::post('me', 'AuthController@me');
 // Route::resource('report-type', 'ReportTypeController');
 // Route::resource('report', 'ReportController');
 Route::get('clinic/me', 'ClinicController@myClinic')->name('clinic.me');
+Route::get('clinic/{clinic}/shift/filter', 'ClinicController@filterByDate')->name('clinic.filterByDate');
+// Route::put('shifts/{shifts}/shift/{shift}/confirm', 'UserTurnController@confirm')->name('turn.confirm');
+// Route::put('shifts/{shifts}/shift/{shift}/unconfirm', 'UserTurnController@unconfirm')->name('turn.unconfirm');
+Route::get('user/{user}/book', 'BookingController@shiftsOfUser');
+Route::post('user/{user}/book', 'BookingController@bookShifts');
+Route::get('shift/{shift}/user', 'BookingController@shiftsBooked');
+Route::put('shift/{shift}/user/{user}/confirm', 'BookingController@confirmBooking');
+Route::put('shift/{shift}/user/{user}/unconfirm', 'BookingController@unconfirmBooking');
 Route::apiResources([
 	'report-type' => 'ReportTypeController',
 	'report' => 'ReportController',
 	'clinic-type' => 'ClinicTypeController',
 	'clinic' => 'ClinicController',
 	'clinic.shift' => 'ClinicShiftController',
-	'user.turn' => 'UserTurnController',
+	// 'shift.book' => 'BookingController',
 ]);
 Route::put('report/{report}/confirm', 'ReportController@confirm')->name('report.confirm');
 Route::put('report/{report}/unconfirm', 'ReportController@unconfirm')->name('report.unconfirm');
@@ -41,4 +49,6 @@ Route::apiResource('user', 'UserController', ['except' => ['index', 'show', 'des
 Route::post('user/change-password', 'UserController@changePassword')->name('user.change-password');
 Route::post('user/change-info', 'AuthController@changeInfo')->name('user.change-info');
 
-// My Clinic Func
+Route::get('city', 'CityController@city')->name('city');
+Route::get('district', 'CityController@district')->name('district');
+Route::get('district/{district}/ward', 'CityController@ward')->name('ward');

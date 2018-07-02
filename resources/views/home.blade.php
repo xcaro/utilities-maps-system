@@ -326,7 +326,7 @@
 @endsection
 @section('scripts')
 <script src="https://apis.google.com/js/platform.js" async defer></script>
-<script async defer src="//maps.googleapis.com/maps/api/js?libraries=places‌​&key=AIzaSyA0kXy7r6QF_I9nixVMeP1TbIZ3ERfWgYc&libraries=places&language=vi&region=vn"></script>
+<script async defer src="//maps.googleapis.com/maps/api/js?libraries=places‌​&key={{ env('GOOGLE_MAP_KEY') }}&libraries=places&language=vi&region=vn"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 <script>
 	$(() => {

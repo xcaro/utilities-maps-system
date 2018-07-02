@@ -62,8 +62,8 @@
 
 @endsection
 @section('scripts')
-<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>-->
-<script src="http://localhost:8000/socket.io/socket.io.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+<!--<script src="http://localhost:8000/socket.io/socket.io.js"></script>-->
 <script>
 	var listType = {!!$listType!!};
 	var types = {};
@@ -100,9 +100,11 @@
 	 */
 	var displayMarker = (map, report) => {
 		let infowindow = new google.maps.InfoWindow({
-			content: `${report.comment == null ? '':report.comment}<hr>
-	 						<button type="button" class="btn btn-primary confirm-report" data-report-id="${report.id}" data-report-type="${report.type_id}">${report.confirm?'Unconfirm':'Confirm'}</button>
-	 						<button type="button" class="btn btn-danger">Delete</button>`
+			content: `<b>Ghi chú: </b>${report.comment == null ? '':report.comment}<br/>
+			<b>Trạng thái: </b><span class="label ${report.confirm?'label-success':'label-danger'}">${report.confirm?'Xác nhận':'Chưa xác nhận'}</span>
+			<hr>
+	 		<button type="button" class="btn btn-primary confirm-report" data-report-id="${report.id}" data-report-type="${report.type_id}">${report.confirm?'Unconfirm':'Confirm'}</button>
+	 		<button type="button" class="btn btn-danger suspend-report" data-report-id="${report.id}">Suspend</button>`
 		});
 		let marker = new google.maps.Marker({
 			draggable: true,
@@ -110,9 +112,7 @@
 			position: {lat: report.latitude, lng: report.longitude},
 			icon: (report.confirm) ? types[report.type_id].confirmed_icon: types[report.type_id].unconfirmed_icon,
 		});
-		marker.addListener('click', () => {
-			infowindow.open(map, marker);
-		});
+		marker.addListener('click', () => infowindow.open(map, marker));
 		marker.setMap(map);
 		markers[report.id] = (marker);
 	}
@@ -140,7 +140,7 @@
 		// Show các rp
 		//displayMarkers(map, listReport);
 		var socket = io('http://127.0.0.1:8000');
-      	socket.on('connection', (res) => {
+      	socket.on('reports', (res) => {
       		let reportType = $('#report-type').val();
 			let reportDistrict = $('#report-district').val();
 			let reportStatus = $('#report-status').val();
@@ -172,6 +172,10 @@
 					displayMarker(map, res.new_val);
 				}
       		}
+      		if (res.type == 'change') {
+      			markers[res.new_val.id].setMap(null);
+      			displayMarker(map, res.new_val);
+      		}
       		console.log(res);
       	});
 		// Thực hiện confirm
@@ -193,7 +197,23 @@
 			.always(() => console.log("complete"));
 			
 		});
-		
+		$(document).on('click', 'button.suspend-report', (e) => {
+			let id = $(e.target).data('report-id');
+			$.ajax({
+				url: '/admin/report/' + id ,
+				method: 'POST',
+				data: { _token: token, _method:'DELETE'},
+			})
+			.done((res) => {
+				console.log(markers)
+				console.log(res);
+				if(res.success){
+					markers[id].setMap(null);
+				}
+			})
+			.fail((err) => console.log(err))
+			.always(() => console.log("complete"));
+		});
 		$('#btn-filter').click((e) => {
 			let reportType = $('#report-type').val();
 			let reportDistrict = $('#report-district').val();

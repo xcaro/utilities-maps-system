@@ -9,11 +9,17 @@ use App\Http\Resources\Clinic as ClinicResource;
 use App\Http\Resources\ClinicCollection;
 use App\Clinic;
 use App\Doctor;
+use App\Setting;
+use r;
+use Illuminate\Support\Carbon;
 class ClinicController extends Controller
 {
+    private $expire;
+
     public function __construct()
     {
         $this->middleware('auth:api', ['except' => ['index', 'show']]);
+        $this->expire = Setting::where('key', 'default_clinic_expire')->first()->value;
     }
     /**
      * Display a listing of the resource.
@@ -43,6 +49,9 @@ class ClinicController extends Controller
      */
     public function store(Request $request)
     {
+        
+        $district = \App\District::where('name', $request->district)->first();
+        $ward = \App\Ward::where('name', $request->ward)->first();
         DB::beginTransaction();
 
         $item = new Clinic;
@@ -53,7 +62,10 @@ class ClinicController extends Controller
         $item->type = $request->type;
         $item->user_created = auth('api')->user()->id;
         $item->description = $request->description;
-        
+        $item->end_date = Carbon::now()->addDay($this->expire);
+        $item->district_id = $district->id;
+        $item->ward_id = $ward->id;
+
         if($item->save()){
             $item = Clinic::find($item->id);
             foreach ($request->doctors as $rel) {
@@ -72,6 +84,13 @@ class ClinicController extends Controller
                 }
             }
             DB::commit();
+
+            // add new clinic to rethink
+            $r_connect = r\connect(env('R_HOST'), env('R_PORT'));
+            $r_result = r\db(env('R_DATABASE'))->table('activeClinics')
+                ->insert($item->toArray())
+                ->run($r_connect);
+            $r_connect->close();
 
             return response()->json([
                 'message' => 'Created successful',
@@ -103,6 +122,8 @@ class ClinicController extends Controller
      */
     public function update(Request $request, $id)
     {
+        DB::beginTransaction();
+
         $item = Clinic::find($id);
         $item->name = $request->name;
         $item->latitude = $request->latitude;
@@ -110,11 +131,14 @@ class ClinicController extends Controller
         $item->address = $request->address;
         $item->type = $request->type;
         $item->confirmed = $request->confirmed;
+        $item->description = $request->description;
+        
         if($item->save()){
             foreach ($request->doctors as $rel) {
                 $doctor = Doctor::find($rel['id']);
                 $doctor->name = $rel['name'];
                 $doctor->description = $rel['description'];
+                $doctor->title = $rel['title'];
                 if ($rel['image'] != null) {
                     $file = $rel['image'];
                     $ext = $file->getClientOriginalExtension();
@@ -124,11 +148,21 @@ class ClinicController extends Controller
                 }
                 $doctor->save();
             }
+            DB::commit();
+
+            $r_connect = r\connect(env('R_HOST'), env('R_PORT'));
+            $r_result = r\db(env('R_DATABASE'))->table('activeClinics')
+                ->get((int)$id)->update($item->toArray())
+                ->run($r_connect);
+            $r_connect->close();
+
             return response()->json([
                 'message' => 'Updated successful',
                 'data' => new ClinicResource($item),
             ], 201);
         }
+        DB::rollBack();
+
         return response()->json([
             'message' => 'Data can not be processed',
         ], 201);
@@ -142,6 +176,10 @@ class ClinicController extends Controller
      */
     public function destroy($id)
     {
+        $r_connect = r\connect(env('R_HOST'), env('R_PORT'));
+        $result = r\db('app')->table('activeClinics')->get((int)$id)->delete()->run($r_connect);
+        $r_connect->close();
+
         $item = Clinic::find($id);
         $item->active = false;
         $item->save();
@@ -152,5 +190,23 @@ class ClinicController extends Controller
         $user = auth('api')->user();
         $clinics = Clinic::where('user_created', $user->id)->get();
         return new ClinicCollection($clinics);
+    }
+    public function filterByDate($id)
+    {
+        if (!request('date')) {
+            return response()->json([
+                'message' => 'Missing parameters \'date\'',
+            ], 200);
+        }
+        $date = request('date');
+        $date = Carbon::createFromFormat('Y-m-d', $date);
+        $date->hour = 0;
+        $date->minute = 0;
+        $date->second = 0;
+        //$date->timestamp = 0;
+        // return $date;
+        $result = \App\ClinicShift::whereDate('start_shift', $date);
+        return $result->get();
+        return new \App\Http\Resources\ClinicShiftCollection($result->get());
     }
 }

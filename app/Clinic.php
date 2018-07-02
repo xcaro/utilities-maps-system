@@ -26,4 +26,8 @@ class Clinic extends Model
     {
         return $this->hasMany(Doctor::class);
     }
+    public function userCreated()
+    {
+        return $this->belongsTo(User::class, 'user_created');
+    }
 }

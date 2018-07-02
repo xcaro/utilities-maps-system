@@ -91,6 +91,12 @@
 		<div class="collapse" id="clinic-viewer">
 			<ul class="nav">
 				<li>
+					<a href="#">
+						<span class="sidebar-mini">+</span>
+						<span class="sidebar-normal">Danh sách chuyên khoa</span>
+					</a>
+				</li>
+				<li>
 					<a href="{{ route('admin.clinic.create') }}">
 						<span class="sidebar-mini">+</span>
 						<span class="sidebar-normal">Tạo phòng khám</span>

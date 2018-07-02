@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\UserTurn as UserTurnResource;
 use App\Http\Resources\UserTurnCollection;
 use App\UserTurn;
+use Illuminate\Support\Carbon;
 
 class UserTurnController extends Controller
 {
@@ -36,7 +37,7 @@ class UserTurnController extends Controller
 
         $turn = new UserTurn;
         $turn->user_id = auth('api')->user()->id;
-        $turn->register_day = $turn->register_day;
+        $turn->register_day = Carbon::now();
 
         if ($turn->save()) {
             $turn->shifts()->attach($shift_id);
@@ -89,5 +90,27 @@ class UserTurnController extends Controller
         $turn->active = false;
         $turn->save();
         return response()->json(null, 204);
+    }
+    public function confirm($turn_id, $shift_id)
+    {
+        $turn = UserTurn::findOrFail($turn_id);
+        $turn->shifts()->updateExistingPivot($shift_id, ['confirmed' => true]);
+        $turn->confirm = true;
+        $turn->save();
+        return response()->json([
+            'message' => 'Confirmed successful',
+            'data' => new UserTurnResource($turn),
+        ], 200);
+    }
+    public function unconfirm($turn_id, $shift_id)
+    {
+        $turn = UserTurn::findOrFail($turn_id);
+        $turn->shifts()->updateExistingPivot($shift_id, ['confirmed' => false]);
+        $turn->confirm = false;
+        $turn->save();
+        return response()->json([
+            'message' => 'Unconfirmed successful',
+            'data' => new UserTurnResource($turn),
+        ], 200);
     }
 }

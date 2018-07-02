@@ -13,8 +13,13 @@ class ClinicShift extends Model
     	'end_shift',
     	'active',
     ];
-    public function clinc()
+    public function clinic()
     {
     	return $this->belongsTo(Clinic::class);
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'shift_user', 'shift_id', 'user_id')->withPivot(['confirmed'])->withTimestamps();
     }
 }

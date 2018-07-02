@@ -10,7 +10,9 @@ Route::group([
 		'as' => 'dashboard',
 	]);
 });
-
+Route::put('clinic/{clinic}/confirm', 'ClinicController@confirm')->name('clinic.confirm');
+Route::put('clinic/{clinic}/unconfirm', 'ClinicController@unconfirm')->name('clinic.unconfirm');
+Route::post('clinic/filter', 'ClinicController@filter')->name('clinic.filter');
 Route::resources([
 	//'rtype' => 'ReportTypeController',
 	'user' => 'UserController',
@@ -33,6 +35,6 @@ Route::resource('report', 'ReportController', [
 ]);
 Route::resource('rtype', 'ReportTypeController', [
 	'except' => [
-		'create', 'show', 'update',
+		'create', 'update',
 	]
 ]);

@@ -18,9 +18,11 @@ class Doctor extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
+            'title' => $this->title,
             $this->mergeWhen(($this->image) != null, [
                 'image' => url('upload/doctors/' . $this->image),
             ]),
+
         ];
     }
 }

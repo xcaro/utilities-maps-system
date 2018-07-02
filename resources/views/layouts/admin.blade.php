@@ -253,7 +253,7 @@
 	<script src="{{ asset('assets/js/jquery-jvectormap.js') }}"></script>
 
 	<!--  Google Maps Plugin    -->
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA0kXy7r6QF_I9nixVMeP1TbIZ3ERfWgYc"></script>
+	<script async defer src="//maps.googleapis.com/maps/api/js?libraries=places‌​&key={{ env('GOOGLE_MAP_KEY') }}&libraries=places&language=vi&region=vn"></script>
 
 	<!-- Wizard Plugin    -->
 	<script src="{{ asset('assets/js/jquery.bootstrap.wizard.min.js') }}"></script>
@@ -275,6 +275,20 @@
 
 	@yield('scripts')
 <script>
+	var pushNotify = (type = 'warning', content = 'Có thông báo mới') => {
+		$.notify({
+			icon: 'ti-flag-alt',
+			message: content,
+		}, {
+			type: type,
+			// delay: 5000,
+			placement: {
+                from: 'top',
+                align: 'right'
+            },
+            
+		});
+	}
 	$(() => {
 		let path = window.location.href;
 		path = path.replace(/\/$/, "");

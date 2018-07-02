@@ -19,7 +19,7 @@ class UserTurn extends JsonResource
             'user_id' => $this->user_id,
             'confirm' => $this->confirm,
             'register_day' => $this->register_day,
-            'shifts' => $this->shifts(),
+            'shifts' => $this->shifts,
         ];
     }
 }
