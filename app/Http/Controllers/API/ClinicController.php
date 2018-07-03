@@ -49,6 +49,7 @@ class ClinicController extends Controller
      */
     public function store(Request $request)
     {
+        return $request;
         
         $district = \App\District::where('name', $request->district)->first();
         $ward = \App\Ward::where('name', $request->ward)->first();

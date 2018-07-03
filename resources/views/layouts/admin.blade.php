@@ -272,6 +272,7 @@
 
 	<!-- Paper Dashboard PRO DEMO methods, don't include it in your project! -->
 	{{-- <script src="{{ asset('assets/js/demo.js') }}"></script> --}}
+	<script src="{{ asset('js/utils.js')}}"></script>
 
 	@yield('scripts')
 <script>
