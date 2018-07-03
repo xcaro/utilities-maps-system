@@ -39,8 +39,8 @@ class ClinicShiftController extends Controller
         $item = new ClinicShift;
         $item->name = $request->name;
         $item->clinic_id = $id;
-        $item->start_shift = Carbon::createFromFormat('Y-m-d H:m:s',$request->start_shift);
-        $item->end_shift = Carbon::createFromFormat('Y-m-d H:m:s',$request->end_shift);
+        $item->start_shift = Carbon::createFromFormat('Y-m-d H:i:s',$request->start_shift);
+        $item->end_shift = Carbon::createFromFormat('Y-m-d H:i:s',$request->end_shift);
 
         if ($item->save()) {
             return response()->json([
@@ -74,8 +74,8 @@ class ClinicShiftController extends Controller
         $item = ClinicShift::findOrFail($id);
         $item->name = $request->name;
         $item->clinic_id = $id;
-        $item->start_shift = Carbon::createFromFormat('Y-m-d H:m:s',$request->start_shift);
-        $item->end_shift = Carbon::createFromFormat('Y-m-d H:m:s',$request->end_shift);
+        $item->start_shift = Carbon::createFromFormat('Y-m-d H:i:s',$request->start_shift);
+        $item->end_shift = Carbon::createFromFormat('Y-m-d H:i:s',$request->end_shift);
 
         if ($item->save()) {
             return response()->json([
