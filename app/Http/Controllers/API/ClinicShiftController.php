@@ -36,7 +36,6 @@ class ClinicShiftController extends Controller
      */
     public function store($id, Request $request)
     {
-        Carbon::now()->addDay($this->expire);
         $item = new ClinicShift;
         $item->name = $request->name;
         $item->clinic_id = $id;
