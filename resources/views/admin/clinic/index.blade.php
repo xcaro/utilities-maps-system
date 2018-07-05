@@ -86,7 +86,8 @@
         	<b>Địa chỉ: </b><i>${cln.address}</i><br/><b>Trạng thái: </b><span class="label ${cln.confirmed?'label-success':'label-danger'}">${cln.confirmed?'Xác nhận':'Chưa xác nhận'}</span>
         	<hr>
 			<button type="button" class="btn ${cln.confirmed?'btn-primary':'btn-success'} " data-cln-id="${cln.id}" onclick="javascript:${cln.confirmed?'unconfirmClinic('+cln.id+')':'confirmClinic('+cln.id+')'}"><i class="${cln.confirmed?'ti-close':'ti-check'}"></i></button>
-			<button type="button" class="btn btn-danger"><i class="ti-lock"></i></button><a href="clinic/${cln.id}/edit"><button class="btn btn-info"><i class="ti-pencil-alt"></i></button></a>`,
+			<button type="button" class="btn btn-danger" onclick="javascript:suspendClinic(${cln.id})"><i class="ti-lock"></i></button>
+			<a href="clinic/${cln.id}/edit"><button class="btn btn-info"><i class="ti-pencil-alt"></i></button></a>`,
 			maxWidth:300,
         });
         let marker = new google.maps.Marker({
@@ -97,13 +98,17 @@
 	        icon: (cln.confirmed) ? type.confirm: type.unconfirm
         });
         marker.addListener('click',() => {
-          infowindow.open(map, marker);
-        });
+			infowindow.open(map, marker)
+			google.maps.event.addListener(map, "click", function(event) {
+			    infowindow.close();
+			});
+		});
         markers[cln.id] = (marker);
 	}
 
 	var displayClinics = (map, lstCln) => {
 		clearAllMarkers(markers);
+		map.setCenter({lat:lstCln[0].latitude, lng: lstCln[0].longitude});
 		$.each(lstCln, (index, el) => {
 			displayClinic(map, el);
 		});
@@ -140,7 +145,25 @@
   		.fail((err) => console.log(err))
   		.always(() => console.log("complete"));
 	}
-
+	var suspendClinic = (id) => {
+		$.ajax({
+			url: '/admin/clinic/' + id,
+			method: 'POST',
+			dataType: 'JSON',
+			data: {
+				_method:'DELETE',
+				_token:token,
+			},
+		})
+		.done((res) => {
+			if (res.success) {
+  				pushNotify('info', 'Đình chỉ phòng khám thành công');
+  			}
+		})
+		.fail((err) => console.log(err))
+  		.always(() => console.log("complete"));
+		
+	}
 	$(() => {
 		var map = new google.maps.Map(document.getElementById('map'), {
 			center: {lat: 10.764237, lng: 106.689597},
@@ -148,14 +171,14 @@
         	zoom: 12,
 		});
 
-		var socket = io('http://127.0.0.1:8000/');
+		var socket = io('http://127.0.0.1:3000/');
       	socket.on('clinics', (res) => {
    			let clnType = $('#cln-type').val();
 			let clnDistrict = $('#cln-dst').val();
 			let clnStatus = $('#cln-status').val();
 
 			if (res.type == 'add') {
-				pushNotify('warning', 'Có báo cáo mới');
+				pushNotify('warning', 'Có thêm một phòng khám được đăng ký');
 				// $.notify({
 				// 	icon: 'ti-flag-alt',
 				// 	message: 'Có báo cáo mới',
@@ -185,6 +208,9 @@
       		if (res.type == 'change') {
       			markers[res.new_val.id].setMap(null);
       			displayClinic(map, res.new_val);
+      		}
+      		if (res.type == 'remove') {
+				markers[res.old_val.id].setMap(null);
       		}
       		console.log(res);
       	});

@@ -30,4 +30,9 @@ class Clinic extends Model
     {
         return $this->belongsTo(User::class, 'user_created');
     }
+    public function shifts()
+    {
+        return $this->hasMany(ClinicShift::class);
+    }
+    
 }

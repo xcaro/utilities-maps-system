@@ -109,7 +109,15 @@ class ClinicController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $r_connect = r\connect(env('R_HOST'), env('R_PORT'));
+        $result = r\db('app')->table('activeClinics')->get((int)$id)->delete()->run($r_connect);
+        $r_connect->close();
+        
+        Clinic::find($id)->update(['active' => false]);
+        return response()->json([
+            'success' => true,
+            'message' => 'Deleted',
+        ], 200);
     }
     public function filter(Request $request)
     {

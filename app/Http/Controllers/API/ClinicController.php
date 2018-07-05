@@ -123,32 +123,37 @@ class ClinicController extends Controller
      */
     public function update(Request $request, $id)
     {
-        DB::beginTransaction();
-
         $item = Clinic::find($id);
+
+        $this->authorize($item, 'update');
+
+        DB::beginTransaction();
         $item->name = $request->name;
         $item->latitude = $request->latitude;
         $item->longitude = $request->longitude;
         $item->address = $request->address;
         $item->type = $request->type;
-        $item->confirmed = $request->confirmed;
+        //$item->confirmed = $request->confirmed;
         $item->description = $request->description;
         
         if($item->save()){
-            foreach ($request->doctors as $rel) {
-                $doctor = Doctor::find($rel['id']);
-                $doctor->name = $rel['name'];
-                $doctor->description = $rel['description'];
-                $doctor->title = $rel['title'];
-                if ($rel['image'] != null) {
-                    $file = $rel['image'];
-                    $ext = $file->getClientOriginalExtension();
-                    $name = $doctor->id . '.' . $ext;
-                    $file->move(public_path('upload/doctors'), $name);
-                    $doctor->image = $image;
+            if ($request->doctors) {
+                foreach ($request->doctors as $rel) {
+                    $doctor = Doctor::find($rel['id']);
+                    $doctor->name = $rel['name'];
+                    $doctor->description = $rel['description'];
+                    $doctor->title = $rel['title'];
+                    if ($rel['image'] != null) {
+                        $file = $rel['image'];
+                        $ext = $file->getClientOriginalExtension();
+                        $name = $doctor->id . '.' . $ext;
+                        $file->move(public_path('upload/doctors'), $name);
+                        $doctor->image = $image;
+                    }
+                    $doctor->save();
                 }
-                $doctor->save();
             }
+            
             DB::commit();
 
             $r_connect = r\connect(env('R_HOST'), env('R_PORT'));
@@ -206,7 +211,7 @@ class ClinicController extends Controller
         $date->second = 0;
         //$date->timestamp = 0;
         // return $date;
-        $result = \App\ClinicShift::whereDate('start_shift', $date);
+        $result = \App\ClinicShift::whereDate('start_shift', $date)->where('active', true);
         return $result->get();
         return new \App\Http\Resources\ClinicShiftCollection($result->get());
     }

@@ -19,7 +19,7 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">Địa chỉ</label>
 	                    <div class="col-md-9">
-	                        <input type="text" placeholder="Địa chỉ" class="form-control" required value="{{ $cln->address }}" name="address">
+	                        <input type="text" placeholder="Địa chỉ" class="form-control" required value="{{ $cln->address }}" name="address" id="clinic-address">
 	                    </div>
 					</div>
 					<div class="form-group">
@@ -79,7 +79,7 @@
 					<div class="form-group">
 						<label class="col-md-3"></label>
 						<div class="col-md-9">
-	                    	<button type="submit" class="btn btn-primary btn-fill">Tạo mới</button>
+	                    	<button type="submit" class="btn btn-primary btn-fill">Chỉnh sửa</button>
 	                    	<a href="{{ route('admin.clinic.index') }}"><button type="button" class="btn btn-danger btn-fill">Thoát</button></a>
 						</div>
 					</div>
@@ -88,7 +88,7 @@
 		</div>
     </div>
 </div>
-<button id="get-location">get location</button>
+<!--<button id="get-location">get location</button>-->
 @endsection
 @section('scripts')
 <script src="https://cdn.ckeditor.com/ckeditor5/10.1.0/classic/ckeditor.js"></script>
@@ -96,7 +96,7 @@
 	$(function(argument) {
 		ClassicEditor
 		.create(document.querySelector( '#editor' ), {
-
+			toolbar: ['Bold', 'Italic', 'bulletedList', 'numberedList', 'blockQuote','link']
 		})
 	    .then( editor => {
 	        editor.setData('{{ $cln->description }}') ;
@@ -139,7 +139,7 @@
 		      }
 		    });
 	    });
-	    
+	    var autocompleteFrom = new google.maps.places.Autocomplete(document.getElementById('clinic-address'));
 	});
 
 </script>

@@ -7,7 +7,7 @@
 	<link rel="icon" type="image/png" sizes="96x96" href="{{ asset('assets/img/favicon.png') }}">-->
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-	<title>{{ $title  = 'Admin Dashboard'}}</title>
+	<title>{{ $title  = 'Trang quản trị'}}</title>
 
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
@@ -45,11 +45,11 @@
 		-->
 			<div class="logo">
 				<a href="#" class="simple-text logo-mini">
-					CT
+					LCT
 				</a>
 
 				<a href="#" class="simple-text logo-normal">
-					noname system
+					lct system
 				</a>
 			</div>
 	    	<div class="sidebar-wrapper">
@@ -62,12 +62,12 @@
 	                    <a data-toggle="collapse" href="#collapseExample" class="collapsed">
 	                        <span>
 								{{ Auth::user()->name }}
-		                        <b class="caret"></b>
+		                        <!--<b class="caret"></b>-->
 							</span>
 	                    </a>
 						<div class="clearfix"></div>
 
-	                    <div class="collapse" id="collapseExample">
+	                    <!--<div class="collapse" id="collapseExample">
 	                        <ul class="nav">
 	                            <li>
 									<a href="#profile">
@@ -88,7 +88,7 @@
 									</a>
 								</li>
 	                        </ul>
-	                    </div>
+	                    </div>-->
 	                </div>
 	            </div>
 
@@ -111,20 +111,20 @@
 	                        <span class="icon-bar bar3"></span>
 	                    </button>
 	                    <a class="navbar-brand" href="#Dashboard">
-							Overview
+							
 						</a>
 	                </div>
 	                <div class="collapse navbar-collapse">
 
-						<form class="navbar-form navbar-left navbar-search-form" role="search">
+						<!--<form class="navbar-form navbar-left navbar-search-form" role="search">
 	    					<div class="input-group">
 	    						<span class="input-group-addon"><i class="fa fa-search"></i></span>
 	    						<input type="text" value="" class="form-control" placeholder="Search...">
 	    					</div>
-	    				</form>
+	    				</form>-->
 
 	                    <ul class="nav navbar-nav navbar-right">
-	                        <li>
+	                        <!--<li>
 	                            <a href="#stats" class="dropdown-toggle btn-magnify" data-toggle="dropdown">
 	                                <i class="ti-panel"></i>
 									<p>Stats</p>
@@ -154,7 +154,7 @@
 										Settings
 									</p>
 	                            </a>
-	                        </li>
+	                        </li>-->
 	                        <li>
 
 	                            <a class="btn-rotate"  href="{{ route('admin.logout') }}"

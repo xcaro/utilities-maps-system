@@ -9,37 +9,28 @@
 @section('content')
 <div class="row">
 	<div class="col-md-12">
-
-
 		<div class="card">
 			<div class="card-header">
-				<h4 class="card-title">{{ $title = ''}}</h4>
 				<button type="button" class="btn btn-primary create-type" data-type="create"><i class="ti-plus"></i> Thêm mới</button>
 			</div>
 			<div class="card-content table-responsive table-full-width">
-				<table class="table">
+				<table class="table table-striped">
 					<thead>
 						<tr>
 							<th class="text-center">#</th>
-							<th>Tên loại</th>
-							<th>Icon xác nhận</th>
-							<th>Icon chưa xác nhận</th>
-							<th>Icon menu</th>
+							<th>Chuyên khoa</th>
 						</tr>
 					</thead>
 					<tbody>
-						@foreach($listType as $item)
+						@foreach($list_type as $item)
 							<tr>
 								<td class="text-center">{{ $item->id }}</td>
 								<td>{{ $item->name }}</td>
-								<td><img src="{{ $item->confirmed_icon }}" class="img-thumbnail" ></td>
-								<td><img src="{{ $item->unconfirmed_icon }}" class="img-thumbnail"></td>
-								<td><img src="{{ $item->menu_icon }}" class="img-thumbnail"></td>
 								<td class="td-actions text-right">
-									<button type="button" data-id="{{ $item->id }}" data-type="update" rel="tooltip" title="Edit Type" class="btn btn-success btn-simple btn-xs edit-type">
+									<button type="button" data-id="{{ $item->id }}" data-type="update" rel="tooltip" title="Chỉnh sửa" class="btn btn-success btn-simple btn-xs edit-type">
 										<i class="ti-pencil-alt"></i>
 									</button>
-									<button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-xs" onclick="javascript:removeType({{$item->id}})">
+									<button type="button" rel="tooltip" title="Xoá" class="btn btn-danger btn-simple btn-xs" onclick="javascript:removeType({{$item->id}})">
 										<i class="ti-close"></i>
 									</button>
 								</td>
@@ -71,25 +62,7 @@
 				<div class="form-group">
 					<label class="col-md-3 control-label">Tên loại</label>
 					<div class="col-md-9">
-						<input type="text" name="name" class="form-control" placeholder="Tên loại" />
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-md-3 control-label">Đã xác nhận</label>
-					<div class="col-md-9">
-						<input type="text" name="confirmed_icon" class="form-control" placeholder="Đường dẫn icon đã xác nhận" required/>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-md-3 control-label">Chưa xác nhận</label>
-					<div class="col-md-9">
-						<input type="text" name="unconfirmed_icon" class="form-control" placeholder="Đường dẫn icon chưa xác nhận" required/>
-					</div>
-				</div>
-					<div class="form-group">
-					<label class="col-md-3 control-label">Icon menu</label>
-					<div class="col-md-9">
-						<input type="text" name="menu_icon" class="form-control" placeholder="Đường dẫn icon menu" required/>
+						<input type="text" name="name" class="form-control" placeholder="Tên loại" required />
 					</div>
 				</div>
 			</div>
@@ -121,7 +94,7 @@
             buttonsStyling: false
         }).then(function() {
             $.ajax({
-                url: '/admin/rtype/' + id,
+                url: '/admin/ctype/' + id,
                 method: 'POST',
                 dataType: 'JSON',
                 data: {
@@ -177,15 +150,12 @@
 				$('.btn-submit-create').hide();
 				$('.btn-submit-update').show();
 				$.ajax({
-					 url: `rtype/${id}`,
+					 url: `ctype/${id}`,
 					 type: 'GET',
 					 dataType: 'JSON',
 				})
 				.done((res) => {
 					 $('input[name="name"]').val(res.name);
-					 $('input[name="confirmed_icon"]').val(res.confirmed_icon);
-					 $('input[name="unconfirmed_icon"]').val(res.unconfirmed_icon);
-					 $('input[name="menu_icon"]').val(res.menu_icon);
 				})
 				.fail((err) => console.log(err))
 				.always(() => console.log("get data complete"));
@@ -193,14 +163,11 @@
 		});
 		$('.btn-submit-update').click(function(event) {
 			$.ajax({
-			  url: '/admin/rtype/' + id,
+			  url: '/admin/ctype/' + id,
 			  method: 'PUT',
 			  dataType: 'JSON',
 			  data: {
 			      name:$('input[name="name"]').val(),
-			      confirmed_icon:$('input[name="confirmed_icon"]').val(),
-			      unconfirmed_icon:$('input[name="unconfirmed_icon"]').val(),
-			      menu_icon:$('input[name="menu_icon"]').val(),
 			      _token:token,
 			 },
 			})
@@ -238,14 +205,11 @@
 		});
 		$('.btn-submit-create').click(function(event) {
 			$.ajax({
-			  url: '/admin/rtype/',
+			  url: '/admin/ctype/',
 			  method: 'POST',
 			  dataType: 'JSON',
 			  data: {
 			      name:$('input[name="name"]').val(),
-			      confirmed_icon:$('input[name="confirmed_icon"]').val(),
-			      unconfirmed_icon:$('input[name="unconfirmed_icon"]').val(),
-			      menu_icon:$('input[name="menu_icon"]').val(),
 			      _token:token,
 			 },
 			})

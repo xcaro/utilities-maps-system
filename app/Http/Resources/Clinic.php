@@ -28,6 +28,7 @@ class Clinic extends JsonResource
             'district_id' => $this->district_id,
             'confirmed' => $this->confirmed,
             'end_date' => $this->end_date,
+            'description' => $this->description,
             //'doctors' => 
             //'user_created' => $this->user_created,
             //'confirmed' => $this->confirmed,

@@ -63,8 +63,8 @@
                 </div>
                 <div class="col-xs-7">
                     <div class="numbers">
-                        <p>Lịch khám</p>
-                        23
+                        <p>Lịch hẹn</p>
+                        {{ $total_shifts_today }}
                     </div>
                 </div>
             </div>
@@ -89,7 +89,7 @@
                 <div class="col-xs-7">
                     <div class="numbers">
                         <p>Người dùng</p>
-                        60
+                        {{ $total_user }}
                     </div>
                 </div>
             </div>
@@ -119,7 +119,7 @@
                 </div>-->
                 <hr>
                 <div class="stats">
-                    <i class="ti-check"></i> Data information certified
+                    <!--<i class="ti-check"></i> Data information certified-->
                 </div>
             </div>
         </div>
@@ -127,8 +127,8 @@
     <div class="col-md-6">
         <div class="card ">
             <div class="card-header">
-                <h4 class="card-title">2015 Sales</h4>
-                <p class="category">All products including Taxes</p>
+                <h4 class="card-title">Báo cáo theo tháng trong <script>document.write(new Date().getFullYear())</script></h4>
+                <!--<p class="category">All products including Taxes</p>-->
             </div>
             <div class="card-content">
                 <canvas id="line-chart-area"></canvas>
@@ -136,7 +136,7 @@
             <div class="card-footer">
                 <hr>
                 <div class="stats">
-                    <i class="ti-check"></i> Data information certified
+                    <!--<i class="ti-check"></i> Data information certified-->
                 </div>
             </div>
         </div>
@@ -149,11 +149,80 @@
 @section('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
 <script>
+    var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    var colorNames = Object.keys(window.chartColors);
+    var listType = {!!$list_type!!};
+    var resData = {!! $report_every_month !!};
+    var dataLine = [];
+    listType.forEach(rel => {
+        let type = [];
+        resData.forEach(item => {
+            if (rel.id === item.type_id) {
+                type.push(item.total);
+            }
+        });
+        dataLine.push(type);
+        console.log(dataLine[0]);
+    });
+    var configLine = {
+        type: 'line',
+        data: {
+            labels: MONTHS.splice(0, (new Date().getMonth() + 1))
+        },
+        options: {
+            responsive: true,
+            // title: {
+            //     display: true,
+            //     text: 'Biểu đồ báo cáo trong năm'
+            // },
+            tooltips: {
+                mode: 'index',
+                intersect: false,
+            },
+            hover: {
+                mode: 'nearest',
+                intersect: true
+            },
+            scales: {
+                xAxes: [{
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Month'
+                    }
+                }],
+                yAxes: [{
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Value'
+                    }
+                }]
+            }
+        }
+    };
+    window.myLine = new Chart(document.getElementById('line-chart-area').getContext('2d'), configLine);
+    var addDataset = (label, data) => {
+        var colorName = colorNames[configLine.data.datasets.length % colorNames.length];
+        var newColor = window.chartColors[colorName];
+        var newDataset = {
+            label: label,
+            backgroundColor: newColor,
+            borderColor: newColor,
+            data: data,
+            fill: false
+        };
+        configLine.data.datasets.push(newDataset);
+        window.myLine.update();
+    }
+listType.forEach(item => {
+    addDataset(item.name, dataLine[item.id - 1])
+});
 	$(function(){
         var dataPie = [];
         var labelPie = [];
         {!! $report_current_year !!}.forEach(function(rel){
-            dataPie.push(rel.total);
+            dataPie.push(rel.reports_count);
             labelPie.push(rel.name);
         });
         var myPie = new Chart(document.getElementById('pie-chart-area').getContext('2d'), {
@@ -168,24 +237,7 @@
             options: {responsive: true}
         });
 
-        var myLine = new Chart(document.getElementById('line-chart-area').getContext('2d'), {
-            type: 'line',
-            data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                datasets: [{
-                    label: 'My First dataset',
-                    backgroundColor: window.chartColors.red,
-                    borderColor: window.chartColors.red,
-                    data: [
-                        10, 100, 30, 20, 500, 50,
-                    ],
-                    fill: true,
-                }]
-            },
-            options: {
-
-            }
-        });
+        
 
     });
 

@@ -87,6 +87,7 @@
 	 */
 	var displayMarkers = (map, listReport) => {
 		clearAllMarkers(markers);
+		map.setCenter({lat:listReport[0].latitude, lng: listReport[0].longitude});
 		$.each(listReport, (index, el) => {
 			displayMarker(map, el);
 		});
@@ -103,18 +104,55 @@
 			content: `<b>Ghi chú: </b>${report.comment == null ? '':report.comment}<br/>
 			<b>Trạng thái: </b><span class="label ${report.confirm?'label-success':'label-danger'}">${report.confirm?'Xác nhận':'Chưa xác nhận'}</span>
 			<hr>
-	 		<button type="button" class="btn btn-primary confirm-report" data-report-id="${report.id}" data-report-type="${report.type_id}">${report.confirm?'Unconfirm':'Confirm'}</button>
-	 		<button type="button" class="btn btn-danger suspend-report" data-report-id="${report.id}">Suspend</button>`
+	 		<button type="button" class="btn btn-primary" data-report-id="${report.id}" data-report-type="${report.type_id}" onclick="javascript:${report.confirm?'unconfirmReport('+report.id+')':'confirmReport('+report.id+')'}">${report.confirm?'Huỷ xác nhận':'Xác nhận'}</button>
+	 		<button type="button" class="btn btn-danger suspend-report" data-report-id="${report.id}">Xoá</button>`
 		});
 		let marker = new google.maps.Marker({
-			draggable: true,
             animation: google.maps.Animation.DROP,
 			position: {lat: report.latitude, lng: report.longitude},
 			icon: (report.confirm) ? types[report.type_id].confirmed_icon: types[report.type_id].unconfirmed_icon,
 		});
-		marker.addListener('click', () => infowindow.open(map, marker));
+		marker.addListener('click', () => {
+			infowindow.open(map, marker)
+			google.maps.event.addListener(map, "click", function(event) {
+			    infowindow.close();
+			});
+		});
 		marker.setMap(map);
 		markers[report.id] = (marker);
+	}
+
+	var	confirmReport = (id) => {
+		$.ajax({
+			url: '/admin/report/' + id + '/confirm',
+			method: 'PUT',
+			data: { _token: token},
+		})
+		.done((res) => {
+			console.log(res);
+			if(res.success){
+				//markers[id].setIcon(types[$(e.target).data('report-type')].confirmed_icon);
+				pushNotify('success', 'Xác nhận thành công');
+			}
+		})
+		.fail((err) => console.log(err))
+		.always(() => console.log("complete"));
+	}
+	var	unconfirmReport = (id) => {
+		$.ajax({
+			url: '/admin/report/' + id + '/unconfirm',
+			method: 'PUT',
+			data: { _token: token, _method:'DELETE'},
+		})
+		.done((res) => {
+			console.log(res);
+			if(res.success){
+				//markers[id].setIcon(types[$(e.target).data('report-type')].confirmed_icon);
+				pushNotify('warning', 'Huỷ xác nhận thành công');
+			}
+		})
+		.fail((err) => console.log(err))
+		.always(() => console.log("complete"));
 	}
 
 	$(() => {
@@ -139,7 +177,7 @@
 		
 		// Show các rp
 		//displayMarkers(map, listReport);
-		var socket = io('http://127.0.0.1:8000');
+		var socket = io('http://127.0.0.1:3000');
       	socket.on('reports', (res) => {
       		let reportType = $('#report-type').val();
 			let reportDistrict = $('#report-district').val();
@@ -176,27 +214,30 @@
       			markers[res.new_val.id].setMap(null);
       			displayMarker(map, res.new_val);
       		}
+      		if (res.type == 'remove') {
+				markers[res.old_val.id].setMap(null);
+      		}
       		console.log(res);
       	});
 		// Thực hiện confirm
-		$(document).on('click', 'button.confirm-report', (e) => {
-			let id = $(e.target).data('report-id');
-			$.ajax({
-				url: '/admin/report/' + id + '/confirm',
-				method: 'PUT',
-				data: { _token: token},
-			})
-			.done((res) => {
-				console.log(res);
-				if(res.success){
-					markers[id].setIcon(types[$(e.target).data('report-type')].confirmed_icon);
-					$(e.target).text('Unconfirm');
-				}
-			})
-			.fail((err) => console.log(err))
-			.always(() => console.log("complete"));
+		// $(document).on('click', 'button.confirm-report', (e) => {
+		// 	let id = $(e.target).data('report-id');
+		// 	$.ajax({
+		// 		url: '/admin/report/' + id + '/confirm',
+		// 		method: 'PUT',
+		// 		data: { _token: token},
+		// 	})
+		// 	.done((res) => {
+		// 		console.log(res);
+		// 		if(res.success){
+		// 			//markers[id].setIcon(types[$(e.target).data('report-type')].confirmed_icon);
+		// 			pushNotify('success', 'Xác nhận thành công');
+		// 		}
+		// 	})
+		// 	.fail((err) => console.log(err))
+		// 	.always(() => console.log("complete"));
 			
-		});
+		// });
 		$(document).on('click', 'button.suspend-report', (e) => {
 			let id = $(e.target).data('report-id');
 			$.ajax({
@@ -205,8 +246,6 @@
 				data: { _token: token, _method:'DELETE'},
 			})
 			.done((res) => {
-				console.log(markers)
-				console.log(res);
 				if(res.success){
 					markers[id].setMap(null);
 				}

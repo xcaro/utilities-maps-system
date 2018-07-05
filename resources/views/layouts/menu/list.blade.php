@@ -35,7 +35,7 @@
 				<li>
 					<a href="{{ route('admin.user.create') }}">
 						<span class="sidebar-mini">+</span>
-						<span class="sidebar-normal">Tạo tải khoản</span>
+						<span class="sidebar-normal">Tạo tài khoản</span>
 					</a>
 				</li>
                 <li>
@@ -44,12 +44,12 @@
 						<span class="sidebar-normal">Danh sách tài khoản</span>
 					</a>
 				</li>
-				<li>
+				{{-- <li>
 					<a href="{{ route('admin.role.index') }}">
 						<span class="sidebar-mini">+</span>
 						<span class="sidebar-normal">Nhóm quyền</span>
 					</a>
-				</li>
+				</li> --}}
             </ul>
 		</div>
 	</li>
@@ -58,7 +58,7 @@
 	<li>
 		<a data-toggle="collapse" href="#report-viewer" >
 			<i class="ti-package"></i>
-			<p>Báo cáo
+			<p>Báo cáo giao thông
 			   <b class="caret"></b>
 			</p>
 		</a>
@@ -76,6 +76,12 @@
 						<span class="sidebar-normal">Danh sách báo cáo</span>
 					</a>
 				</li>
+				<!--<li>
+					<a href="#">
+						<span class="sidebar-mini">+</span>
+						<span class="sidebar-normal">Thống kê</span>
+					</a>
+				</li>-->
             </ul>
 		</div>
 	</li>
@@ -91,25 +97,38 @@
 		<div class="collapse" id="clinic-viewer">
 			<ul class="nav">
 				<li>
-					<a href="#">
+					<a href="{{ route('admin.ctype.index')}}">
 						<span class="sidebar-mini">+</span>
 						<span class="sidebar-normal">Danh sách chuyên khoa</span>
 					</a>
 				</li>
-				<li>
+				{{-- <li>
 					<a href="{{ route('admin.clinic.create') }}">
 						<span class="sidebar-mini">+</span>
 						<span class="sidebar-normal">Tạo phòng khám</span>
 					</a>
-				</li>
+				</li> --}}
                 <li>
 					<a href="{{ route('admin.clinic.index') }}">
 						<span class="sidebar-mini">+</span>
 						<span class="sidebar-normal">Quản lý phòng khám</span>
 					</a>
 				</li>
+				<!--<li>
+					<a href="#">
+						<span class="sidebar-mini">+</span>
+						<span class="sidebar-normal">Thống kê</span>
+					</a>
+				</li>-->
             </ul>
 		</div>
 	</li>
 	@endcan
+	    <li>
+        <a href="{{route('admin.setting.index')}}" >
+            <i class="ti-settings"></i>
+            <p>Cài đặt
+            </p>
+        </a>
+    </li>
 </ul>

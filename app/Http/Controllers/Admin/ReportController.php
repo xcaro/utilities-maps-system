@@ -127,10 +127,24 @@ class ReportController extends Controller
         $r_connect = r\connect(env('R_HOST'), env('R_PORT'));
         $result = r\db('app')->table('activeReports')->get((int)$id)->update(['confirm' => true])->run($r_connect);
         $r_connect->close();
+
         Report::find($id)->update(['confirm' => true]);
         return response()->json([
             'success' => true,
             'message' => 'Confirmed',
+        ], 200);
+    }
+    public function unconfirm($id)
+    {
+
+        $r_connect = r\connect(env('R_HOST'), env('R_PORT'));
+        $result = r\db('app')->table('activeReports')->get((int)$id)->update(['confirm' => false])->run($r_connect);
+        $r_connect->close();
+        
+        Report::find($id)->update(['confirm' => false]);
+        return response()->json([
+            'success' => true,
+            'message' => 'Unconfirmed',
         ], 200);
     }
     public function filter(Request $request)

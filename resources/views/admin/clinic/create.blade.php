@@ -1,4 +1,7 @@
 @extends('layouts.admin')
+@section('styles')
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+@endsection
 @section('content')
 <div class="row">
 	<div class="col-md-12">
@@ -43,7 +46,8 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">Người quản lý</label>
 	                    <div class="col-md-9">
-							<label class="col-md-9 control-label"></label>
+							<select class="js-example-basic-single form-control" name="username">
+							</select>
 						</div>
 					</div>
 					<div class="form-group">
@@ -70,11 +74,12 @@
 @endsection
 @section('scripts')
 <script src="https://cdn.ckeditor.com/ckeditor5/10.1.0/classic/ckeditor.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 <script>
 	$(function(argument) {
 		ClassicEditor
 		.create(document.querySelector( '#editor' ), {
-
+			toolbar: ['Bold', 'Italic', 'bulletedList', 'numberedList', 'blockQuote','link']
 		})
 	    .then( editor => {
 	        console.log( editor );
@@ -82,6 +87,23 @@
 	    .catch( error => {
 	        console.error( error );
 	    } );
+
+	    $('.js-example-basic-single').select2({
+		  ajax: {
+		    url: '/admin/user/search',
+		    data:function (data) {
+		      return {
+		      	username: data.term,
+		      }
+		    },
+		    processResults:  function (data, params){
+		    	return {
+			        username: data.username
+			      }
+		    }
+		  }
+		});
+
 	});
 
 </script>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\ClinicType;
 
 class ClinicTypeController extends Controller
 {
@@ -14,7 +15,10 @@ class ClinicTypeController extends Controller
      */
     public function index()
     {
-        //
+        $listType = \App\ClinicType::where('active', true)->get();
+        return view('admin.ctype.index', [
+            'list_type' => $listType
+        ]);
     }
 
     /**
@@ -35,7 +39,21 @@ class ClinicTypeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $valid = \Validator::make($request->all(), [
+            'name' => 'required|string|max:255'
+        ]);
+        $item = new ClinicType;
+        $item->name = $request->name;
+        if ($item->save()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Thêm loại mới thành công',
+            ]);
+        }
+        return response()->json([
+            'success' => false,
+            'message' => 'Thêm loại mới thất bại',
+        ]);
     }
 
     /**
@@ -46,7 +64,8 @@ class ClinicTypeController extends Controller
      */
     public function show($id)
     {
-        //
+        $type = ClinicType::findOrFail($id);
+        return response()->json($type);
     }
 
     /**
@@ -69,7 +88,21 @@ class ClinicTypeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $valid = \Validator::make($request->all(), [
+            'name' => 'required|string|max:255'
+        ])->validate();
+        $item = ClinicType::findOrFail($id);
+        $item->name = $request->name;
+        if ($item->save()) {
+            return response()->json([
+                'message' => 'Cập nhật loại thành công',
+                'success' => true,
+            ]);
+        }
+        return response()->json([
+            'message' => 'Cập nhật loại thất bại',
+            'success' => false,
+        ]);
     }
 
     /**
@@ -80,6 +113,17 @@ class ClinicTypeController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $item = ClinicType::findOrFail($id);
+        $item->active = false;
+        if ($item->save()) {
+            return response()->json([
+                'message' => 'Xoá thành công',
+                'success' => true,
+            ]);
+        }
+        return response()->json([
+            'message' => 'Xoá thất bại',
+            'success' => false,
+        ]);
     }
 }

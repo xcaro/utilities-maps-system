@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ReportRequest;
 
 use App\Http\Resources\Report as ReportResource;
 use App\Http\Resources\ReportCollection;
@@ -34,7 +35,7 @@ class ReportController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ReportRequest $request)
     {
         // rql
         $r_connect = r\connect(env('R_HOST'), env('R_PORT'));
@@ -95,7 +96,7 @@ class ReportController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ReportRequest $request, $id)
     {
         $report = Report::find($id);
         $report->latitude = $request->latitude;

@@ -76,6 +76,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
+        $this->authorize(User::findOrFail($id), 'view');
         return new UserResource(User::findOrFail($id));
     }
 
@@ -89,6 +90,9 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $user = User::find($id);
+
+        $this->authorize($user, 'update');
+
         $user->name = $request->name;
         $user->email = $request->email;
         $user->username = $request->username;

@@ -22,4 +22,8 @@ class ClinicShift extends Model
     {
         return $this->belongsToMany(User::class, 'shift_user', 'shift_id', 'user_id')->withPivot(['confirmed'])->withTimestamps();
     }
+    public function usersConfirmed()
+    {
+        return $this->belongsToMany(User::class, 'shift_user', 'shift_id', 'user_id')->wherePivot('confirmed', true)->withTimestamps();
+    }
 }

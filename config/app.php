@@ -153,6 +153,7 @@ return [
 Barryvdh\Debugbar\ServiceProvider::class,
 Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
 Mpociot\ApiDoc\ApiDocGeneratorServiceProvider::class,
+App\Providers\FakerServiceProvider::class,
         /*
          * Application Service Providers...
          */

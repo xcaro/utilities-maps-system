@@ -112,6 +112,17 @@ class ReportTypeController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $item = ReportType::findOrFail($id);
+        $item->active = false;
+        if ($item->save()) {
+            return response()->json([
+                'message' => 'Xoá thành công',
+                'success' => true,
+            ]);
+        }
+        return response()->json([
+            'message' => 'Xoá thất bại',
+            'success' => false,
+        ]);
     }
 }
