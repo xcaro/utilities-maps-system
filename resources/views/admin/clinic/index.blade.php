@@ -171,7 +171,7 @@
         	zoom: 12,
 		});
 
-		var socket = io('http://127.0.0.1:3000/');
+		var socket = io('{{env('SOCKET_SERVER')}}');
       	socket.on('clinics', (res) => {
    			let clnType = $('#cln-type').val();
 			let clnDistrict = $('#cln-dst').val();

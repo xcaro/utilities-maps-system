@@ -177,7 +177,7 @@
 		
 		// Show các rp
 		//displayMarkers(map, listReport);
-		var socket = io('http://127.0.0.1:3000');
+		var socket = io('{{env('SOCKET_SERVER')}}');
       	socket.on('reports', (res) => {
       		let reportType = $('#report-type').val();
 			let reportDistrict = $('#report-district').val();
