@@ -35,9 +35,11 @@
 	                                <a href="{{ route('admin.user.edit', $user->id) }}" rel="tooltip" title="Chỉnh sửa" class="btn btn-success btn-simple btn-xs">
 	                                    <i class="ti-pencil-alt"></i>
 	                                </a>
+                                    @if($user->active)
 	                                <a href="#" rel="tooltip" title="Khoá" class="btn btn-danger btn-simple btn-xs" onclick="javascript:suspendUser({{$user->id}})">
 	                                    <i class="ti-close"></i>
 	                                </a>
+                                    @endif
 	                            </td>
 	                        </tr>
                         @endforeach
