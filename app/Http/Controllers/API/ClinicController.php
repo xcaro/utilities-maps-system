@@ -37,6 +37,15 @@ class ClinicController extends Controller
         if (request('type')) {
             $result->where('type', request('type'));
         }
+        if (request('district_id')) {
+            $result->where('district_id', request('district_id'));
+        }
+        else if (request('ward_id')) {
+            $result->where('ward_id', request('ward_id'));
+        }
+        if (request('name')) {
+            $result->where('name', 'like', '%'.request('name').'%');
+        }
         // trả về
         return new ClinicCollection($result->get());
     }
