@@ -171,7 +171,7 @@
         	zoom: 12,
 		});
 
-		var socket = io('{{env('SOCKET_SERVER')}}');
+		var socket = io('{{env('SOCKET_SERVER')}}', {secure: true});
       	socket.on('clinics', (res) => {
    			let clnType = $('#cln-type').val();
 			let clnDistrict = $('#cln-dst').val();
