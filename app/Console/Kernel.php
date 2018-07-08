@@ -13,7 +13,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        \App\Console\Commands\ClinicDisable::class,
+        \App\Console\Commands\ReportDisable::class,
     ];
 
     /**
@@ -26,6 +27,10 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+        $schedule->command('clinic:disable')
+                 ->daily();
+        $schedule->command('report:disable')
+                 ->everyMinute();
     }
 
     /**

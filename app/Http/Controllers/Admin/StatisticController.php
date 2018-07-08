@@ -28,10 +28,10 @@ class StatisticController extends Controller
     	->leftJoin('shift_user', 'clinic_shifts.id', '=', 'shift_user.shift_id')
     	->where('shift_user.confirmed', true)
     	->groupBy(\DB::raw('clinic_types.id, clinic_types.name'))
-    	->select(\DB::raw('clinic_types.id,clinic_types.name,COUNT(*)'))
+    	->select(\DB::raw('clinic_types.id,clinic_types.name,COUNT(*) as total'))
     	->get();
 
-    	//return response()->json($result, 200, [], JSON_PRETTY_PRINT);
+    	return response()->json($result, 200, [], JSON_PRETTY_PRINT);
     	return view('admin.clinic.statistic', [
 
     	]);

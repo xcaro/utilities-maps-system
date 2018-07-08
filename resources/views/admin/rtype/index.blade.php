@@ -25,6 +25,7 @@
 							<th>Icon xác nhận</th>
 							<th>Icon chưa xác nhận</th>
 							<th>Icon menu</th>
+							<th>Thời gian tồn tại</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -35,6 +36,7 @@
 								<td><img src="{{ $item->confirmed_icon }}" class="img-thumbnail" ></td>
 								<td><img src="{{ $item->unconfirmed_icon }}" class="img-thumbnail"></td>
 								<td><img src="{{ $item->menu_icon }}" class="img-thumbnail"></td>
+								<td>{{ $item->alive }}(s)</td>
 								<td class="td-actions text-right">
 									<button type="button" data-id="{{ $item->id }}" data-type="update" rel="tooltip" title="Edit Type" class="btn btn-success btn-simple btn-xs edit-type">
 										<i class="ti-pencil-alt"></i>
@@ -86,10 +88,16 @@
 						<input type="text" name="unconfirmed_icon" class="form-control" placeholder="Đường dẫn icon chưa xác nhận" required/>
 					</div>
 				</div>
-					<div class="form-group">
+				<div class="form-group">
 					<label class="col-md-3 control-label">Icon menu</label>
 					<div class="col-md-9">
 						<input type="text" name="menu_icon" class="form-control" placeholder="Đường dẫn icon menu" required/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-3 control-label">Thời gian tồn tại</label>
+					<div class="col-md-9">
+						<input type="text" name="alive" number="true" class="form-control" placeholder="Thời gian tồn tại" required/>
 					</div>
 				</div>
 			</div>

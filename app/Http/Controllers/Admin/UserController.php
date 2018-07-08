@@ -63,7 +63,7 @@ class UserController extends Controller
         $user->address = $request->address;
         $user->phone = $request->phone;
         $user->role_id = $request->role;
-        $user->active = $request->active === 'on' ? true:false;
+        $user->active = true;
         if ($user->save()) {
             return redirect()
                    ->route('admin.user.index')
@@ -148,6 +148,9 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $user->active = false;
         if ($user->save()) {
+            \App\Clinic::where('user_created', $user->id)
+                         ->update(['active' => false]);
+                         
             return response()->json([
                 'success' => true,
                 'message' => 'Đã xoá thành công',

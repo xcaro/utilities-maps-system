@@ -54,4 +54,10 @@ class BookingController extends Controller
             'message' => 'Unconfirmed',
         ], 200);
     }
+    public function confirmedShifts()
+    {
+        return response()->json([
+            'data' => \Auth::user()->confirmedShifts,
+        ], 200);
+    }
 }

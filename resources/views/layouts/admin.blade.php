@@ -54,7 +54,7 @@
 			</div>
 	    	<div class="sidebar-wrapper">
 				<div class="user">
-	                <div class="info">
+	                <div class="info text-center text-uppercase">
 						<!--<div class="photo">
 		                    <img src="{{ asset('assets/img/faces/face-1.jpg') }}" />
 		                </div>-->
