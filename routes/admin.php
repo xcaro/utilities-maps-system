@@ -17,7 +17,8 @@ Route::post('clinic/filter', 'ClinicController@filter')->name('clinic.filter');
 Route::get('user/search', 'UserController@search')->name('user.search');
 Route::get('setting', 'SettingController@index')->name('setting.index');
 Route::post('setting', 'SettingController@update')->name('setting.update');
-// Route::get('ctyte', 'ClinicTypeController@index')->name('admin.ctype.index');
+Route::get('user/{user}/change-password', 'UserController@changePassword')->name('user.change-password');
+Route::post('user/{user}/change-password', 'UserController@updatePassword')->name('user.update-password');
 Route::resources([
 	//'rtype' => 'ReportTypeController',
 	'user' => 'UserController',
@@ -49,3 +50,6 @@ Route::resource('ctype', 'ClinicTypeController', [
 		'create', 
 	]
 ]);
+Route::get('uuuu', function(){
+	return request('id');
+});

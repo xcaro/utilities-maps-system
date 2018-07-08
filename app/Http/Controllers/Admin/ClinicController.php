@@ -93,9 +93,16 @@ class ClinicController extends Controller
         $item->latitude = $request->latitude;
         $item->longitude = $request->longitude;
         $item->description = $request->description;
-        $item->end_date = Carbon::createFromFormat('Y-m-d H:i:s', $request->end_date);
+        $item->end_date = Carbon::createFromFormat('Y-m-d', $request->end_date);
         $item->active = $request->active == 'on' ? true:false;
         if ($item->save()) {
+            $item = Clinic::find($id);
+            $r_connect = r\connect(env('R_HOST'), env('R_PORT'));
+            $r_result = r\db(env('R_DATABASE'))->table('activeClinics')
+                ->get((int)$id)->update($item->toArray())
+                ->run($r_connect);
+            $r_connect->close();
+
             return redirect()->route('admin.clinic.index')->with('message', 'Chỉnh sửa thành công');
         }
         return redirect()->route('admin.clinic.index')->withErrors('Chỉnh sửa không thành công');
@@ -131,7 +138,10 @@ class ClinicController extends Controller
         if ($request->has('status') && ($request->status == 0 || $request->status == 1)) {
             $cln->where('confirmed', $request->status == 0 ? false:true);
         }
-        return response()->json($cln->get());
+        return response()->json([
+            'results' => $cln->get(),
+            'total_results' => $cln->count(),
+        ]);
     }
     public function confirm($id)
     {

@@ -114,12 +114,12 @@
 						<span class="sidebar-normal">Quản lý phòng khám</span>
 					</a>
 				</li>
-				<!--<li>
-					<a href="#">
+				<li>
+					<a href="{{ route('admin.clinic.statistic') }}">
 						<span class="sidebar-mini">+</span>
 						<span class="sidebar-normal">Thống kê</span>
 					</a>
-				</li>-->
+				</li>
             </ul>
 		</div>
 	</li>

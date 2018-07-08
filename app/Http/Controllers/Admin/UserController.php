@@ -16,7 +16,18 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::paginate(10);
+        $users = new User;
+        if (request('status') !== null && request('status') !== '2') {
+            $users = $users->where('active', \request('status') == '0' ? false:true);
+        }
+        if (request('q')) {
+            $users = $users->where(function($query) {
+                return $query->where('username', 'like', '%'.request('q').'%')
+                       ->orWhere('name', 'like', '%'.request('q').'%');
+            });
+        }
+        $users = $users->orderBy('created_at', 'desc')->paginate(10);
+        //return $users;
         return view('admin.user.index', [
             'users' => $users,
         ]);
@@ -111,9 +122,6 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $user->name = $request->name;
         $user->username = $request->username;
-        if ($request->password != '') {
-            $user->password = bcrypt($request->password);
-        }
         $user->email = $request->email;
         $user->address = $request->address;
         $user->phone = $request->phone;
@@ -155,5 +163,48 @@ class UserController extends Controller
     {
         $users = User::select(['id', 'username'])->where('active', true)->where('username', 'like', '%'.\request('username').'%')->get();
         return response()->json($users, 200, [], JSON_PRETTY_PRINT);
+    }
+    public function changePassword($id)
+    {
+        $user = User::findOrFail($id);
+        return view('admin.user.changepass', ['user' => $user]);
+    }
+    public function updatePassword(Request $request, $id)
+    {
+        $valid = \Validator::make($request->all(), [
+            'oldPass' => 'required',
+            'newPass' => 'required|min:6',
+            'renewPass' => 'required|required_with:newPass|same:newPass|min:6'
+        ])->validate();
+        $old_pass = $request->oldPass;
+        $new_pass = $request->newPass;
+        $renew_pass = $request->renewPass;
+        $user = User::findOrFail($id);
+        if ($new_pass !== $renew_pass) {
+            return redirect()
+                   ->back()
+                   ->withErrors('Mật khẩu nhập lại không trùng khớp');
+        }
+        if (\Hash::check($new_pass, $user->password)) {
+            return redirect()
+               ->back()
+               ->withErrors('Mật khẩu mới trùng với mật khẩu cũ');
+        }
+        if (\Hash::check($old_pass, $user->password)) {
+            $user->password = bcrypt($new_pass);
+            if ($user->save()) {
+                if (\Auth::user()->id == $id) {
+                    \Auth::logout();
+                }
+                return redirect()
+                       ->route('admin.user.index')
+                       ->with('message', 'Đổi mật khẩu thành công');
+            }
+        }
+        return redirect()
+               ->back()
+               ->withInput()
+               ->withErrors('Mật khẩu cũ không đúng');
+
     }
 }

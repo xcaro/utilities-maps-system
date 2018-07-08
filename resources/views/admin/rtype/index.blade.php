@@ -137,7 +137,14 @@
                         confirmButtonClass: "btn btn-success btn-fill",
                         buttonsStyling: false
                     });
-                } 
+                } else {
+                	swal({
+                        text: 'Không thể xoá',
+                        type: "error",
+                        confirmButtonClass: "btn btn-success btn-fill",
+                        buttonsStyling: false
+                    });
+                }
             })
             .fail(function() {
                 swal({

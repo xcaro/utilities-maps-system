@@ -1,16 +1,15 @@
 @extends('layouts.admin')
 @section('styles')
 <style>
-	
+	#show-mylocation{
+		margin-right: 15px;
+	}
 </style>
 @endsection
 @section('content')
 <div class="row">
 	<div class="col-md-12">
-		<div class="card">
-			<div class="card-header">
-                <h4 class="card-title">Lọc báo cáo</h4>
-			</div>
+		<div class="card" id="filter-control">
 			<div class="card-content">
 				<div class="row" id="filter-options">
 						<div class="form-group col-md-3">
@@ -38,7 +37,7 @@
 						</div>
 						
 						<div class="form-group col-md-3">
-							<button class="btn btn-primary" type="button" id="btn-filter"><i class="ti-search"></i> Tìm </button>
+							<button class="btn btn-primary btn-filter" type="button" ><i class="ti-search"></i> Tìm </button>
 						</div>
 					
 				</div>
@@ -48,12 +47,10 @@
 	<div class="col-md-12">
         <div class="card card-map">
 			<div class="card-header">
-                <h4 class="card-title">Bảng đồ tình trạng giao thông <span id="filter-option"></span></h4>
+                <h4 class="card-title">Bảng đồ tình trạng giao thông <div id="results" style="display: none;">| Có <span id="total"></span> kết quả</div></h4>
             </div>
 			<div class="card-content">
-				<!--<div id="admin">
-					<report-map></report-map>
-				</div>-->
+				<button type="button" class="btn btn-simple btn-fill btn-xs" id="show-mylocation"><i class="ti-location-pin"></i></button>
             	<div id="map" class="map map-big"></div>
             </div>
 		</div>
@@ -87,7 +84,7 @@
 	 */
 	var displayMarkers = (map, listReport) => {
 		clearAllMarkers(markers);
-		map.setCenter({lat:listReport[0].latitude, lng: listReport[0].longitude});
+		//map.setCenter({lat:listReport[0].latitude, lng: listReport[0].longitude});
 		$.each(listReport, (index, el) => {
 			displayMarker(map, el);
 		});
@@ -108,16 +105,20 @@
 	 		<button type="button" class="btn btn-danger suspend-report" data-report-id="${report.id}">Xoá</button>`
 		});
 		let marker = new google.maps.Marker({
+			title:types[report.type_id].name,
+			// draggable: true,
             animation: google.maps.Animation.DROP,
 			position: {lat: report.latitude, lng: report.longitude},
 			icon: (report.confirm) ? types[report.type_id].confirmed_icon: types[report.type_id].unconfirmed_icon,
 		});
-		marker.addListener('click', () => {
-			infowindow.open(map, marker)
+		marker.addListener('click', function()  {
+			$('.gm-style-iw').parent().remove();
+			infowindow.open(map, marker);
 			google.maps.event.addListener(map, "click", function(event) {
 			    infowindow.close();
 			});
 		});
+		
 		marker.setMap(map);
 		markers[report.id] = (marker);
 	}
@@ -156,10 +157,10 @@
 	}
 
 	$(() => {
-		
 		// format Danh sách loại rp
 		$.each(listType, (index, el) => {
 			types[el.id] = {
+				name:el.name,
 				confirmed_icon: el.confirmed_icon,
 				unconfirmed_icon: el.unconfirmed_icon,
 			};
@@ -174,7 +175,30 @@
         	mapTypeControl: false,
         	zoom: 12,
 		});
-		
+		map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(document.getElementById('show-mylocation'));
+		const geocoder = new google.maps.Geocoder();
+
+		$('#show-mylocation').click(function(event) {
+			if (navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(function(position) {
+					var pos = {
+						lat: position.coords.latitude,
+						lng: position.coords.longitude
+					};
+					map.setCenter(pos);
+					map.setZoom(15)
+					let marker = new google.maps.Marker({
+						position: pos,
+						map: map,
+					});
+				}, function() {
+					console.log('fail');
+				});
+			} else {
+				console.log('fail');
+			}
+  
+		});
 		// Show các rp
 		//displayMarkers(map, listReport);
 		var socket = io('{{env('SOCKET_SERVER')}}', {secure: true});
@@ -253,10 +277,24 @@
 			.fail((err) => console.log(err))
 			.always(() => console.log("complete"));
 		});
-		$('#btn-filter').click((e) => {
+		$(document).on('click', '.btn-filter', function(event) {
 			let reportType = $('#report-type').val();
 			let reportDistrict = $('#report-district').val();
 			let reportStatus = $('#report-status').val();
+			let districtName = $('#report-district option:selected').text();
+
+			if (reportDistrict != 0) {
+				geocoder.geocode( { 'address': districtName}, function(results, status) {
+			      if (status == 'OK') {
+			        map.setCenter(results[0].geometry.location);
+			        if (map.getZoom() < 13) {
+			        	map.setZoom(13)
+			        }
+			      } else {
+			        alert('Geocode was not successful for the following reason: ' + status);
+			      }
+			    });
+			}
 
 			$.ajax({
 				url: '/admin/report/filter',
@@ -272,7 +310,9 @@
 			.done((res) => {
 				console.log(res);
 				clearAllMarkers(markers);
-				displayMarkers(map, res);
+				displayMarkers(map, res.results);
+				$('#results #total').text(res.total_results)
+				$('#results').css('display', 'inline-block')
 			})
 			.fail((err) => {
 				console.log(err);
@@ -280,8 +320,13 @@
 			.always(function() {
 				console.log("complete");
 			});
-			
 		});
+		// $(document).on('click', '.gm-fullscreen-control', function(event) {
+		// 	map.controls[google.maps.ControlPosition.TOP_LEFT].push(document.getElementById('filter-control').cloneNode(true));
+		// 	if ($('.gm-style').width() == $(document).width()) {
+		// 		map.controls[google.maps.ControlPosition.TOP_LEFT].clear()
+		// 	}
+		// });
 	});
 	
 </script>

@@ -30,11 +30,12 @@ class DashboardController extends Controller
 
         $report_every_month = Report::select(\DB::raw('`type_id`, MONTH(`created_at`) as month, COUNT(*) as total'))->whereYear('created_at', $today->format('Y'))->groupBy(\DB::raw('`type_id`, MONTH(`created_at`)'))->get();
 
-        $report_current_year = \App\ReportType::withCount(['reports' => function($q) use ($today){
+        $report_current_year = \App\ReportType::where('active', true)->withCount(['reports' => function($q) use ($today){
             return $q->whereYear('created_at', $today->format('Y'));
         }])->get();
 
         $list_type = \App\ReportType::select(['id', 'name'])->where('active', true)->get();
+        // return $list_type;
         //$report_every_month = \App\Report::groupBy(\DB::raw('MONTH(`created_at`)'))->get();
         //return dd($report_every_month);
         //return response()->json($report_every_month, 200, [], JSON_PRETTY_PRINT);

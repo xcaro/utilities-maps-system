@@ -33,6 +33,7 @@ Route::post('user/{user}/book', 'BookingController@bookShifts');
 Route::get('shift/{shift}/user', 'BookingController@shiftsBooked');
 Route::put('shift/{shift}/user/{user}/confirm', 'BookingController@confirmBooking');
 Route::put('shift/{shift}/user/{user}/unconfirm', 'BookingController@unconfirmBooking');
+Route::post('clinic/{clinic}/shift/multi', 'ClinicShiftController@multiShifts')->name('shift.mutli');
 Route::apiResources([
 	'report-type' => 'ReportTypeController',
 	'report' => 'ReportController',

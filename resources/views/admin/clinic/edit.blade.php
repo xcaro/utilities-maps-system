@@ -106,7 +106,7 @@
 	    } );
 	    $('.datetimepicker').datetimepicker({
 	    	defaultDate: '{{ $cln->end_date }}',
-	    	format: 'YYYY-MM-DD HH:mm:ss',
+	    	format: 'YYYY-MM-DD',
             icons: {
                 time: "fa fa-clock-o",
                 date: "fa fa-calendar",

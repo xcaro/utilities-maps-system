@@ -165,6 +165,10 @@ class ReportController extends Controller
         }
         //$req[] = ['active', '=', true];
         //$reports = Report::where($req)->get();
-        return response()->json($reports->get());
+        // return response()->json($reports->get());
+        return response()->json([
+            'results' => $reports->get(),
+            'total_results' => $reports->count(),
+        ]);
     }
 }

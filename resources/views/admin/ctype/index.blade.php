@@ -25,7 +25,7 @@
 						@foreach($list_type as $item)
 							<tr>
 								<td class="text-center">{{ $item->id }}</td>
-								<td>{{ $item->name }}</td>
+								<td><a href="#" class="text-primary">{{ $item->name }}</a></td>
 								<td class="td-actions text-right">
 									<button type="button" data-id="{{ $item->id }}" data-type="update" rel="tooltip" title="Chỉnh sửa" class="btn btn-success btn-simple btn-xs edit-type">
 										<i class="ti-pencil-alt"></i>
@@ -110,9 +110,17 @@
                         confirmButtonClass: "btn btn-success btn-fill",
                         buttonsStyling: false
                     });
-                } 
+                } else {
+                	swal({
+                        text: 'Không thể xoá',
+                        type: "error",
+                        confirmButtonClass: "btn btn-success btn-fill",
+                        buttonsStyling: false
+                    });
+                }
             })
-            .fail(function() {
+            .fail(function(err) {
+            	console.log(err)
                 swal({
                   text: 'Xảy ra lỗi',
                   type: 'error',
@@ -176,7 +184,6 @@
 				 if (res.success) {
 					 swal({
 						 title: "Thành công!",
-						 text: res.message,
 						 buttonsStyling: false,
 						 confirmButtonClass: "btn btn-success btn-fill",
 						 type: "success"
@@ -184,7 +191,6 @@
 				 } else {
 					 swal({
 						 title: "Thất bại!",
-						 text: res.message,
 						 buttonsStyling: false,
 						 confirmButtonClass: "btn btn-danger btn-fill",
 						 type: "error"

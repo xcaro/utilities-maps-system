@@ -115,7 +115,7 @@ class ClinicTypeController extends Controller
     {
         $item = ClinicType::findOrFail($id);
         $item->active = false;
-        if ($item->save()) {
+        if (!(\App\Clinic::where('type', $id)->where('active', true)->exists()) && $item->save()) {
             return response()->json([
                 'message' => 'Xoá thành công',
                 'success' => true,

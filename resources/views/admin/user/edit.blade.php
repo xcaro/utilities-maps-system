@@ -40,30 +40,31 @@
                             <input type="text" placeholder="Tên tài khoản" class="form-control" required value="{{$user->username}}" name="username">
                         </div>
                     </div>
-                    <div class="form-group">
+                    <!--<div class="form-group">
                         <label class="col-md-3 control-label">Mật khẩu</label>
                         <div class="col-md-9">
                             <input type="password" placeholder="Mật khẩu" class="form-control"  name="password">
                         </div>
-                    </div>
+                    </div>-->
                     <div class="form-group">
                         <label class="col-md-3 control-label">Địa chỉ</label>
                         <div class="col-md-9">
-                            <input type="text" placeholder="Địa chỉ" class="form-control" value="{{$user->name}}" name="address">
+                            <input type="text" placeholder="Địa chỉ" class="form-control" value="{{$user->address}}" name="address">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-3 control-label">Số điện thoại</label>
                         <div class="col-md-9">
-                            <input type="text" placeholder="Số điện thoại" class="form-control" value="{{$user->name}}" name="phone">
+                            <input type="text" placeholder="Số điện thoại" class="form-control" value="{{$user->phone}}" name="phone">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-3 control-label">Loại tài khoản</label>
                         <div class="col-md-9">
                             <select class="form-control">
+                                <option value="">---</option>
                                 @foreach($roles as $role)
-                                <option value="{{ $role->id }}">{{ $role->title }}</option>
+                                <option value="{{ $role->id }}" {{$role->id == $user->role_id ?'selected':''}}>{{ $role->title }}</option>
                                 @endforeach
                             </select>
                         </div>

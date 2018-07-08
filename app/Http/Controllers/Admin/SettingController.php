@@ -18,7 +18,7 @@ class SettingController extends Controller
     public function update(Request $request)
     {
     	$r = \Validator::make($request->all(), [
-    		'default_clinic_expire' => 'required|numeric'
+    		'default_clinic_expire' => 'required|numeric|min:7'
     	])->validate();
     	$default_clinic_expire = $request->default_clinic_expire;
     	$item = Setting::where('key', 'default_clinic_expire')->first();

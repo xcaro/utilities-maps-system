@@ -99,9 +99,35 @@ class ClinicShiftController extends Controller
         $item->save();
         return response()->json(null, 204);
     }
-    public function getRegistered($shift_id)
+    public function multiShifts($id, Request $request)
     {
-        
+        $shifts = $request->shifts;
+        $total = 0;
+        \DB::beginTransaction();
+        foreach ($shifts as $shift) {
+            $item = new ClinicShift;
+            $item->name = $shift['name'];
+            $item->clinic_id = $id;
+            $item->start_shift = Carbon::createFromFormat('Y-m-d H:i:s',$shift['start_shift']);
+            $item->end_shift = Carbon::createFromFormat('Y-m-d H:i:s',$shift['end_shift']);
+            if ($item->save()) {
+                $total++;
+            }
+        }
+        if (count($shifts) === $total) {
+            \DB::commit();
+            return response()->json([
+                'success' => true,
+                'message' => 'Tạo ca thành công',
+            ], 200);
+        }
+        else {
+            \DB::rollBack();
+        }
+        return response()->json([
+            'success' => false,
+            'message' => 'Tạo ca không thành công',
+        ], 200);
     }
     
 }

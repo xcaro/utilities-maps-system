@@ -55,9 +55,9 @@
 	    	<div class="sidebar-wrapper">
 				<div class="user">
 	                <div class="info">
-						<div class="photo">
+						<!--<div class="photo">
 		                    <img src="{{ asset('assets/img/faces/face-1.jpg') }}" />
-		                </div>
+		                </div>-->
 
 	                    <a data-toggle="collapse" href="#collapseExample" class="collapsed">
 	                        <span>
@@ -159,7 +159,7 @@
 
 	                            <a class="btn-rotate"  href="{{ route('admin.logout') }}"
                                        onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
+                                                     document.getElementById('logout-form').submit();" rel="tooltip" title="Đăng xuất" data-placement="left">
                                         
 									<i class="fa fa-sign-out"></i>
 									<p class="hidden-md hidden-lg">
@@ -211,6 +211,7 @@
 	</div>
 </body>
 <script>
+	
 	var token = '{{ csrf_token()}}';
 </script>
 	<!--   Core JS Files. Extra: TouchPunch for touch library inside jquery-ui.min.js   -->

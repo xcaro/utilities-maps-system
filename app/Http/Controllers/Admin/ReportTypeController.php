@@ -114,7 +114,7 @@ class ReportTypeController extends Controller
     {
         $item = ReportType::findOrFail($id);
         $item->active = false;
-        if ($item->save()) {
+        if (!(\App\Report::where('type_id', $id)->exists()) && $item->save()) {
             return response()->json([
                 'message' => 'Xoá thành công',
                 'success' => true,

@@ -1,4 +1,11 @@
 @extends('layouts.admin')
+@section('styles')
+<style>
+	#show-mylocation{
+		margin-right: 15px;
+	}
+</style>
+@endsection
 @section('content')
 <div class="row">
 	<div class="col-md-12">
@@ -27,7 +34,7 @@
 					</div>
 					<div class="form-group col-md-3">
 						<select class="form-control" id="cln-dst">
-							<option>Tất cả khu vực</option>
+							<option value="0">Tất cả khu vực</option>
 							@foreach($listDistrict as $dst)
 								<option value="{{ $dst->id }}">{{ $dst->name }}</option>
 							@endforeach 
@@ -42,7 +49,7 @@
 					</div>
 					<div class="form-group col-md-3">
 						<button class="btn btn-primary" type="button" id="btn-filter"><i class="ti-search"></i> Tìm </button>
-						<a href="{{ route('admin.clinic.create') }}"><button class="btn btn-fill btn-success">Thêm mới</button></a>
+						
 					</div>
 				</div>
 			</div>
@@ -51,9 +58,10 @@
 	<div class="col-md-12">
 		<div class="card card-map">
 			<div class="card-header">
-                <h4 class="card-title">Danh sách phòng </h4>
+                <h4 class="card-title">Danh sách phòng <div id="results" style="display: none;">| Có <span id="total"></span> kết quả</div></h4>
 			</div>
 			<div class="card-content">
+				<button type="button" class="btn btn-simple btn-fill btn-xs" id="show-mylocation"><i class="ti-location-pin"></i></button>
             	<div id="map" class="map map-big"></div>
 			</div>
 		</div>
@@ -85,15 +93,14 @@
         	content: `<b>Tên: <i>${cln.name}</i></b><br/>
         	<b>Địa chỉ: </b><i>${cln.address}</i><br/><b>Trạng thái: </b><span class="label ${cln.confirmed?'label-success':'label-danger'}">${cln.confirmed?'Xác nhận':'Chưa xác nhận'}</span>
         	<hr>
-			<button type="button" class="btn ${cln.confirmed?'btn-primary':'btn-success'} " data-cln-id="${cln.id}" onclick="javascript:${cln.confirmed?'unconfirmClinic('+cln.id+')':'confirmClinic('+cln.id+')'}"><i class="${cln.confirmed?'ti-close':'ti-check'}"></i></button>
-			<button type="button" class="btn btn-danger" onclick="javascript:suspendClinic(${cln.id})"><i class="ti-lock"></i></button>
-			<a href="clinic/${cln.id}/edit"><button class="btn btn-info"><i class="ti-pencil-alt"></i></button></a>`,
+			<button type="button" class="btn ${cln.confirmed?'btn-primary':'btn-success'} " data-cln-id="${cln.id}" onclick="javascript:${cln.confirmed?'unconfirmClinic('+cln.id+')':'confirmClinic('+cln.id+')'}" rel="tooltip" title="${cln.confirmed?'Huỷ xác nhận':'Xác nhận'}"><i class="${cln.confirmed?'ti-close':'ti-check'}"></i></button>
+			<button type="button" class="btn btn-danger" onclick="javascript:suspendClinic(${cln.id})" rel="tooltip" title="Xoá"><i class="ti-lock"></i></button>
+			<a href="clinic/${cln.id}/edit" data-toggle="tooltip" title="Chỉnh sửa" class="btn btn-info"><i class="ti-pencil-alt"></i></a>`,
 			maxWidth:300,
         });
         let marker = new google.maps.Marker({
 	        position: {lat: cln.latitude, lng: cln.longitude},
 	        map: map,
-	        draggable: true,
             animation: google.maps.Animation.DROP,
 	        icon: (cln.confirmed) ? type.confirm: type.unconfirm
         });
@@ -108,7 +115,7 @@
 
 	var displayClinics = (map, lstCln) => {
 		clearAllMarkers(markers);
-		map.setCenter({lat:lstCln[0].latitude, lng: lstCln[0].longitude});
+		//map.setCenter({lat:lstCln[0].latitude, lng: lstCln[0].longitude});
 		$.each(lstCln, (index, el) => {
 			displayClinic(map, el);
 		});
@@ -165,10 +172,36 @@
 		
 	}
 	$(() => {
+		$('[data-toggle="tooltip"]').tooltip();   
+
 		var map = new google.maps.Map(document.getElementById('map'), {
 			center: {lat: 10.764237, lng: 106.689597},
         	mapTypeControl: false,
         	zoom: 12,
+		});
+		const geocoder = new google.maps.Geocoder();
+		map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(document.getElementById('show-mylocation'));
+
+		$('#show-mylocation').click(function(event) {
+			if (navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(function(position) {
+					var pos = {
+						lat: position.coords.latitude,
+						lng: position.coords.longitude
+					};
+					map.setCenter(pos);
+					map.setZoom(15)
+					let marker = new google.maps.Marker({
+						position: pos,
+						map: map,
+					});
+				}, function() {
+					console.log('fail');
+				});
+			} else {
+				console.log('fail');
+			}
+  
 		});
 
 		var socket = io('{{env('SOCKET_SERVER')}}', {secure: true});
@@ -256,7 +289,20 @@
 			let clnType = $('#cln-type').val();
 			let clnDistrict = $('#cln-dst').val();
 			let clnStatus = $('#cln-status').val();
+			let districtName = $('#cln-dst option:selected').text();
 
+			if (clnDistrict != 0) {
+				geocoder.geocode( { 'address': districtName}, function(results, status) {
+			      if (status == 'OK') {
+			        map.setCenter(results[0].geometry.location);
+			        if (map.getZoom() < 13) {
+			        	map.setZoom(13)
+			        }
+			      } else {
+			        alert('Geocode was not successful for the following reason: ' + status);
+			      }
+			    });
+			}
 			$.ajax({
 				url: '/admin/clinic/filter',
 				method: 'POST',
@@ -271,7 +317,9 @@
 			.done((res) => {
 				console.log(res);
 				clearAllMarkers(markers);
-				displayClinics(map, res);
+				displayClinics(map, res.results);
+				$('#results #total').text(res.total_results)
+				$('#results').css('display', 'inline-block')
 			})
 			.fail((err) => console.log(err))
 			.always(() => console.log("complete"));

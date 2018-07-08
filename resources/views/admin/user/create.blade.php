@@ -68,7 +68,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <!--<div class="form-group">
                         <label class="col-md-3 control-label">Trạng thái</label>
                         <div class="col-md-9">
                             <div class="checkbox">
@@ -78,7 +78,7 @@
                                 </label>
                             </div>      
                         </div>
-                    </div>
+                    </div>-->
 				</div>
 				<div class="card-footer">
 					<div class="form-group">

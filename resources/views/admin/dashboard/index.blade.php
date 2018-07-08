@@ -162,7 +162,7 @@
             }
         });
         dataLine.push(type);
-        console.log(dataLine[0]);
+        // console.log(dataLine[0]);
     });
     var configLine = {
         type: 'line',
@@ -215,9 +215,11 @@
         configLine.data.datasets.push(newDataset);
         window.myLine.update();
     }
+
 listType.forEach(item => {
     addDataset(item.name, dataLine[item.id - 1])
 });
+
 	$(function(){
         var dataPie = [];
         var labelPie = [];
