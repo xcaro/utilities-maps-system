@@ -11,6 +11,7 @@ class StatisticController extends Controller
     public function clinic()
     {
     	$today = Carbon::today();
+        $list_type = \App\ClinicType::where('active', true)->get();
 
     	// $result = \App\Clinic::with(['shifts' => function($q) {
     	// 	return $q->withCount('usersConfirmed');
@@ -22,18 +23,20 @@ class StatisticController extends Controller
     	// 	->select(\DB::raw('clinic_shifts.id, COUNT(shift_user.confirmed) as total'))
     	// 	->get();
 
-    	$result = \DB::table('clinic_types')
+    	$shift_every_month = \DB::table('clinic_types')
     	->leftJoin('clinics', 'clinic_types.id', '=', 'clinics.type')
     	->leftJoin('clinic_shifts', 'clinics.id', '=', 'clinic_shifts.clinic_id')
     	->leftJoin('shift_user', 'clinic_shifts.id', '=', 'shift_user.shift_id')
     	->where('shift_user.confirmed', true)
-    	->groupBy(\DB::raw('clinic_types.id, clinic_types.name'))
-    	->select(\DB::raw('clinic_types.id,clinic_types.name,COUNT(*) as total'))
+    	->groupBy(\DB::raw('clinic_types.id, MONTH(`shift_user`.`created_at`)'))
+        ->orderBy(\DB::raw('MONTH(`shift_user`.`created_at`),clinic_types.id'))
+    	->select(\DB::raw('clinic_types.id,clinic_types.name,COUNT(*) as total, MONTH(`shift_user`.`created_at`) as month'))
     	->get();
 
-    	return response()->json($result, 200, [], JSON_PRETTY_PRINT);
+    	//return response()->json($shift_every_month, 200, [], JSON_PRETTY_PRINT);
     	return view('admin.clinic.statistic', [
-
+            'list_type' => $list_type,
+            'shift_every_month' => $shift_every_month,
     	]);
     }
 }

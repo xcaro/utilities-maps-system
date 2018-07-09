@@ -38,7 +38,10 @@ class DashboardController extends Controller
         // return $list_type;
         //$report_every_month = \App\Report::groupBy(\DB::raw('MONTH(`created_at`)'))->get();
         //return dd($report_every_month);
-        // $result = \App\Clinic::whereDate('end_date', '<', $today)->update(['active' => false]);
+        // $result = \App\Report::where('active', true)->where('type_id', 1)->get();
+        //->map(function($item){return $item['id'];});
+        //$result= \App\Report::where('id', 'in', $result[0])->get();
+        // return $result->toJson();
         // return response()->json($result, 200, [], JSON_PRETTY_PRINT);
     	return view('admin.dashboard.index', [
     		'title' => 'Dashboard',

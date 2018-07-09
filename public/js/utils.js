@@ -1,13 +1,35 @@
 'use strict';
 
 window.chartColors = {
-	red: 'rgb(255, 99, 132)',
-	orange: 'rgb(255, 159, 64)',
-	yellow: 'rgb(255, 205, 86)',
-	green: 'rgb(75, 192, 192)',
-	blue: 'rgb(54, 162, 235)',
-	purple: 'rgb(153, 102, 255)',
-	grey: 'rgb(201, 203, 207)'
+	// red: 'rgb(255, 99, 132)',
+	// orange: 'rgb(255, 159, 64)',
+	// yellow: 'rgb(255, 205, 86)',
+	// green: 'rgb(75, 192, 192)',
+	// blue: 'rgb(54, 162, 235)',
+	// purple: 'rgb(153, 102, 255)',
+	// grey: 'rgb(201, 203, 207)',
+Red		:'rgb(230, 25, 75)',
+Green		:'rgb(60, 180, 75)',
+Yellow:'rgb(255, 225, 25)',
+Blue		:'rgb(0, 130, 200)',
+Orange		:'rgb(245, 130, 48)',
+Purple	:'rgb(145, 30, 180)',
+Cyan		:'rgb(70, 240, 240)	',
+Magenta		:'rgb(240, 50, 230)',
+Lime		:'rgb(210, 245, 60)',
+Pink		:'rgb(250, 190, 190)',
+Teal		:'rgb(0, 128, 128)	',
+Lavender	:'rgb(230, 190, 255)',
+Brown		:'rgb(170, 110, 40)',
+Beige		:'rgb(255, 250, 200)',
+Maroon		:'rgb(128, 0, 0)',
+Mint		:'rgb(170, 255, 195)',
+Olive		:'rgb(128, 128, 0)',
+Coral		:'rgb(255, 215, 180)',
+Navy		:'rgb(0, 0, 128)',
+Grey		:'rgb(128, 128, 128)',
+White		:'rgb(255, 255, 255)',
+Black		:'rgb(0, 0, 0)',
 };
 
 (function(global) {

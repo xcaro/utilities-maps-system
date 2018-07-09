@@ -195,7 +195,7 @@
                     display: true,
                     scaleLabel: {
                         display: true,
-                        labelString: 'Value'
+                        labelString: 'Số lượng'
                     }
                 }]
             }

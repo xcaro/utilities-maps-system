@@ -19,7 +19,7 @@ class BookingController extends Controller
     public function shiftsOfUser($user_id)
     {
     	$user = User::findOrFail($user_id);
-    	return new ClinicShiftCollection($user->shifts);
+    	return response()->json($user->shifts, 200);
     }
 
     public function bookShifts(Request $request, $user_id)
@@ -28,7 +28,7 @@ class BookingController extends Controller
     	$user->shifts()->attach($request->shifts_id);
     	return response()->json([
             'message' => 'Booking successful',
-            'data' => new ClinicShiftCollection($user->shifts)
+            'data' => $user->shifts
         ], 201);
     }
     public function shiftsBooked($shift_id)

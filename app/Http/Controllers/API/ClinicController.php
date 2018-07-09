@@ -219,7 +219,7 @@ class ClinicController extends Controller
         $date->second = 0;
         //$date->timestamp = 0;
         // return $date;
-        $result = \App\ClinicShift::whereDate('start_shift', $date)->where('active', true);
+        $result = \App\ClinicShift::whereDate('start_shift', $date)->where('active', true)->where('clinic_id', $id);
         return $result->get();
         return new \App\Http\Resources\ClinicShiftCollection($result->get());
     }

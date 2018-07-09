@@ -64,7 +64,7 @@ class User extends Authenticatable implements JWTSubject
     }
     public function shifts()
     {
-        return $this->belongsToMany(ClinicShift::class, 'shift_user', 'user_id', 'shift_id')->withPivot(['confirmed'])->withTimestamps();
+        return $this->belongsToMany(ClinicShift::class, 'shift_user', 'user_id', 'shift_id')->withPivot('confirmed')->withTimestamps();
     }
     public function confirmedShifts()
     {
