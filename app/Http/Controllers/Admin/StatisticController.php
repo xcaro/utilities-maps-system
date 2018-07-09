@@ -33,10 +33,12 @@ class StatisticController extends Controller
     	->select(\DB::raw('clinic_types.id,clinic_types.name,COUNT(*) as total, MONTH(`shift_user`.`created_at`) as month'))
     	->get();
 
-    	//return response()->json($shift_every_month, 200, [], JSON_PRETTY_PRINT);
+        $clinic_every_month = \App\Clinic::groupBy(\DB::raw('MONTH(`created_at`)'))->select(\DB::raw('MONTH(`created_at`) as month, COUNT(*) as total'))->get();
+    	//return response()->json($clinic_every_month, 200, [], JSON_PRETTY_PRINT);
     	return view('admin.clinic.statistic', [
             'list_type' => $list_type,
             'shift_every_month' => $shift_every_month,
+            'clinic_every_month' => $clinic_every_month,
     	]);
     }
 }

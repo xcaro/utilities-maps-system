@@ -27,7 +27,7 @@
                 <!--<p class="category">All products including Taxes</p>-->
             </div>
             <div class="card-content">
-                <canvas id="line-chart-area"></canvas>
+                <canvas id="line-chart-area-2"></canvas>
             </div>
             <div class="card-footer">
                 <hr>
@@ -49,23 +49,29 @@
 	let list_type = {!!$list_type!!};
 	let shift_every_month = {!!$shift_every_month!!};
 	let data = {};
-	
 
-	// for (var i = 0; i < month; i++) {
-	// 	let dataOfMonth = [];
-	// 	for(let item of list_type) {
-
-	// 	}
-	// }
-
+	var addDataset = (label, data, objChart, config) => {
+        var colorName = colorNames[config.data.datasets.length % colorNames.length];
+        var newColor = window.chartColors[colorName];
+        var newDataset = {
+            label: label,
+            backgroundColor: newColor,
+            borderColor: newColor,
+            data: data,
+            fill: false
+        };
+        config.data.datasets.push(newDataset);
+		objChart.update();
+    }
     
 
 	var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+	var labelMonth = MONTHS.splice(0, (new Date().getMonth() + 1));
 	var colorNames = Object.keys(window.chartColors);
 	var config = {
 		type: 'line',
 		data: {
-			labels: MONTHS.splice(0, (new Date().getMonth() + 1)),
+			labels: labelMonth,
 		},
 		options: {
 			responsive: true,
@@ -101,19 +107,8 @@
 	};
 
 	window.myLine = new Chart(document.getElementById('line-chart-area').getContext('2d'), config);
-	var addDataset = (label, data) => {
-        var colorName = colorNames[config.data.datasets.length % colorNames.length];
-        var newColor = window.chartColors[colorName];
-        var newDataset = {
-            label: label,
-            backgroundColor: newColor,
-            borderColor: newColor,
-            data: data,
-            fill: false
-        };
-        config.data.datasets.push(newDataset);
-		window.myLine.update();
-    }
+
+	
 
 	for (let type of list_type) {
 		let dataOfMonth = [];
@@ -134,11 +129,51 @@
 		console.log(dataOfMonth)
 		data[type.id] = dataOfMonth;
 		if (data[type.id].length !== 0) {
-			addDataset(type.name, data[type.id]);
+			addDataset(type.name, data[type.id], window.myLine, config);
 		}	
 
 	}
-	// for (let type of list_type) {
-	// }
+	
+	let clinic_every_month = {!!$clinic_every_month!!};
+	let data2 = [];
+	let config2 = {
+		type: 'line',
+		data: {
+			labels: labelMonth,
+		},
+		options: {
+			responsive: true,
+			tooltips: {
+				mode: 'index',
+				intersect: false,
+			},
+			hover: {
+				mode: 'nearest',
+				intersect: true
+			},
+			scales: {
+				yAxes: [{
+					display: true,
+					scaleLabel: {
+						display: true,
+						labelString: 'Số lượng'
+					}
+				}]
+			}
+		}
+	};
+	window.myLine2 = new Chart(document.getElementById('line-chart-area-2').getContext('2d'), config2);
+	for (let i = 0; i < month; i++) {
+		for (let item of clinic_every_month) {
+			if (item.month === (i+1)) {
+				data[i] = item.total
+			}
+			else {
+				data[i] = 0
+			}
+		}
+	}
+	addDataset('Phòng khám', data2, window.myLine2, config2)
+
 </script>
 @endsection

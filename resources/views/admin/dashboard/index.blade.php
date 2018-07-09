@@ -231,7 +231,7 @@ listType.forEach(item => {
             type: 'pie',
             data: { datasets: [{
                 data: dataPie,
-                backgroundColor: [ window.chartColors.red, window.chartColors.orange,window.chartColors.yellow,window.chartColors.green,window.chartColors.blue,],
+                backgroundColor: [ window.chartColors.Red, window.chartColors.Green,window.chartColors.Yellow,window.chartColors.Blue,window.chartColors.Orange],
                 label: 'Dataset 1'
             }],
             labels: labelPie

@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
+use r;
 
 class ClinicDisable extends Command
 {
@@ -38,7 +39,14 @@ class ClinicDisable extends Command
      */
     public function handle()
     {
-        \App\Clinic::whereDate('end_date', '<', Carbon::today())
-                     ->update(['active' => false]);
+        $r_connect = r\connect(env('R_HOST'), env('R_PORT'));
+
+        $result = \App\Clinic::whereDate('end_date', '<', Carbon::today())
+                     ->get()->map(function($item) use ($r_connect) {
+                        r\db('app')->table('activeClinics')->get((int)$item['id'])->delete()->run($r_connect);
+                        return $item['id'];
+                     });
+                     \App\Clinic::whereIn('id', $result)->update(['active' => false]);
+        $r_connect->close();
     }
 }

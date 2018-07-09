@@ -105,10 +105,11 @@
 	        icon: (cln.confirmed) ? type.confirm: type.unconfirm
         });
         marker.addListener('click',() => {
+			$('.gm-style-iw').parent().remove();
 			infowindow.open(map, marker)
-			google.maps.event.addListener(map, "click", function(event) {
-			    infowindow.close();
-			});
+			// google.maps.event.addListener(map, "click", function(event) {
+			//     infowindow.close();
+			// });
 		});
         markers[cln.id] = (marker);
 	}
@@ -191,9 +192,19 @@
 					};
 					map.setCenter(pos);
 					map.setZoom(15)
+					let infowindow = new google.maps.InfoWindow({
+						content:'Vị trí hiện tại',
+					});
 					let marker = new google.maps.Marker({
 						position: pos,
 						map: map,
+					});
+					marker.addListener('click', () => {
+						$('.gm-style-iw').parent().remove();
+						infowindow.open(map, marker)
+						google.maps.event.addListener(map, "click", function(event) {
+						    infowindow.close();
+						});
 					});
 				}, function() {
 					console.log('fail');

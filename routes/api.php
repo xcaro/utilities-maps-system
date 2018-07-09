@@ -21,6 +21,8 @@ Route::post('login', 'AuthController@login');
 Route::post('logout', 'AuthController@logout');
 Route::post('refresh', 'AuthController@refresh');
 Route::post('me', 'AuthController@me');
+Route::post('password/forgot', 'ForgotPasswordController@getResetToken');
+Route::post('password/reset', 'ResetPasswordController@reset');
 
 // Route::resource('report-type', 'ReportTypeController');
 // Route::resource('report', 'ReportController');

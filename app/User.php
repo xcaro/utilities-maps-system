@@ -5,10 +5,12 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Auth\Passwords\CanResetPassword;
+use App\Notifications\ResetPassword as ResetPasswordNotification;
 
 class User extends Authenticatable implements JWTSubject
 {
-    use Notifiable;
+    use Notifiable, CanResetPassword;
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
@@ -69,5 +71,9 @@ class User extends Authenticatable implements JWTSubject
     public function confirmedShifts()
     {
         return $this->belongsToMany(ClinicShift::class, 'shift_user', 'user_id', 'shift_id')->wherePivot('confirmed', true)->withTimestamps();
+    }
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPasswordNotification($token));
     }
 }
