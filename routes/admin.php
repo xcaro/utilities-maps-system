@@ -51,5 +51,5 @@ Route::resource('ctype', 'ClinicTypeController', [
 	]
 ]);
 Route::get('uuuu', function(){
-	return request('id');
+	return \App\Report::where('active', true)->get();
 });

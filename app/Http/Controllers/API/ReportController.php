@@ -37,6 +37,8 @@ class ReportController extends Controller
      */
     public function store(ReportRequest $request)
     {
+        $district = \App\District::where('name', 'like', '%'.$request->district.'%')->first();
+        $ward = \App\Ward::where('name', 'like', '%'.$request->ward.'%')->first();
         // rql
         $r_connect = r\connect(env('R_HOST'), env('R_PORT'));
 
@@ -47,6 +49,8 @@ class ReportController extends Controller
         $report->comment = $request->comment;
         $report->type_id = $request->type;
         $report->user_created = auth('api')->check()? auth('api')->user()->id:null;
+        $report->district_id = $district->id;
+        $report->ward_id = $ward->id;
 
         if($report->save())
         {

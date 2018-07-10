@@ -27,7 +27,7 @@ class ReportRequest extends FormRequest
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
             'comment' => 'string|max:255',
-            'image' => 'image:bmp,jpeg,png|max:2000',
+            //'image' => 'image:bmp,jpeg,png|max:2000',
         ];
     }
 }

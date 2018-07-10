@@ -44,6 +44,8 @@ class ReportTypeController extends Controller
         $item->unconfirmed_icon = $request->unconfirmed_icon;
         $item->confirmed_icon = $request->confirmed_icon;
         $item->menu_icon = $request->menu_icon;
+        $item->alive = $request->alive;
+        
         if ($item->save()) {
             return response()->json([
                 'success' => true,
@@ -92,6 +94,7 @@ class ReportTypeController extends Controller
         $item->unconfirmed_icon = $request->unconfirmed_icon;
         $item->confirmed_icon = $request->confirmed_icon;
         $item->menu_icon = $request->menu_icon;
+        $item->alive = $request->alive;
         if ($item->save()) {
             return response()->json([
                 'message' => 'Cập nhật loại thành công',

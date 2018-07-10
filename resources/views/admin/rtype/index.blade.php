@@ -197,10 +197,12 @@
 					 dataType: 'JSON',
 				})
 				.done((res) => {
+					console.log(res)
 					 $('input[name="name"]').val(res.name);
 					 $('input[name="confirmed_icon"]').val(res.confirmed_icon);
 					 $('input[name="unconfirmed_icon"]').val(res.unconfirmed_icon);
 					 $('input[name="menu_icon"]').val(res.menu_icon);
+					 $('input[name="alive"]').val(res.alive);
 				})
 				.fail((err) => console.log(err))
 				.always(() => console.log("get data complete"));
@@ -216,6 +218,7 @@
 			      confirmed_icon:$('input[name="confirmed_icon"]').val(),
 			      unconfirmed_icon:$('input[name="unconfirmed_icon"]').val(),
 			      menu_icon:$('input[name="menu_icon"]').val(),
+			      alive:$('input[name="alive"]').val(),
 			      _token:token,
 			 },
 			})
@@ -261,6 +264,7 @@
 			      confirmed_icon:$('input[name="confirmed_icon"]').val(),
 			      unconfirmed_icon:$('input[name="unconfirmed_icon"]').val(),
 			      menu_icon:$('input[name="menu_icon"]').val(),
+			      alive:$('input[name="alive"]').val(),
 			      _token:token,
 			 },
 			})

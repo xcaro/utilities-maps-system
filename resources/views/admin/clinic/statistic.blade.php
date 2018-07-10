@@ -126,7 +126,7 @@
 				}
 			}
 		}
-		console.log(dataOfMonth)
+		// console.log(dataOfMonth)
 		data[type.id] = dataOfMonth;
 		if (data[type.id].length !== 0) {
 			addDataset(type.name, data[type.id], window.myLine, config);
@@ -166,12 +166,13 @@
 	for (let i = 0; i < month; i++) {
 		for (let item of clinic_every_month) {
 			if (item.month === (i+1)) {
-				data[i] = item.total
+				data2[i] = item.total
 			}
 			else {
-				data[i] = 0
+				data2[i] = 0
 			}
 		}
+		// console.log(data2)
 	}
 	addDataset('Phòng khám', data2, window.myLine2, config2)
 

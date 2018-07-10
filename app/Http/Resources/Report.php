@@ -25,7 +25,9 @@ class Report extends JsonResource
                 'image' => url('upload/reports/' . $this->image),
             ]),
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at
+            'updated_at' => $this->updated_at,
+            'ward_id' => $this->ward_id,
+            'district_id' => $this->district_id
         ];
     }
 }
