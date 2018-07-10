@@ -30,7 +30,7 @@ class StatisticController extends Controller
     	->where('shift_user.confirmed', true)
     	->groupBy(\DB::raw('clinic_types.id, MONTH(`shift_user`.`created_at`)'))
         ->orderBy(\DB::raw('MONTH(`shift_user`.`created_at`),clinic_types.id'))
-    	->select(\DB::raw('clinic_types.id,clinic_types.name,COUNT(*) as total, MONTH(`shift_user`.`created_at`) as month'))
+    	->select(\DB::raw('clinic_types.id,COUNT(*) as total, MONTH(`shift_user`.`created_at`) as month'))
     	->get();
 
         $clinic_every_month = \App\Clinic::groupBy(\DB::raw('MONTH(`created_at`)'))->select(\DB::raw('MONTH(`created_at`) as month, COUNT(*) as total'))->get();

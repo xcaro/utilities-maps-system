@@ -25,7 +25,7 @@ class ForgotPasswordController extends Controller
         $token = $this->broker()->createToken($user);
         $user->sendPasswordResetNotification($token);
         return response()->json([
-            //'token' => $token, 
+            // 'token' => $token, 
             'message' => 'Mã đặt lại mật khẩu đã được gửi về email của bạn.',
         ]);
     }
