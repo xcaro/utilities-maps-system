@@ -35,7 +35,7 @@ class ReportController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ReportRequest $request)
+    public function store(Request $request)
     {
         $district = \App\District::where('name', 'like', '%'.$request->district.'%')->first();
         $ward = \App\Ward::where('name', 'like', '%'.$request->ward.'%')->first();
@@ -100,7 +100,7 @@ class ReportController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ReportRequest $request, $id)
+    public function update(Request $request, $id)
     {
         $report = Report::find($id);
         $report->latitude = $request->latitude;
