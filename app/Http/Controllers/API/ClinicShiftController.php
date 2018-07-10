@@ -110,6 +110,7 @@ class ClinicShiftController extends Controller
             $item->clinic_id = $id;
             $item->start_shift = Carbon::createFromFormat('Y-m-d H:i:s',$shift['start_shift']);
             $item->end_shift = Carbon::createFromFormat('Y-m-d H:i:s',$shift['end_shift']);
+            
             if ($item->save()) {
                 $total++;
             }
