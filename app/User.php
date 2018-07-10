@@ -5,12 +5,11 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
-use Illuminate\Auth\Passwords\CanResetPassword;
 use App\Notifications\ResetPassword as ResetPasswordNotification;
 
 class User extends Authenticatable implements JWTSubject
 {
-    use Notifiable, CanResetPassword;
+    use Notifiable;
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
