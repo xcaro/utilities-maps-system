@@ -154,13 +154,29 @@
     var listType = {!!$list_type!!};
     var resData = {!! $report_every_month !!};
     var dataLine = [];
+    var currMonth = new Date().getMonth() + 1;
     listType.forEach(rel => {
         let type = [];
-        resData.forEach(item => {
-            if (rel.id === item.type_id) {
-                type.push(item.total);
+        for(let item of resData) {
+            for (var i = 0; i < currMonth; i++) {
+                console.log(i)
+                if (rel.id === item.type_id) {
+                    if ((i + 1) === item.month) {
+                        type[i] = item.total;
+                    }
+                    else if (!type[i]) {
+                        type[i] = 0;
+                    }
+                }
             }
-        });
+        }
+        // resData.forEach(item => {
+        //     if (rel.id === item.type_id) {
+        //         type.push(item.total);
+        //     }
+        // });
+        // 
+        // console.log(type);
         dataLine.push(type);
         // console.log(dataLine[0]);
     });
