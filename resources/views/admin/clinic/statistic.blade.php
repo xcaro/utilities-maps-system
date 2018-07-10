@@ -23,7 +23,7 @@
     <div class="col-md-6">
         <div class="card ">
             <div class="card-header">
-                <h4 class="card-title"><script>document.write(new Date().getFullYear())</script></h4>
+                <h4 class="card-title">Số lượng phòng khám trong <script>document.write(new Date().getFullYear())</script></h4>
                 <!--<p class="category">All products including Taxes</p>-->
             </div>
             <div class="card-content">
